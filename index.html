@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12344D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Guía USA">
+<title>Guía USA · Juan David y Santiago</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="iconos/icono-192.png">
+<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">
+<link rel="stylesheet" href="css/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/gastos.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="logo">✈</div><div><h1>Guía USA</h1><p>Juan David y Santiago · 30 oct – 24 nov 2026</p></div></div>
+  <div class="seg" role="group" aria-label="Número de personas"><span>Personas</span><button data-g="1">1</button><button data-g="2" class="on">2</button><button data-g="3">3</button><button data-g="4">4</button></div>
+</header>
+
+<main>
+<section class="view on" id="v-inicio"></section>
+<section class="view" id="v-dias"></section>
+<section class="view" id="v-mapa">
+  <nav class="chips" id="cityChips" aria-label="Ciudades"></nav>
+  <nav class="chips" id="filterChips" aria-label="Filtro"></nav>
+  <div class="layout">
+    <div class="mapwrap"><div id="map"></div><div id="lmap"></div>
+      <button class="mode" id="mode" type="button" title="Cambiar entre satélite y mapa dibujado">✏️ Mapa dibujado ⇄</button>
+      <div class="layers"><button id="zIn" aria-label="Acercar">+</button><button id="zOut" aria-label="Alejar">−</button><button id="zReset">Centrar</button><button id="tour" class="play">▶ Recorrido</button></div>
+      <div class="scale" id="scale"><span id="scaleT">—</span><i id="scaleB"></i></div>
+    </div>
+    <section class="panel" id="panel" aria-live="polite"></section>
+  </div>
+</section>
+<section class="view" id="v-comer"></section>
+<section class="view" id="v-ingles"></section>
+<section class="view" id="v-fotos"></section>
+<section class="view" id="v-gratis"></section>
+<section class="view" id="v-gastos"></section>
+</main>
+
+<nav class="tabs" id="tabs" aria-label="Secciones">
+  <button data-t="inicio" class="on"><span class="ic">🏠</span>Inicio</button>
+  <button data-t="dias"><span class="ic">🗓️</span>Días</button>
+  <button data-t="mapa"><span class="ic">🗺️</span>Mapa</button>
+  <button data-t="gastos"><span class="ic">💸</span>Gastos</button>
+  <button data-t="comer"><span class="ic">🍕</span>Comer</button>
+  <button data-t="ingles"><span class="ic">🗣️</span>Inglés</button>
+  <button data-t="fotos"><span class="ic">📸</span>Fotos</button>
+  <button data-t="gratis"><span class="ic">🎟️</span>Gratis</button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/vendor/leaflet.js"></script>
+<script src="js/datos/lugares.js"></script>
+<script src="js/datos/ciudades.js"></script>
+<script src="js/datos/presupuesto.js"></script>
+<script src="js/datos/dias.js"></script>
+<script src="js/datos/contenido.js"></script>
+<script src="js/datos/mapas.js"></script>
+<script src="js/offline.js"></script>
+<script src="js/gastos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

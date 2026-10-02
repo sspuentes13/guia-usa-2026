@@ -1,0 +1,7 @@
+# Nunca subir gastos ni secretos
+*.csv
+gastos*.json
+*.env
+node_modules/
+.DS_Store
+Thumbs.db
