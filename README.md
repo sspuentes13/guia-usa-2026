@@ -60,8 +60,17 @@ Los gastos **no** quedan en este sitio. Se guardan en cada teléfono y se sincro
 
 **Si cambias el código del script después:** Implementar → **Administrar implementaciones** → ✏️ → Versión: **Nueva versión** → Implementar (así la URL no cambia).
 
+### Una sola hoja para todos
+- Se crea **una sola** Google Sheet y se publica **una sola vez**. Todos los teléfonos (el tuyo, el de Juan…) usan **la misma URL `/exec` y la misma clave**: así todos los gastos quedan en la misma pestaña *Gastos*, sin importar quién los anote.
+- Juan **no** necesita cuenta de Google ni permiso en la hoja: el script escribe en tu nombre ("Ejecutar como: Yo"). Si quieres que vea la hoja, compártela con él como *Lector*.
+- Nunca hagas "Nueva implementación" otra vez para lo mismo: crearía otra URL. Para cambios usa *Administrar implementaciones → Nueva versión*.
+- Para comprobar que la URL sirve, ábrela en el navegador: debe decir `"ok":true … Funciona`.
+
 ### Cómo funciona
 - Cada gasto se guarda **primero en el teléfono** (📱). Si hay internet se sube a la hoja en segundos (☁️). Sin internet queda en cola y se sube solo al volver la conexión.
+- Cada teléfono trae lo de los demás al guardar un gasto, al abrir la pestaña Gastos, al volver el internet y cada 90 segundos con la app abierta. Para forzarlo, toca el estado verde ("☁️ Sincronizado").
+- Si dos personas editan el mismo gasto, queda la última edición.
+- También se puede corregir directamente en la hoja (monto, descripción, etc.): el cambio llega a todos los teléfonos. Para borrar desde la hoja escribe **sí** en la columna `borrado` (no borres la fila). Las columnas `id`, `creado` y `modificado` no se tocan.
 - Exportar: **Reportes → CSV** (abre en Excel y Google Sheets) o **JSON** (respaldo). Importar JSON en **Ajustes → Respaldo**.
 - Si se pierde un teléfono: cambia la clave (menú **Gastos de la guía → Cambiar la clave**) y conecta de nuevo los demás.
 

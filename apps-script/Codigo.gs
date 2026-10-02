@@ -24,6 +24,26 @@ function onOpen() {
     .addToUi();
 }
 
+/* Si alguien corrige un gasto directamente en la hoja (monto, descripción, "sí" en borrado…),
+   se recalculan los valores y se marca como modificado para que llegue a todos los teléfonos. */
+function onEdit(e) {
+  var hoja = e.range.getSheet();
+  if (hoja.getName() !== HOJA_GASTOS) return;
+  var r0 = Math.max(2, e.range.getRow()), r1 = e.range.getLastRow();
+  if (r1 < r0) return;
+  var c = function (n) { return COLUMNAS.indexOf(n); };
+  var filas = hoja.getRange(r0, 1, r1 - r0 + 1, COLUMNAS.length).getValues();
+  var ahora = Date.now();
+  var valores = [], mods = [];
+  filas.forEach(function (f) {
+    var monto = Number(f[c('monto')]) || 0, tasa = Number(f[c('tasa')]) || 4000, usd = f[c('moneda')] === 'USD';
+    valores.push(f[c('id')] ? [Math.round(usd ? monto * tasa : monto), Math.round((usd ? monto : monto / tasa) * 100) / 100] : [f[c('valor_cop')], f[c('valor_usd')]]);
+    mods.push([f[c('id')] ? ahora : f[c('modificado')]]);
+  });
+  hoja.getRange(r0, c('valor_cop') + 1, filas.length, 2).setValues(valores);
+  hoja.getRange(r0, c('modificado') + 1, filas.length, 1).setValues(mods);
+}
+
 function prepararHojaYClave() {
   prepararHojas_();
   var props = PropertiesService.getScriptProperties();
