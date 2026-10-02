@@ -17,8 +17,11 @@ if('serviceWorker' in navigator&&location.protocol!=='file:'){
       reg.addEventListener('updatefound',function(){var w=reg.installing;if(!w)return;w.addEventListener('statechange',function(){if(w.state==='installed'&&navigator.serviceWorker.controller)avisar(w)})});
       setInterval(function(){reg.update().catch(function(){})},60*60*1000);
     }).catch(function(e){console.warn('SW',e)});
-    // solo recarga cuando la persona tocó "Actualizar" (no en la primera instalación)
-    navigator.serviceWorker.addEventListener('controllerchange',function(){if(!OFF.actualizando)return;OFF.actualizando=false;location.reload()});
+    // solo recarga cuando la persona tocó "Actualizar"; en la primera instalación solo avisa que ya funciona sin internet
+    var habia=!!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange',function(){
+      if(OFF.actualizando){OFF.actualizando=false;location.reload();return}
+      if(!habia){habia=true;toast('✓ Guía guardada: ya funciona sin internet');var c=document.getElementById('offlineCard');if(c&&!OFF.corriendo)renderOfflineCard(c)}});
   });
 }
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted().then(function(p){if(!p)navigator.storage.persist().catch(function(){})}).catch(function(){});
@@ -75,7 +78,7 @@ function offBorrar(){return caches.delete(OFF.CACHE).then(function(){try{localSt
 function renderOfflineCard(el){if(!el)return;
   var st=offEstado(),n=offLista().length,est=n*OFF.KB_PROMEDIO*1000,sw='serviceWorker' in navigator&&navigator.serviceWorker.controller;
   var h='<h3 style="margin:0 0 6px">📶 Usar sin internet</h3>';
-  h+='<p class="lead" style="font-size:14px;margin:0 0 10px">La guía ya queda guardada en este dispositivo al abrirla'+(sw?' <span class="pill g">✓ lista</span>':'')+'. Los mapas satelitales se guardan aparte: descárgalos con wifi antes de salir.</p>';
+  h+='<p class="lead" style="font-size:14px;margin:0 0 10px">La guía ya queda guardada en este dispositivo al abrirla'+(sw?' <span class="pill g">✓ lista</span>':' <span class="pill o">guardando… mantén el wifi un momento</span>')+'. Los mapas satelitales se guardan aparte: descárgalos con wifi antes de salir.</p>';
   if(OFF.corriendo){h+=offBarra()}
   else if(st){h+='<div class="box'+(st.completo?'':' o')+'"><h4>'+(st.completo?'✓ Mapas guardados':'Descarga incompleta')+'</h4>'+st.tiles.toLocaleString('es-CO')+' de '+st.total.toLocaleString('es-CO')+' imágenes · <b>'+offMB(st.bytes)+'</b> · '+new Date(st.fecha).toLocaleDateString('es-CO',{day:'numeric',month:'short'})+(st.fallas?'<br>'+st.fallas+' no se pudieron bajar'+(st.completo?' (no afecta el uso).':': toca el botón otra vez para completarlas.'):'')+'</div>'}
   else h+='<div class="box">Se descargan <b>'+n.toLocaleString('es-CO')+' imágenes</b> alrededor de cada lugar (zoom 12 a 17). Ocupan cerca de <b>'+offMB(est)+'</b>. Tarda de 2 a 10 minutos con buen wifi.</div>';

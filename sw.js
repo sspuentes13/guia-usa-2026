@@ -4,7 +4,7 @@
    - Fotos de Wikipedia y fuente: caché con actualización en segundo plano.
    - Gastos (Google Apps Script): nunca se guardan aquí.
    Al publicar cambios grandes, sube VERSION para forzar la actualización. */
-var VERSION='2026-10-02a';
+var VERSION='2026-10-02b';
 var SHELL='guia-app-'+VERSION, PREP='guia-tiles-prep', VIS='guia-tiles-vis', EXT='guia-ext';
 var ARCHIVOS=['./','index.html','manifest.webmanifest','css/leaflet.css','css/app.css','css/gastos.css',
   'js/vendor/leaflet.js','js/datos/lugares.js','js/datos/ciudades.js','js/datos/presupuesto.js','js/datos/dias.js',
