@@ -5,3 +5,8 @@ gastos*.json
 node_modules/
 .DS_Store
 Thumbs.db
+
+# Vínculo privado con el Apps Script (contiene IDs del script y de la URL /exec)
+apps-script/.clasp.json
+apps-script/.despliegue
+.clasp.json

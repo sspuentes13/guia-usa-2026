@@ -60,6 +60,16 @@ Los gastos **no** quedan en este sitio. Se guardan en cada teléfono y se sincro
 
 **Si cambias el código del script después:** Implementar → **Administrar implementaciones** → ✏️ → Versión: **Nueva versión** → Implementar (así la URL no cambia).
 
+**O desde este proyecto (computador ya vinculado con [clasp](https://github.com/google/clasp)):** el código de `apps-script/` se sube a la hoja así, sin cambiar la URL:
+
+```bash
+cd apps-script
+npx @google/clasp -A ~/.clasp-personal/.clasprc.json push --force
+npx @google/clasp -A ~/.clasp-personal/.clasprc.json update-deployment "$(cat .despliegue)" -d "Gastos guía USA"
+```
+
+Los archivos `apps-script/.clasp.json` (ID del script) y `apps-script/.despliegue` (ID de la URL `/exec`) son privados: están en `.gitignore` y solo existen en el computador vinculado.
+
 ### Una sola hoja para todos
 - Se crea **una sola** Google Sheet y se publica **una sola vez**. Todos los teléfonos (el tuyo, el de Juan…) usan **la misma URL `/exec` y la misma clave**: así todos los gastos quedan en la misma pestaña *Gastos*, sin importar quién los anote.
 - Juan **no** necesita cuenta de Google ni permiso en la hoja: el script escribe en tu nombre ("Ejecutar como: Yo"). Si quieres que vea la hoja, compártela con él como *Lector*.
