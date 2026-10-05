@@ -1,0 +1,187 @@
+/* Guía USA · interfaz: rutas del día, análisis, práctica de inglés y adaptación a cualquier pantalla */
+
+/* ---------- detalles generales ---------- */
+.top{box-shadow:0 8px 20px -18px rgba(18,52,77,.55)}
+.tabs button{position:relative;transition:background .2s,color .2s}
+.tabs button.on::after{content:"";position:absolute;top:2px;left:30%;right:30%;height:3px;border-radius:3px;background:var(--orange)}
+.card,.day{transition:box-shadow .2s}
+.chip{transition:background .15s,border-color .15s}
+.btn{transition:transform .1s,background .15s}
+.btn:active,.chip:active,.say:active{transform:scale(.96)}
+.btn.sm{padding:7px 12px;font-size:13px}
+.row.spread{justify-content:space-between}
+.toggle2.full{display:flex;width:100%}
+.toggle2.full button{flex:1}
+.pill.sm,.stat .sm{font-size:12px;font-weight:700;color:inherit;opacity:.75}
+.box.g{background:var(--green-2);color:var(--green)}
+.pill.r{background:#FBE4E4;color:#9B2C2C}
+
+/* ---------- mapa ---------- */
+.mapwrap{height:auto}
+.layers{flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 24px)}
+.layers button{min-width:38px;min-height:36px;font-family:inherit}
+.daychips{align-items:center;padding-top:0}
+.chiplbl{flex:none;font-size:12px;font-weight:800;color:var(--ink-2);padding-right:2px}
+.daychips .chip small{font-size:12px}
+.route.dia{stroke-dasharray:none!important;animation:none;opacity:.95}
+.leglbl{background:none;border:0}
+.leglbl span{display:inline-block;transform:translate(-50%,-50%);white-space:nowrap;background:#fff;color:var(--ink);border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;box-shadow:0 3px 10px -3px rgba(18,52,77,.55);border:2px solid var(--orange)}
+.leglbl span.tr{border-color:var(--snow)}
+.diasgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:0 0 12px}
+.diabtn{border:2px solid var(--sky-2);background:var(--paper);border-radius:16px;padding:10px 12px;text-align:left;cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;gap:2px}
+.diabtn:hover{border-color:var(--orange)}
+.diabtn b{font-size:15px}
+.diabtn small{font-size:12px;color:var(--ink-2);line-height:1.3}
+.diabtn span{font-size:12px;font-weight:800;color:var(--orange-deep)}
+.buscar{display:flex;gap:8px;margin:0 0 10px}
+.buscar input{flex:1;min-width:0;font:inherit;font-size:16px;border:2px solid var(--sky-2);background:var(--sky-2);border-radius:999px;padding:9px 14px;color:var(--ink)}
+.buscar input:focus{outline:none;border-color:var(--orange);background:#fff}
+.buscar .btn{flex:none}
+.places li.vacio{padding:14px;color:var(--ink-2);font-size:14px}
+ol.ruta{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:0}
+.ruta .parada button{width:100%;text-align:left;border:2px solid var(--sky-2);background:var(--paper);border-radius:16px;padding:10px 12px;cursor:pointer;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;font:inherit;color:inherit}
+.ruta .parada button:hover{border-color:var(--orange)}
+.ruta .parada b{display:block;font-size:15px}
+.ruta .parada small{font-size:12px;color:var(--ink-2)}
+.ruta .num{width:44px;height:44px}
+.ruta .tramo{margin:0 0 0 21px;padding:7px 0 7px 22px;border-left:3px dotted var(--orange);font-size:12px;font-weight:700;color:var(--ink-2)}
+.ruta .tramo.trans{border-left-color:var(--snow)}
+
+/* pantalla completa del mapa */
+body.mapa-full{overflow:hidden}
+body.mapa-full .mapwrap{position:fixed;inset:0;z-index:980;border-radius:0;height:auto!important}
+body.mapa-full .mode{top:calc(12px + env(safe-area-inset-top,0px));left:calc(12px + env(safe-area-inset-left,0px))}
+body.mapa-full .layers{top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px))}
+@media (max-width:640px){body.mapa-full .layers{top:calc(54px + env(safe-area-inset-top,0px))}}
+
+/* ---------- días ---------- */
+.dtools{margin-bottom:12px}
+.dtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.dtags .pill{font-size:11px;padding:3px 9px}
+.rutadia h4{color:var(--orange-deep)}
+ol.mini{list-style:none;margin:6px 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+ol.mini button{border:0;background:var(--paper);border-radius:999px;padding:5px 10px 5px 5px;font:inherit;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+ol.mini button i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-size:11px}
+ol.mini small{color:var(--orange-deep)}
+.rnota{font-size:13px;color:var(--ink-2);margin:0 0 8px}
+.anastats b .sm{font-size:13px}
+ul.insights{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ul.insights li{background:var(--sky-2);border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.45}
+table.ana td,table.ana th{text-align:left;white-space:normal;vertical-align:top}
+table.ana td:first-child{min-width:96px}
+table.ana tr.clic{cursor:pointer}
+table.ana tr.clic:hover td{background:#FFF8F2}
+.ciudades .box b{font-size:15px}
+
+/* ---------- inglés ---------- */
+.ingtop .row{justify-content:space-between}
+.ingprog{font-size:14px;margin-bottom:10px;display:grid;gap:6px}
+.ingprog b{font-size:20px;color:var(--orange-deep)}
+.ingfil{position:sticky;top:64px;z-index:400;background:var(--sky-2);padding:6px 0 0;margin:0 -2px}
+.ingfil input{width:100%;font:inherit;font-size:16px;border:2px solid transparent;background:var(--paper);border-radius:999px;padding:10px 16px;color:var(--ink)}
+.ingfil input:focus{outline:none;border-color:var(--orange)}
+.ingfil .chips{padding:8px 0}
+.phr2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start;padding:12px 0;border-top:1px solid var(--sky-2)}
+.card .phr2:first-of-type{border-top:0}
+.phr2 b{display:block;font-size:16px;line-height:1.35}
+.phr2 small{display:block;color:var(--ink-2);font-size:13px;margin-top:2px}
+.phr2 small.tip,.carta .tip{color:var(--orange-deep);font-weight:700}
+.phr2.hecha b{color:var(--green)}
+.pbtn{display:flex;gap:6px}
+.say.mic{background:var(--ink)}
+.say.mic.on{background:#C53030;animation:pulse .8s ease infinite}
+.say.chk{background:var(--sky-2);color:var(--ink);font-weight:800}
+.phr2.hecha .say.chk{background:var(--green);color:#fff}
+.psal:empty{display:none}
+.psal{margin-top:8px}
+.psal .esc{font-size:13px;font-weight:700;color:#C53030}
+.nota{border-radius:12px;padding:8px 10px;font-size:13px;line-height:1.45;background:var(--sky-2)}
+.nota.g{background:var(--green-2);color:var(--green)}
+.nota.o{background:var(--orange-2);color:var(--orange-deep)}
+.nota small{display:block;margin-top:4px;color:var(--ink-2)}
+.palabras{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}
+.palabras span{border-radius:6px;padding:1px 6px;font-weight:800}
+.palabras .ok{background:#CDEFD8;color:var(--green)}
+.palabras .mal{background:#FFD9BF;color:var(--orange-deep)}
+.simul summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.simul summary::-webkit-details-marker{display:none}
+.simul summary .gh3{margin:0}
+.simul summary::after{content:"▾";margin-left:auto;font-weight:800;color:var(--ink-2)}
+.simul[open] summary::after{content:"▴"}
+ol.dialogo{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:12px}
+.dialogo li{display:grid;gap:6px}
+.dialogo .q,.dialogo .a{display:grid;grid-template-columns:28px minmax(0,1fr) auto auto;gap:8px;align-items:center;border-radius:16px;padding:8px 10px}
+.dialogo .q{background:var(--sky-2);margin-right:12%}
+.dialogo .a{background:var(--orange-2);margin-left:12%}
+.dialogo span{font-size:20px}
+.dialogo b{display:block;font-size:15px}
+.dialogo small{display:block;font-size:12px;color:var(--ink-2)}
+.sonidos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.sonidos .chip{background:var(--paper)}
+.sonidos .chip small{color:var(--ink-2);font-weight:600}
+.carta{margin-top:12px;background:var(--ink);color:#fff;border-radius:20px;padding:16px 18px;animation:fade .3s ease}
+.carta small{color:var(--sky)}
+.carta .es{font-size:22px;font-weight:800;margin:6px 0}
+.carta .en{font-size:20px;font-weight:800;color:var(--orange);margin:0 0 4px}
+.carta .tip{color:var(--orange-2)}
+.carta .btn{background:rgba(255,255,255,.12);color:#fff}
+.carta .btn.pri{background:var(--orange)}
+.carta .row{margin-top:10px}
+
+/* ---------- celular vertical ---------- */
+@media (max-width:860px){.mapwrap{height:52vh;height:52dvh}}
+@media (max-width:520px){
+  .view{padding:6px 14px 20px}
+  h2.big{font-size:32px}
+  .lead{font-size:15px}
+  .card{padding:16px}
+  .layers .lbl{display:none}
+  .phr2{grid-template-columns:1fr}
+  .pbtn{justify-content:flex-end}
+  .dialogo .q{margin-right:0}.dialogo .a{margin-left:0}
+  .dialogo .q,.dialogo .a{grid-template-columns:24px minmax(0,1fr) auto}
+  .dialogo .a .mic{grid-column:3}
+  .buscar{flex-wrap:wrap}
+  .buscar .btn{width:100%;justify-content:center}
+  .ingfil{top:58px}
+  table.ana{font-size:13px}
+}
+
+/* ---------- celular horizontal: pestañas a un lado y mapa junto al panel ---------- */
+@media (orientation:landscape) and (max-height:540px){
+  body{padding:0 env(safe-area-inset-right,0px) 0 calc(74px + env(safe-area-inset-left,0px))}
+  .top{position:static;padding:8px 14px 4px;gap:8px}
+  .brand p{display:none}
+  .logo{width:30px;height:30px;font-size:15px;border-radius:10px}
+  .brand h1{font-size:16px}
+  .seg button{height:28px}
+  .tabs{top:0;bottom:0;left:0;right:auto;width:calc(70px + env(safe-area-inset-left,0px));flex-direction:column;justify-content:flex-start;gap:1px;padding:6px 5px 6px calc(5px + env(safe-area-inset-left,0px));overflow-y:auto}
+  .tabs button{flex:0 0 auto;max-width:none;width:100%;padding:4px 0;font-size:10px;min-height:42px}
+  .tabs button .ic{font-size:17px}
+  .tabs button.on::after{top:20%;bottom:20%;left:auto;right:-5px;width:3px;height:auto}
+  .view{padding:4px 12px 14px}
+  h2.big{font-size:26px;margin:2px 0 6px}
+  .hero{padding:18px 20px}
+  .hero h2{font-size:32px}
+  .chips{padding-bottom:6px}
+  .chip{padding:6px 12px;font-size:13px}
+  .layout{grid-template-columns:minmax(0,1.35fr) minmax(250px,1fr);height:calc(100vh - 24px);height:calc(100dvh - 24px);min-height:230px}
+  .mapwrap{height:auto}
+  .panel{max-height:none}
+  .tot{bottom:8px}
+  .toast{bottom:16px}
+  .offbanner{bottom:12px;left:calc(84px + env(safe-area-inset-left,0px))}
+  .gacciones{bottom:0}
+  .gtabs,.ingfil{top:0}
+  .grid4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .layers{top:12px}
+  .layers .lbl{display:none}
+  .ph{height:150px}
+  body[data-tab="mapa"] .top{display:none}
+  body[data-tab="mapa"] .view{padding-top:8px}
+}
+@media (orientation:landscape) and (max-height:540px) and (max-width:700px){
+  .layout{grid-template-columns:1fr;height:auto}
+  .mapwrap{height:calc(100dvh - 40px)}
+}

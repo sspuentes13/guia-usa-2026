@@ -15,9 +15,10 @@
 <link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">
 <link rel="stylesheet" href="css/leaflet.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<link crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/gastos.css">
+<link rel="stylesheet" href="css/ui.css">
 </head>
 <body>
 <header class="top">
@@ -31,10 +32,11 @@
 <section class="view" id="v-mapa">
   <nav class="chips" id="cityChips" aria-label="Ciudades"></nav>
   <nav class="chips" id="filterChips" aria-label="Filtro"></nav>
+  <nav class="chips daychips" id="dayChips" aria-label="Ruta del día"></nav>
   <div class="layout">
     <div class="mapwrap"><div id="map"></div><div id="lmap"></div>
       <button class="mode" id="mode" type="button" title="Cambiar entre satélite y mapa dibujado">✏️ Mapa dibujado ⇄</button>
-      <div class="layers"><button id="zIn" aria-label="Acercar">+</button><button id="zOut" aria-label="Alejar">−</button><button id="zReset">Centrar</button><button id="tour" class="play">▶ Recorrido</button></div>
+      <div class="layers"><button id="zIn" aria-label="Acercar">+</button><button id="zOut" aria-label="Alejar">−</button><button id="zReset" aria-label="Centrar" title="Centrar">⌖</button><button id="cercaBtn" aria-label="Cerca de mí" title="Lo más cercano a mí">📍</button><button id="fullBtn" aria-label="Pantalla completa" title="Pantalla completa">⛶</button><button id="tour" class="play" aria-label="Recorrido">▶<span class="lbl"> Recorrido</span></button></div>
       <div class="scale" id="scale"><span id="scaleT">—</span><i id="scaleB"></i></div>
     </div>
     <section class="panel" id="panel" aria-live="polite"></section>
@@ -65,8 +67,13 @@
 <script src="js/datos/presupuesto.js"></script>
 <script src="js/datos/dias.js"></script>
 <script src="js/datos/contenido.js"></script>
+<script src="js/datos/ingles.js"></script>
 <script src="js/datos/mapas.js"></script>
 <script src="js/offline.js"></script>
+<script src="js/rutas.js"></script>
+<script src="js/mapa-rutas.js"></script>
+<script src="js/vista-dias.js"></script>
+<script src="js/ingles.js"></script>
 <script src="js/gastos.js"></script>
 <script src="js/app.js"></script>
 </body>

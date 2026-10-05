@@ -95,7 +95,8 @@ Los datos están separados por tema en `js/datos/`:
 | `dias.js` | Itinerario día a día (`DAYS`) |
 | `lugares.js` | Lugares del mapa (`P`): nombre, coordenadas, día, precio, foto |
 | `presupuesto.js` | Presupuesto planeado (`BUDGET`) y tasa (`RATE`) |
-| `contenido.js` | Lugares gratis, comida, frases en inglés, canciones, poses |
+| `contenido.js` | Lugares gratis, comida, canciones, poses |
+| `ingles.js` | Frases de inglés con tips de pronunciación, simulacro de migración y sonidos difíciles |
 | `ciudades.js` | Ciudades y descripciones |
 | `mapas.js` | Mapas dibujados (generados; no editar a mano) |
 
@@ -115,8 +116,12 @@ El mapa de Google My Maps / Organic Maps está en [`datos/viaje-google-my-maps.k
 index.html              página principal
 manifest.webmanifest    datos para instalarla como app
 sw.js                   service worker: guarda la app y los mapas para usar sin internet
-css/                    estilos (app, gastos, Leaflet)
-js/app.js               guía: inicio, días, mapa, comer, inglés, fotos, gratis
+css/                    estilos (app, gastos, interfaz y pantallas, Leaflet)
+js/app.js               guía: inicio, mapa, comer, fotos, gratis
+js/rutas.js             orden por cercanía de los lugares de cada día (respeta horas fijas)
+js/mapa-rutas.js        mapa interactivo: ruta del día, cerca de mí, búsqueda, pantalla completa
+js/vista-dias.js        pestaña Días con su ruta y la vista 📊 Análisis
+js/ingles.js            práctica de inglés: voz lenta, micrófono, tarjetas al azar
 js/gastos.js            registro de gastos, reportes y sincronización
 js/offline.js           descarga de mapas y aviso de versión nueva
 js/datos/               contenido de la guía

@@ -36,15 +36,7 @@ var FOOD=[
  {c:'col',w:'Pandebono y café',d:'Terminal de Cali',p:3,t:'El último sabor de casa antes del viaje (US$ aprox.).',en:''}
 ];
 
-var PHRASES=[
- {k:'✈️ Aeropuerto y migración',l:[['I’m here on vacation for three weeks.','Estoy de vacaciones por tres semanas.'],['I’m staying with family in Arlington, Virginia.','Me quedo con familia en Arlington, Virginia.'],['My return flight is on November twenty-third.','Mi vuelo de regreso es el 23 de noviembre.'],['Where is the exit to the Silver Line?','¿Dónde está la salida a la línea plateada?'],['Is this the line for visitors?','¿Esta es la fila de visitantes?']]},
- {k:'🚇 Metro y tren',l:[['Which train goes to Union Station?','¿Qué tren va a Union Station?'],['Is this the right platform for New York?','¿Es el andén correcto para Nueva York?'],['How many stops to Times Square?','¿Cuántas paradas hasta Times Square?'],['Excuse me, is this seat taken?','Disculpe, ¿este puesto está ocupado?'],['Does this train stop at Wilmington?','¿Este tren para en Wilmington?']]},
- {k:'🍔 Restaurante y comida',l:[['Can I get a coffee with milk, please?','¿Me da un café con leche, por favor?'],['For here or to go? — To go, please.','¿Para aquí o para llevar? — Para llevar.'],['What do you recommend?','¿Qué me recomienda?'],['Can we split the check?','¿Podemos dividir la cuenta?'],['Is the tip included?','¿La propina está incluida?']]},
- {k:'🛍️ Compras',l:[['Do you have this in a medium?','¿Tiene esto en talla M?'],['Can I try this on?','¿Me lo puedo probar?'],['Is there any discount today?','¿Hay algún descuento hoy?'],['I’m just looking, thanks.','Solo estoy mirando, gracias.'],['Can I get a receipt, please?','¿Me da el recibo, por favor?']]},
- {k:'🏛️ Museos y tours',l:[['We have a timed pass for ten o’clock.','Tenemos pase para las diez.'],['Where does the tour start?','¿Dónde empieza el tour?'],['Can we take pictures here?','¿Podemos tomar fotos aquí?'],['What’s the story behind this?','¿Cuál es la historia de esto?'],['Could you take a picture of us, please?','¿Nos podría tomar una foto, por favor?']]},
- {k:'🆘 Ayuda',l:[['Excuse me, could you help me?','Disculpe, ¿me podría ayudar?'],['I’m lost. How do I get to…?','Estoy perdido. ¿Cómo llego a…?'],['Could you speak more slowly, please?','¿Podría hablar más despacio, por favor?'],['Where is the nearest restroom?','¿Dónde queda el baño más cercano?'],['I need a pharmacy.','Necesito una farmacia.']]},
- {k:'💬 Conversar',l:[['We’re from Colombia.','Somos de Colombia.'],['It’s our first time in the U.S.','Es nuestra primera vez en EE. UU.'],['What’s your favorite place in the city?','¿Cuál es tu lugar favorito de la ciudad?'],['That sounds awesome!','¡Suena genial!'],['Have a great day!','¡Que tengas un buen día!']]}
-];
+/* Las frases de inglés están en js/datos/ingles.js */
 
 var SONGS=[
  {t:'NUEVAYoL',a:'Bad Bunny',c:'ny',u:'Historia: llegada a Times Square'},
@@ -56,7 +48,7 @@ var SONGS=[
  {t:'New York, New York',a:'Frank Sinatra',c:'ny',u:'Publicación: resumen del día'},
  {t:'Washington, D.C.',a:'The Magnetic Fields',c:'dc',u:'Historia: monumentos'},
  {t:'Chocolate City',a:'Parliament',c:'dc',u:'Historia: U Street y museos'},
- {t:'Take Me Home, Country Roads',a:'John Denver',c:'arl',u:'Publicación: Virginia y la familia'},
+ {t:'Take Me Home, Country Roads',a:'John Denver',c:'arl',u:'Publicación: Virginia y los amigos'},
  {t:'Good Morning Baltimore',a:'Hairspray',c:'bal',u:'Historia: llegada a Baltimore'},
  {t:'Gonna Fly Now',a:'Tema de Rocky',c:'phi',u:'Video: subiendo las escaleras de Rocky'},
  {t:'Philadelphia Freedom',a:'Elton John',c:'phi',u:'Publicación: Liberty Bell e Independence Hall'},

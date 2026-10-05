@@ -24,7 +24,7 @@ function renderInicio(){
  var h='<div class="hero"><span class="pl">✈</span><span class="pill o">Guía flexible · no un horario</span><h2>Toma lo que quieras de cada día.</h2><p>Esto no es un itinerario para seguir al pie de la letra. Cada día tiene opciones según la energía, alternativas si llueve, qué comer, un reto de inglés, la foto del día y su canción.</p>'+
  '<div class="cd"><div><b>'+dd+'</b><small>días</small></div><div><b>'+hh+'</b><small>horas</small></div><div><b>'+P.filter(function(p){return p.c!=='col'}).length+'</b><small>lugares</small></div><div><b>'+FREE.filter(function(f){return f.st!=='no'}).length+'</b><small>gratis</small></div></div></div>';
  h+='<div class="grid4"><div class="stat o"><small>Total para '+g+'</small><b>'+fmt(t.all,'COP')+'</b></div><div class="stat"><small>Cada persona</small><b>'+fmt(t.all/g,'COP')+'</b></div><div class="stat"><small>Gastos en EE. UU.</small><b>'+fmt(t.USD,'USD')+'</b></div><div class="stat"><small>Gastos en Colombia</small><b>'+fmt(t.COP,'COP')+'</b></div></div>';
- h+='<div class="card mt"><h3 style="margin:0 0 8px">Cómo usar la guía</h3><div class="grid2"><div class="box"><h4>🗓️ Días</h4>Cambia entre <b>resumido</b> y <b>completo</b>, y escoge tu energía: alta, media o baja.</div><div class="box"><h4>🗺️ Mapa</h4>Lugares numerados, extras sugeridos con borde punteado y botón <b>＋ Añadir</b> para sumarlos al presupuesto.</div><div class="box"><h4>🗣️ Inglés</h4>Frases por situación con botón para escuchar la pronunciación.</div><div class="box"><h4>📸 Fotos</h4>Poses para 1, 2, 3 y 4 personas y canciones para historias y publicaciones.</div><div class="box"><h4>💸 Gastos</h4>Anoten cada gasto en pesos o dólares, vean cuánto llevan y quién le debe a quién.</div><div class="box"><h4>📶 Sin internet</h4>Abran la guía una vez con wifi y toquen <b>Preparar para usar sin internet</b>.</div></div></div>';
+ h+='<div class="card mt"><h3 style="margin:0 0 8px">Cómo usar la guía</h3><div class="grid2"><div class="box"><h4>🗓️ Días</h4>Cada día con su ruta ordenada por cercanía y la vista <b>📊 Análisis</b> para comparar km, costos e intensidad.</div><div class="box"><h4>🗺️ Mapa</h4>Toca un día para ver su ruta con distancias, <b>📍</b> para ver lo más cercano a ti y <b>⛶</b> para pantalla completa.</div><div class="box"><h4>🗣️ Inglés</h4>Más de 100 frases con voz normal o 🐢 lenta, práctica con 🎤 micrófono y simulacro de migración.</div><div class="box"><h4>📸 Fotos</h4>Poses para 1, 2, 3 y 4 personas y canciones para historias y publicaciones.</div><div class="box"><h4>💸 Gastos</h4>Anoten cada gasto en pesos o dólares, vean cuánto llevan y quién le debe a quién.</div><div class="box"><h4>📶 Sin internet</h4>Abran la guía una vez con wifi y toquen <b>Preparar para usar sin internet</b>.</div></div></div>';
  h+='<div class="card" id="offlineCard"></div>';
  h+='<div class="card"><h3 style="margin:0 0 4px">Presupuesto por categoría</h3><p class="lead" style="font-size:14px;margin:0 0 8px">Sin vuelos ni compras. Comidas en casa no suman. Taxis y Uber se pagan por carro.</p><div class="tw"><table class="bt"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th></tr>';
  ['Desayuno','Almuerzo','Cena','Transporte','Entradas y otros'].forEach(function(c){h+='<tr><td>'+c+'</td>';[1,2,3,4].forEach(function(n){var o=catTotals(n)[c]||{USD:0,COP:0};h+='<td'+(n===g?' class="hl"':'')+'>'+fmt(o.COP+o.USD*RATE,'COP')+'</td>'});h+='</tr>'});
@@ -34,25 +34,7 @@ function renderInicio(){
  document.getElementById('snowChk').onchange=function(e){snowOn=e.target.checked;save();renderInicio();toast(snowOn?'Nieve sumada al presupuesto':'Nieve quitada')};
 }
 
-/* ---------- DÍAS ---------- */
-function renderDias(){
- var h='<h2 class="big">Día a día</h2><p class="lead">Escojan según el día y la energía. Lo naranja son los días de viaje o paseo fuera de Washington.</p>';
- h+='<div class="row" style="margin-bottom:12px"><div class="toggle2" role="group" aria-label="Vista"><button data-m="res"'+(daysMode==='res'?' class="on"':'')+'>Resumido</button><button data-m="full"'+(daysMode==='full'?' class="on"':'')+'>Completo</button></div>'+
- '<div class="toggle2" role="group" aria-label="Energía"><button data-e="alta"'+(energy==='alta'?' class="on"':'')+'>⚡ Alta</button><button data-e="media"'+(energy==='media'?' class="on"':'')+'>🙂 Media</button><button data-e="baja"'+(energy==='baja'?' class="on"':'')+'>😴 Baja</button></div></div>';
- DAYS.forEach(function(d,k){var go=['col','ny','bal','phi','del'].indexOf(d.city)>-1;
-  h+='<article class="day'+(go?' go':'')+(daysMode==='full'?' open':'')+'" data-k="'+k+'"><div class="dh" role="button" tabindex="0"><div class="dn"><small>'+(d.n.indexOf('–')>-1?'Días':'Día')+'</small><b>'+d.n+'</b></div><div><h3>'+esc(d.title)+'</h3><p>'+esc(d.date)+' · '+esc(CITYNAME[d.city])+' · '+esc(d.short)+'</p></div><div class="cost">'+dayCost(d)+'</div></div><div class="db">';
-  h+='<div class="en3"><div'+(energy==='alta'?' class="on"':'')+'><small>⚡ ENERGÍA ALTA</small>'+esc(d.alta)+'</div><div'+(energy==='media'?' class="on"':'')+'><small>🙂 MEDIA</small>'+esc(d.media)+'</div><div'+(energy==='baja'?' class="on"':'')+'><small>😴 BAJA</small>'+esc(d.baja)+'</div></div>';
-  h+='<div class="mt"><ul class="tl">'+d.acts.map(function(a){return '<li><b>'+esc(a[0])+'</b><span>'+esc(a[1])+'</span></li>'}).join('')+'</ul></div>';
-  h+='<div class="grid2 mt"><div class="box"><h4>☔ Si llueve</h4>'+esc(d.rain)+'</div><div class="box"><h4>🍽️ Qué comer</h4>'+d.eat.map(esc).join('<br>')+'</div><div class="box o"><h4>🗣️ Reto de inglés</h4>'+esc(d.en)+'</div><div class="box"><h4>📸 Foto y 🎵 canción</h4>'+(esc(d.ig)||'Día libre de fotos')+(d.song?'<br><b>'+esc(d.song)+'</b>':'')+'</div></div>';
-  h+='<div class="mt tw"><table class="bt"><tr><th>Gasto para '+g+'</th><th></th></tr>'+d.items.filter(function(i){return i.v}).map(function(i){return '<tr><td>'+esc(i.cat)+' · '+esc(i.label)+'</td><td>'+fmt(cost(i,g),i.cur)+'</td></tr>'}).join('')+'<tr class="t"><td>Total del día</td><td>'+dayCost(d)+'</td></tr></table></div>';
-  h+='<div class="row mt"><button class="btn pri" data-map="'+d.city+'">Ver en el mapa ›</button></div></div></article>'});
- h+=totBar();
- var el=document.getElementById('v-dias');el.innerHTML=h;
- [].forEach.call(el.querySelectorAll('[data-m]'),function(b){b.onclick=function(){daysMode=b.dataset.m;save();renderDias()}});
- [].forEach.call(el.querySelectorAll('[data-e]'),function(b){b.onclick=function(){energy=b.dataset.e;save();renderDias();toast('Energía '+energy+': opciones resaltadas')}});
- [].forEach.call(el.querySelectorAll('.dh'),function(x){var f=function(){x.parentNode.classList.toggle('open')};x.onclick=f;x.onkeydown=function(e){if(e.key==='Enter')f()}});
- [].forEach.call(el.querySelectorAll('[data-map]'),function(b){b.onclick=function(e){e.stopPropagation();go('mapa');showCity(b.dataset.map==='col'?'col':b.dataset.map)}});
-}
+/* ---------- DÍAS: ver js/vista-dias.js ---------- */
 
 /* ---------- COMER ---------- */
 function renderComer(){
@@ -67,18 +49,12 @@ function renderComer(){
 
 /* ---------- INGLÉS ---------- */
 var voice=null;
-function speak(t,btn){if(!('speechSynthesis' in window)){toast('Este dispositivo no tiene voz disponible');return}
- speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.88;
+function speak(t,btn,rate){if(!('speechSynthesis' in window)){toast('Este dispositivo no tiene voz disponible');return}
+ speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=rate||.9;
  if(!voice){var vs=speechSynthesis.getVoices();voice=vs.filter(function(v){return /en-US/.test(v.lang)})[0]||null}if(voice)u.voice=voice;
  if(btn){btn.classList.add('on');u.onend=u.onerror=function(){btn.classList.remove('on')}}speechSynthesis.speak(u)}
 function bindSay(id){[].forEach.call(document.getElementById(id).querySelectorAll('[data-say]'),function(b){b.onclick=function(e){e.stopPropagation();speak(b.dataset.say,b)}})}
-function renderIngles(){
- var h='<h2 class="big">Inglés en la calle</h2><p class="lead">Frases reales para cada situación. Toquen 🔊 para escuchar la pronunciación; funciona sin internet en la mayoría de iPads.</p>';
- h+='<div class="card"><h3 style="margin:0 0 8px">🎯 Retos del viaje</h3><div class="grid2">'+DAYS.filter(function(d){return d.en}).map(function(d){return '<div class="box"><h4>'+(d.n.indexOf('–')>-1?'Días ':'Día ')+d.n+'</h4>'+esc(d.en)+'</div>'}).join('')+'</div></div>';
- PHRASES.forEach(function(s){h+='<div class="card"><h3 style="margin:0 0 6px">'+s.k+'</h3>'+s.l.map(function(x){return '<div class="phr"><div><b>'+esc(x[0])+'</b><small>'+esc(x[1])+'</small></div><button class="say" data-say="'+esc(x[0])+'" aria-label="Escuchar">🔊</button></div>'}).join('')+'</div>'});
- h+='<div class="card"><h3 style="margin:0 0 6px">💡 Para aprender más rápido</h3><div class="grid2"><div class="box">Pidan siempre ustedes, aunque se equivoquen. Los meseros están acostumbrados.</div><div class="box">Si no entienden: <b>"Sorry, could you repeat that?"</b></div><div class="box">Cada noche, cuenten el día en inglés en un audio de 1 minuto.</div><div class="box">Lean en voz alta los carteles de los museos.</div></div></div>';
- document.getElementById('v-ingles').innerHTML=h;bindSay('v-ingles');
-}
+/* renderIngles: ver js/ingles.js */
 
 /* ---------- FOTOS ---------- */
 function renderFotos(){
@@ -107,7 +83,7 @@ function renderGratis(){
 var NS='http://www.w3.org/2000/svg',svg=null,vb={x:0,y:0,w:1000,h:760};
 var EMO=[[/Aeropuerto|Dulles|El Dorado/,'✈️'],[/Terminal|Station|Estación|Penn/,'🚆'],[/Cementerio/,'🎖️'],[/Capitolio|Casa Blanca|Independence|City Hall/,'🏛️'],[/Museo|Gallery|Library|Biblioteca|Torpedo|Kennedy|Walters|Portrait/,'🖼️'],[/Zoo/,'🐼'],[/Catedral|Cathedral/,'⛪'],[/Puente|Bridge|DUMBO|Teleférico/,'🌉'],[/Ferry|Harbor|Wharf|Riverfront|Boathouse/,'⛴️'],[/Park|Island|Bethesda|Gravelly|Trail|High Line|Square|Circle/,'🌳'],[/Market|Chili|Pizza|Halal|Clarendon/,'🍔'],[/Mall|Fashion/,'🛍️'],[/Times Square|Rockefeller|Grand Central|Summit/,'🌆'],[/Rocky/,'🥊'],[/SNOW|Killington|Snowshoe|Shenandoah/,'❄️'],[/Fort/,'🏰'],[/Memorial|Monument|Monumento|Jefferson|Lincoln|Liberty|Toro|Iwo|Air Force|MLK|Carillon/,'🗽'],[/Old Town|Georgetown|Fells|Elfreth|Exorcista|Vernon|Magic/,'🏘️']];
 function emo(p){for(var k=0;k<EMO.length;k++)if(EMO[k][0].test(p.n))return EMO[k][1];return '📍'}
-function visible(p){if(filter==='todo')return true;if(filter==='core')return p.core;if(filter==='extra')return !p.core;if(filter==='comer')return p.cat==='comer';if(filter==='foto')return !!p.ig;if(filter==='gratis')return FK[p.n]!==undefined||(!p.e&&p.cat!=='transporte');return true}
+function visible(p){if(dayFilter&&diasDe(p).indexOf(dayFilter)<0)return false;if(filter==='todo')return true;if(filter==='core')return p.core;if(filter==='extra')return !p.core;if(filter==='comer')return p.cat==='comer';if(filter==='foto')return !!p.ig;if(filter==='gratis')return FK[p.n]!==undefined||(!p.e&&p.cat!=='transporte');return true}
 function el(n,a,par){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(par)par.appendChild(e);return e}
 function numOf(i){return MAPS[P[i].c].pins.map(function(x){return x.i}).indexOf(i)+1}
 function drawMap(id){var m=MAPS[id],L=m.L,box=document.getElementById('map');box.innerHTML='';
@@ -122,13 +98,11 @@ function drawMap(id){var m=MAPS[id],L=m.L,box=document.getElementById('map');box
  L.rivers.forEach(function(r){el('path',{d:r.d,fill:'none',stroke:'#BFE4F7','stroke-width':r.w,'stroke-linecap':'round','stroke-linejoin':'round'},svg)});
  if(L.roads)el('path',{d:L.roads,fill:'none',stroke:'#FFC9A3','class':'rd'},svg);
  if(L.borders)el('path',{d:L.borders,fill:'none',stroke:'#4A6A80',opacity:.55,'class':'bd'},svg);
- var core=m.pins.filter(function(p){return P[p.i].core});
- if(core.length>1&&id!=='snow')el('path',{d:'M'+core.map(function(p){return p.x+' '+p.y}).join(' L'),'class':'route'},svg);
  m.labels.forEach(function(l){var t=el('text',{x:l.x,y:l.y,'class':'lb k'+l.k,'data-k':l.k},svg);t.textContent=l.t});
  m.pins.forEach(function(p,j){var pl=P[p.i];var gr=el('g',{'class':'pn'+(pl.snow?' snow':'')+(pl.core?'':' x')+(visible(pl)?'':' hide'),'data-i':p.i,transform:'translate('+p.x+' '+p.y+')',tabindex:0,role:'button','aria-label':pl.n},svg);
   var c=el('circle',{cx:0,cy:0,r:15},gr);c.style.animationDelay=(j*30)+'ms';var tx=el('text',{x:0,y:0},gr);tx.textContent=pl.snow?'❄':j+1;
   gr.addEventListener('click',function(e){e.stopPropagation();showPlace(p.i)});gr.addEventListener('keydown',function(e){if(e.key==='Enter')showPlace(p.i)})});
- vb={x:0,y:0,w:1000,h:760};setVB();bindPan()}
+ vb={x:0,y:0,w:1000,h:760};bindPan();refrescarRuta()}
 function setVB(){if(!svg)return;svg.setAttribute('viewBox',vb.x+' '+vb.y+' '+vb.w+' '+vb.h);var s=vb.w/1000;
  [].forEach.call(svg.querySelectorAll('.pn'),function(p){p.firstChild.setAttribute('r',15*s);p.firstChild.setAttribute('stroke-width',3*s);p.lastChild.setAttribute('font-size',13*s)});
  [].forEach.call(svg.querySelectorAll('.lb'),function(l){var k=+l.dataset.k;l.setAttribute('font-size',(k===1?17:k===2?15:14)*s);l.setAttribute('stroke-width',4*s)});
@@ -157,40 +131,45 @@ function gmPlace(p){return 'https://www.google.com/maps/search/?api=1&query='+en
 function gmDir(a,b){return 'https://www.google.com/maps/dir/?api=1&origin='+a.ll.join(',')+'&destination='+b.ll.join(',')+'&travelmode='+(hav(a.ll,b.ll)>2.5?'transit':'walking')}
 function wikiImg(t,cb){if(imgCache[t]!==undefined)return cb(imgCache[t]);try{fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+t).then(function(r){return r.json()}).then(function(j){var s=j.thumbnail?j.thumbnail.source:null;imgCache[t]=s?s.replace(/\/\d+px-/,'/960px-'):null;cb(imgCache[t])}).catch(function(){photosBlocked=true;cb(null)})}catch(e){photosBlocked=true;cb(null)}}
 var tourT=null;
-function stopTour(){if(tourT){clearInterval(tourT);tourT=null}var b=document.getElementById('tour');if(b)b.textContent='▶ Recorrido'}
-function startTour(){stopTour();var ids=MAPS[cur].pins.map(function(x){return x.i}).filter(function(i){return visible(P[i])});if(!ids.length)return;var k=0;showPlace(ids[0],true);document.getElementById('tour').textContent='❚❚ Pausa';tourT=setInterval(function(){k++;if(k>=ids.length){stopTour();return}showPlace(ids[k],true)},4500)}
+function stopTour(){if(tourT){clearInterval(tourT);tourT=null}var b=document.getElementById('tour');if(b)b.innerHTML='▶<span class="lbl"> Recorrido</span>'}
+function startTour(){stopTour();var ids=ordenActual().filter(function(i){return visible(P[i])});if(!ids.length)return;var k=0;showPlace(ids[0],true);document.getElementById('tour').innerHTML='❚❚<span class="lbl"> Pausa</span>';tourT=setInterval(function(){k++;if(k>=ids.length){stopTour();return}showPlace(ids[k],true)},4500)}
 function showCity(id){activeId=null;
+ if(dayFilter&&diasConLugares(id).indexOf(dayFilter)<0)dayFilter=null;
  [].forEach.call(document.querySelectorAll('#cityChips .chip'),function(b){b.classList.toggle('on',b.dataset.id===id)});
- if(cur!==id||!svg){cur=id;drawMap(id)}else mark(-1);
+ if(cur!==id||!svg){cur=id;drawMap(id)}else{mark(-1);refrescarRuta()}
+ pintarDias(id);
  if(realOn)fitCity(id);
- var c=CITIES.filter(function(x){return x.id===id})[0],ps=MAPS[id].pins.map(function(x){return P[x.i]}),ct=cityTotals(id);
+ if(dayFilter)return panelDia();
+ var c=CITIES.filter(function(x){return x.id===id})[0],ps=MAPS[id].pins.map(function(x){return P[x.i]}),ct=cityTotals(id),dias=diasConLugares(id);
  var core=ps.filter(function(p){return p.core}),tk=0;for(var q=1;q<core.length;q++)tk+=hav(core[q-1].ll,core[q].ll);
  var h='<div class="pad"><span class="pill o">'+esc(c.day)+'</span><h2>'+esc(c.name)+'</h2><p>'+esc(c.desc)+'</p>';
- if(id!=='snow')h+='<div class="facts"><div class="fact"><small>Presupuesto aquí ('+g+')</small><b>'+both(ct)+'</b></div><div class="fact"><small>Caminando la ruta</small><b>'+(core.length>1?kmF(tk*1.25)+' · '+walk(tk):'—')+'</b></div></div>';
- h+='<ul class="places">';
- MAPS[id].pins.forEach(function(x,j){var p=P[x.i];if(!visible(p))return;var fr=FK[p.n]!==undefined?FREE[FK[p.n]]:null;
-  h+='<li><button data-i="'+x.i+'"><span class="num'+(p.snow?' snow':'')+(p.core?'':' x')+'">'+(p.snow?'❄':j+1)+'</span><span><b>'+esc(p.n)+'</b><small>'+esc(p.d)+' · '+esc(p.h)+(fr&&fr.st==='res'?' · 🎟️ reservar':'')+'</small></span><span class="price">'+(p.e?fmt(p.e,'USD'):'Gratis')+(added[x.i]?' ✓':'')+'</span></button></li>'});
- h+='</ul></div>';
- var pan=document.getElementById('panel');pan.innerHTML=h;pan.scrollTop=0;
- [].forEach.call(pan.querySelectorAll('.places button'),function(b){b.onclick=function(){showPlace(+b.dataset.i)}})}
+ if(id!=='snow')h+='<div class="facts"><div class="fact"><small>Presupuesto aquí ('+g+')</small><b>'+both(ct)+'</b></div><div class="fact"><small>Lugares · días</small><b>'+ps.length+' · '+(dias.length||'—')+'</b></div></div>';
+ if(dias.length)h+='<div class="diasgrid">'+dias.map(function(n){var r=rutaDia(n),R=r.cerca,it=intensidad(r),d=r.dia;return '<button class="diabtn" data-dia="'+n+'"><b>Día '+n+'</b><small>'+esc(d?d.title:'')+'</small><span>'+it.e+' '+kmF(R.kmPie)+' a pie</span></button>'}).join('')+'</div>';
+ h+='<div class="buscar"><input id="buscar" type="search" placeholder="🔎 Buscar en todo el viaje" autocomplete="off" aria-label="Buscar lugar"><button class="btn" id="cercaP" type="button">📍 Cerca de mí</button></div>';
+ h+='<ul class="places" id="lista"></ul></div>';
+ var pan=document.getElementById('panel');pan.innerHTML=h;pan.scrollTop=0;buscarLugares('');
+ [].forEach.call(pan.querySelectorAll('[data-dia]'),function(b){b.onclick=function(){setDay(+b.dataset.dia)}});
+ document.getElementById('buscar').oninput=function(e){buscarLugares(e.target.value)};
+ document.getElementById('cercaP').onclick=cercaDeMi}
 function showPlace(i,fromTour){if(!fromTour)stopTour();var p=P[i];activeId=i;
  if(tab!=='mapa')go('mapa');
- if(cur!==p.c){cur=p.c;drawMap(p.c);[].forEach.call(document.querySelectorAll('#cityChips .chip'),function(b){b.classList.toggle('on',b.dataset.id===p.c)})}
+ var quitarDia=dayFilter&&diasDe(p).indexOf(dayFilter)<0;if(quitarDia)dayFilter=null;
+ if(cur!==p.c){cur=p.c;drawMap(p.c);[].forEach.call(document.querySelectorAll('#cityChips .chip'),function(b){b.classList.toggle('on',b.dataset.id===p.c)});pintarDias(p.c)}else if(quitarDia){refrescarRuta();pintarDias(p.c)}
  mark(i);
  var pins=MAPS[p.c].pins,pin=pins.filter(function(x){return x.i===i})[0];
  if(pin&&svg){var tw=Math.min(vb.w,520),sx=vb.x,sy=vb.y,sw=vb.w,tx=pin.x-tw*.5,ty=pin.y-tw*.38,t0=performance.now();(function st(now){var k=Math.min(1,(now-t0)/600),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;vb.x=sx+(tx-sx)*e;vb.y=sy+(ty-sy)*e;vb.w=sw+(tw-sw)*e;vb.h=vb.w*.76;setVB();if(k<1)requestAnimationFrame(st)})(t0)}
  if(realOn)lmap.flyTo(p.ll,p.snow?9:16,{duration:.8});
- var order=pins.map(function(x){return x.i}).filter(function(k){return P[k].core}),pos=order.indexOf(i),prev=pos>0?P[order[pos-1]]:null,dk=prev?hav(prev.ll,p.ll):0;
+ var order=dayFilter?ordenActual():pins.map(function(x){return x.i}).filter(function(k){return P[k].core}),pos=order.indexOf(i),prev=pos>0?P[order[pos-1]]:null,dk=prev?hav(prev.ll,p.ll):0;
  var fr=FK[p.n]!==undefined?FREE[FK[p.n]]:null;
- var h='<div class="ph'+(p.snow?' s':'')+'"><div class="img" id="img"></div><button class="back" id="back">‹ '+esc(CITYNAME[p.c])+'</button><span class="nb">'+(p.snow?'❄':numOf(i))+'</span><span class="em">'+emo(p)+'</span><small>'+(p.core?'En el plan':'Sugerido · opcional')+'</small></div><div class="pad">';
+ var h='<div class="ph'+(p.snow?' s':'')+'"><div class="img" id="img"></div><button class="back" id="back">‹ '+esc(CITYNAME[p.c])+'</button><span class="nb">'+(p.snow?'❄':numero(i))+'</span><span class="em">'+emo(p)+'</span><small>'+(p.core?'En el plan':'Sugerido · opcional')+(dayFilter?' · Día '+dayFilter:'')+'</small></div><div class="pad">';
  h+='<span class="pill '+(p.core?'o':'s')+'">'+esc(p.d)+'</span><h2>'+esc(p.n)+'</h2><p>'+esc(p.txt)+'</p><div id="warn"></div>';
- h+='<div class="facts"><div class="fact"><small>Entrada c/u</small><b>'+(p.e?fmt(p.e,'USD'):'Gratis')+'</b></div><div class="fact"><small>Para '+g+'</small><b>'+(p.e?fmt(p.e*g,'USD'):'Gratis')+'</b></div><div class="fact" style="grid-column:1/-1"><small>Cuándo ir</small><b>'+esc(p.h)+'</b></div>'+(prev&&!p.snow?'<div class="fact"><small>Desde '+esc(prev.n)+'</small><b>'+kmF(dk*1.25)+'</b></div><div class="fact"><small>A pie, aprox.</small><b>'+walk(dk)+'</b></div>':'')+'</div>';
+ h+='<div class="facts"><div class="fact"><small>Entrada c/u</small><b>'+(p.e?fmt(p.e,'USD'):'Gratis')+'</b></div><div class="fact"><small>Para '+g+'</small><b>'+(p.e?fmt(p.e*g,'USD'):'Gratis')+'</b></div><div class="fact" style="grid-column:1/-1"><small>Cuándo ir</small><b>'+esc(p.h)+'</b></div>'+(prev&&!p.snow?'<div class="fact"><small>Desde '+esc(prev.n)+'</small><b>'+(dk<=RUTA_A_PIE_MAX?kmF(dk*1.25):kmF(dk))+'</b></div><div class="fact"><small>'+(dk<=RUTA_A_PIE_MAX?'🚶 A pie, aprox.':'🚇 Metro, tren o Uber')+'</small><b>'+(dk<=RUTA_A_PIE_MAX?walk(dk):'~'+durTxt(minTransporte(dk)))+'</b></div>':'')+'</div>';
  if(fr)h+='<div class="box '+(fr.st==='res'?'o':'')+'"><h4>🎟️ '+(fr.st==='res'?'Gratis con reserva':'Gratis')+'</h4>'+esc(fr.s)+'<div class="row mt"><a class="btn pri" href="'+fr.u+'" target="_blank" rel="noopener">Reservar / ver página oficial ↗</a></div></div>';
  if(p.ig)h+='<div class="box mt"><h4>📸 Foto para Instagram</h4>'+esc(p.ig)+'</div>';
  h+='<div class="row mt">'+(!p.core?'<button class="btn or" id="add">'+(added[i]?'✓ En mi plan · quitar':'＋ Añadir a mi plan')+'</button>':'')+'<a class="btn pri" href="'+gmPlace(p)+'" target="_blank" rel="noopener">Google Maps: fotos ↗</a>'+(prev&&!p.snow?'<a class="btn" href="'+gmDir(prev,p)+'" target="_blank" rel="noopener">Cómo llegar ↗</a>':'')+'</div>';
  h+='<div class="row mt"><button class="btn" id="pv">‹ Anterior</button><button class="btn" id="nx">Siguiente ›</button></div></div>';
  var pan=document.getElementById('panel');pan.innerHTML=h;pan.scrollTop=0;
- var all=pins.map(function(x){return x.i}).filter(function(k){return visible(P[k])}),ap=all.indexOf(i);
+ var all=(dayFilter?ordenActual():pins.map(function(x){return x.i})).filter(function(k){return visible(P[k])}),ap=all.indexOf(i);
  document.getElementById('back').onclick=function(){stopTour();showCity(p.c);if(svg){vb={x:0,y:0,w:1000,h:760};setVB()}};
  document.getElementById('pv').onclick=function(){showPlace(all[(ap-1+all.length)%all.length])};
  document.getElementById('nx').onclick=function(){showPlace(all[(ap+1)%all.length])};
@@ -204,8 +183,8 @@ var SAT_URL='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
 function setMode(label,real){var md=document.getElementById('mode');md.textContent=label;md.className='mode'+(real?' real':'')}
 function makeLeaflet(label){var e=document.getElementById('lmap');e.style.display='block';realOn=true;satLabel=label;setMode(label+' ⇄',true);document.getElementById('scale').style.display='none';
  if(!lmap){lmap=L.map('lmap',{zoomControl:false,maxZoom:19}).setView([38.9,-77.03],12);L.control.scale({imperial:false,position:'bottomright'}).addTo(lmap);
- P.forEach(function(p,i){lmk[i]=L.marker(p.ll,{icon:L.divIcon({className:'',html:'<div class="lpin'+(p.snow?' snow':'')+(p.core?'':' x')+'">'+(p.snow?'❄':numOf(i))+'</div>',iconSize:[28,28],iconAnchor:[14,14]}),title:p.n}).addTo(lmap).on('click',function(){showPlace(i)})});
- if(navigator.geolocation){var me=null;try{navigator.geolocation.watchPosition(function(pos){var ll=[pos.coords.latitude,pos.coords.longitude];if(!me)me=L.circleMarker(ll,{radius:8,color:'#fff',weight:3,fillColor:'#1A73E8',fillOpacity:1}).addTo(lmap).bindTooltip('Estás aquí');else me.setLatLng(ll)},function(){},{enableHighAccuracy:true})}catch(e){}}}
+ P.forEach(function(p,i){lmk[i]=L.marker(p.ll,{icon:iconoPin(i),title:p.n}).addTo(lmap).on('click',function(){showPlace(i)})});
+ if(navigator.geolocation){var me=null;try{navigator.geolocation.watchPosition(function(pos){var ll=[pos.coords.latitude,pos.coords.longitude];myLL=ll;if(!meMarker)meMarker=L.circleMarker(ll,{radius:9,color:'#fff',weight:3,fillColor:'#1A73E8',fillOpacity:1}).addTo(lmap).bindTooltip('Estás aquí');else meMarker.setLatLng(ll)},function(){},{enableHighAccuracy:true})}catch(e){}}}
  lmap.invalidateSize();applyFilter();if(activeId!==null){mark(activeId);lmap.setView(P[activeId].ll,P[activeId].snow?9:16)}else fitCity(cur)}
 /* Vuelve al mapa dibujado (SVG), que siempre funciona sin internet */
 function showDrawn(){realOn=false;document.getElementById('lmap').style.display='none';document.getElementById('scale').style.display='';setMode('✏️ Mapa dibujado ⇄',false);if(activeId!==null)mark(activeId);updScale()}
@@ -222,21 +201,24 @@ function tryReal(manual){if(realTried||!window.L)return;realTried=true;var img=n
  var sat=L.tileLayer(SAT_URL,{maxZoom:19,maxNativeZoom:19,crossOrigin:'anonymous',attribution:'© Esri'}).addTo(lmap),street=L.tileLayer(OSM_URL,{maxZoom:19,crossOrigin:'anonymous',attribution:'© OpenStreetMap'});
  L.control.layers({'Satélite':sat,'Calles':street},{},{position:'bottomleft'}).addTo(lmap)};
  img.src=SAT_URL.replace('{z}',12).replace('{y}',1567).replace('{x}',1170)}
-function fitCity(id){if(!realOn||!id)return;if(lroute)lmap.removeLayer(lroute);var core=MAPS[id].pins.map(function(x){return P[x.i]}).filter(function(p){return p.core});
- if(core.length>1&&id!=='snow')lroute=L.polyline(core.map(function(p){return p.ll}),{color:'#FF8A3D',weight:4,dashArray:'8 10'}).addTo(lmap);
- var ps=MAPS[id].pins.map(function(x){return P[x.i].ll});lmap.invalidateSize();lmap.flyToBounds(L.latLngBounds(ps).pad(.15),{duration:1})}
+function fitCity(id){if(!realOn||!id)return;if(lroute){lmap.removeLayer(lroute);lroute=null}if(legLayer){lmap.removeLayer(legLayer);legLayer=null}
+ var ord=dayFilter?rutaActiva().orden:MAPS[id].pins.filter(function(x){return P[x.i].core}).map(function(x){return x.i});
+ if(ord.length>1&&id!=='snow'){lroute=L.polyline(ord.map(function(i){return P[i].ll}),dayFilter?{color:'#FF8A3D',weight:5,opacity:.95}:{color:'#FF8A3D',weight:4,dashArray:'8 10'}).addTo(lmap);if(dayFilter)legLayer=etiquetasTramos(ord)}
+ var sel=dayFilter?ordenActual().filter(function(i){return P[i].c===id}):MAPS[id].pins.map(function(x){return x.i});if(!sel.length)sel=MAPS[id].pins.map(function(x){return x.i});
+ lmap.invalidateSize();lmap.flyToBounds(L.latLngBounds(sel.map(function(i){return P[i].ll})).pad(dayFilter?.25:.15),{duration:1,maxZoom:17})}
 function initMap(){var cc=document.getElementById('cityChips'),fc=document.getElementById('filterChips');
  CITIES.forEach(function(c){var b=document.createElement('button');b.className='chip';b.dataset.id=c.id;b.innerHTML='<i'+(c.snow?' style="background:#5AA9D6"':'')+'></i>'+c.name;b.onclick=function(){stopTour();showCity(c.id)};cc.appendChild(b)});
  [['todo','Todo'],['core','En el plan'],['extra','Sugeridos'],['comer','Comer'],['foto','Fotos'],['gratis','Gratis']].forEach(function(f){var b=document.createElement('button');b.className='chip sm'+(f[0]===filter?' on':'');b.textContent=f[1];b.onclick=function(){filter=f[0];[].forEach.call(fc.children,function(x){x.classList.toggle('on',x===b)});applyFilter();if(activeId===null)showCity(cur)};fc.appendChild(b)});
  document.getElementById('zIn').onclick=function(){if(realOn)lmap.zoomIn();else zoom(.7)};document.getElementById('zOut').onclick=function(){if(realOn)lmap.zoomOut();else zoom(1.4)};
- document.getElementById('zReset').onclick=function(){if(realOn)fitCity(cur);else{vb={x:0,y:0,w:1000,h:760};setVB()}};
+ document.getElementById('zReset').onclick=function(){if(realOn)fitCity(cur);else if(dayFilter)encuadrarSvg();else{vb={x:0,y:0,w:1000,h:760};setVB()}};
+ document.getElementById('cercaBtn').onclick=cercaDeMi;document.getElementById('fullBtn').onclick=function(){pantallaCompleta()};
  document.getElementById('tour').onclick=function(){if(tourT)stopTour();else startTour()};
  document.getElementById('mode').onclick=toggleMode;
  showCity('dc');if(hasTiles())startEmbedded();else tryReal();window.addEventListener('resize',function(){updScale();if(lmap)lmap.invalidateSize()})}
 
 /* ---------- navegación ---------- */
 var mapReady=false;
-function go(t){tab=t;[].forEach.call(document.querySelectorAll('.view'),function(v){v.classList.toggle('on',v.id==='v-'+t)});[].forEach.call(document.querySelectorAll('#tabs button'),function(b){b.classList.toggle('on',b.dataset.t===t)});
+function go(t){tab=t;document.body.setAttribute('data-tab',t);if(t!=='mapa'&&document.body.classList.contains('mapa-full'))pantallaCompleta(false);[].forEach.call(document.querySelectorAll('.view'),function(v){v.classList.toggle('on',v.id==='v-'+t)});[].forEach.call(document.querySelectorAll('#tabs button'),function(b){b.classList.toggle('on',b.dataset.t===t)});
  if(t==='mapa'){if(!mapReady){mapReady=true;initMap()}else{setTimeout(function(){if(lmap)lmap.invalidateSize();updScale()},60)}}
  else{stopTour();render(t)}window.scrollTo(0,0)}
 function render(t){var f={inicio:renderInicio,dias:renderDias,comer:renderComer,ingles:renderIngles,fotos:renderFotos,gratis:renderGratis,gastos:renderGastos}[t];if(f)f()}
