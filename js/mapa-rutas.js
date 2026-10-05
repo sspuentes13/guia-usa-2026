@@ -88,6 +88,8 @@ function panelDia() {
   else h += '<div class="box mt">📋 Orden original del plan. Con “Más cercano” ' + (r.ahorroPie > 0.05 ? 'caminan ' + kmF(r.ahorroPie) + ' menos.' : 'queda mejor por horarios.') + '</div>';
   h += '<div class="facts"><div class="fact"><small>🚶 A pie</small><b>' + kmF(R.kmPie) + ' · ' + durTxt(R.minPie) + '</b></div><div class="fact"><small>🚇 En transporte</small><b>' + (R.nTrans ? R.nTrans + ' tramo' + (R.nTrans > 1 ? 's' : '') + ' · ~' + durTxt(R.minTrans) : 'Ninguno') + '</b></div>' +
     '<div class="fact"><small>📍 Lugares</small><b>' + lug + '</b></div><div class="fact"><small>Intensidad</small><b>' + it.e + ' ' + it.t + '</b></div></div>';
+  var crono = cronogramaDia(n, routeMode), cr = {}; crono.items.forEach(function (x) { if (x.tipo === 'visita' && !x.regreso) cr[x.i] = x; });
+  h += '<div class="cronores">🕘 Empiezan ' + hhmm(crono.items[0] ? crono.items[0].ini : 540) + ' · terminan ~' + hhmm(crono.fin) + (crono.avisos ? ' · <b class="av">⚠️ ' + crono.avisos + ' aviso' + (crono.avisos > 1 ? 's' : '') + '</b>' : ' · ✓ todo abre a tiempo') + '</div>';
   h += '<ol class="ruta">';
   R.orden.forEach(function (i, k) {
     if (k > 0) {
@@ -95,7 +97,7 @@ function panelDia() {
       if (t.km >= 0.05) h += '<li class="tramo ' + (t.pie ? 'pie' : 'trans') + '"' + (t.pie ? '' : ' data-de="' + t.de + '" data-a="' + t.a + '"') + '>' + (t.pie ? '🚶 ' + kmF(t.km * 1.25) + ' · ' + durTxt(minPie(t.km)) + ' a pie' : '🚇 ' + kmF(t.km) + ' · buscando la línea…') + '</li>';
     }
     var p = P[i], reg = R.orden.indexOf(i) < k, f = reg ? null : horaFija(p, n);
-    h += '<li class="parada"><button data-i="' + i + '"><span class="num' + (p.core ? '' : ' x') + '">' + (reg ? '↩' : numero(i)) + '</span><span><b>' + (reg ? 'Regreso · ' : '') + esc(p.n) + '</b><small>' + (f ? '⏰ ' + horaTxt(f.t) + ' · ' : '') + esc(p.h) + (p.c !== cur ? ' · ' + esc(CITYNAME[p.c]) : '') + '</small></span><span class="price">' + (reg ? '' : p.e ? fmt(p.e, 'USD') : 'Gratis') + '</span></button></li>';
+    h += '<li class="parada"><button data-i="' + i + '"><span class="num' + (p.core ? '' : ' x') + '">' + (reg ? '↩' : numero(i)) + '</span><span><b>' + (reg ? 'Regreso · ' : '') + esc(p.n) + '</b><small>' + (cr[i] && !reg ? '<span class="hora">🕘 ' + hhmm(cr[i].ini) + (cr[i].fin > cr[i].ini ? '–' + hhmm(cr[i].fin) : '') + '</span> ' : '') + (f && /amanecer|atardecer|noche|show|reserva/.test(f.por) ? '⏰ ' + esc(f.por) + ' · ' : '') + esc(p.h) + (p.c !== cur ? ' · ' + esc(CITYNAME[p.c]) : '') + '</small>' + (cr[i] && !reg && cr[i].espera >= 10 ? '<small>⏳ Llegan ' + hhmm(cr[i].llega) + ', esperan ' + durTxt(cr[i].espera) + '</small>' : '') + (cr[i] && !reg ? cr[i].avisos.map(function (a) { return '<small class="av">⚠️ ' + esc(a) + '</small>'; }).join('') : '') + '</span><span class="price">' + (reg ? '' : p.e ? fmt(p.e, 'USD') : 'Gratis') + '</span></button></li>';
   });
   h += '</ol><div class="row mt"><a class="btn pri" href="' + gmRuta(R.orden) + '" target="_blank" rel="noopener">🗺️ Ruta en Google Maps ↗</a><button class="btn" id="verDia">🗓️ Ver el día completo</button></div>';
   if (R.orden.length > 11) h += '<p class="gnota">Google Maps abre hasta 9 paradas intermedias; el resto síganlo aquí.</p>';

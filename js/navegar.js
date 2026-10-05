@@ -37,13 +37,19 @@ function ubicIniciar(silencioso) {
   }, { enableHighAccuracy: true, maximumAge: 4000, timeout: 25000 });
 }
 function conUbicacion(cb) {
-  if (ubicActiva()) return cb(UB.ll);
-  ubicIniciar(false); toast('📍 Buscando tu ubicación…');
-  var fin = function () { if (ubicActiva()) { UB.subs = UB.subs.filter(function (f) { return f !== fin; }); cb(UB.ll); } };
+  ubicIniciar(true);
+  // respuesta inmediata con la última ubicación conocida (hasta 10 min); el seguimiento en vivo la va actualizando
+  if (UB.ll && Date.now() - UB.t < 600000) return cb(UB.ll);
+  if (UB.negado) { toast('Activa la ubicación: Ajustes › Privacidad › Localización › Safari'); ubicIniciar(false); }
+  var listo = false, fin = function () { if (listo || !UB.ll) return; listo = true; UB.subs = UB.subs.filter(function (f) { return f !== fin; }); cb(UB.ll); };
   UB.subs.push(fin);
+  if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function (pos) {
+    if (listo) return; UB.ll = [pos.coords.latitude, pos.coords.longitude]; UB.acc = pos.coords.accuracy; UB.t = Date.now(); myLL = UB.ll; dibujarYo(); fin();
+  }, function () {}, { enableHighAccuracy: false, maximumAge: 120000, timeout: 8000 });
 }
 // si ya dieron permiso antes, se activa sola al abrir la app
-if (navigator.permissions && navigator.permissions.query) navigator.permissions.query({ name: 'geolocation' }).then(function (p) { if (p.state === 'granted') ubicIniciar(true); }).catch(function () {});
+// (después de cargar toda la página: así ya existen todas las funciones que usa)
+window.addEventListener('load', function () { if (navigator.permissions && navigator.permissions.query) navigator.permissions.query({ name: 'geolocation' }).then(function (p) { if (p.state === 'granted') ubicIniciar(true); }).catch(function () {}); });
 // brújula del teléfono (iPhone pide permiso al tocar)
 var BRUJ = { on: false, v: null };
 function brujulaActivar() {
@@ -151,9 +157,25 @@ function minTren(k) { return (k < 1.5 ? k / 28 : k < 3 ? k / 40 : k / 58) * 60 +
 /* Nueva York: trenes que en Manhattan van expresos de día (se saltan estaciones locales) */
 var EXPRESO_NY = { A: 1, '2': 1, '3': 1, '4': 1, '5': 1, D: 1, Q: 1 };
 function estacionesCerca(ll, max, n) {
-  return TR.E.map(function (e) { return { e: e, k: hav(ll, e.ll) }; }).filter(function (x) { return x.k <= max; }).sort(function (a, b) { return a.k - b.k; }).slice(0, n || 6);
+  var todas = TR.E.map(function (e) { return { e: e, k: hav(ll, e.ll) }; }).filter(function (x) { return x.k <= max; }).sort(function (a, b) { return a.k - b.k; }), vistas = {}, o = [];
+  todas.forEach(function (x) {
+    if (vistas[x.e.i] || o.length >= (n || 6)) return;     // un solo resultado por complejo
+    vistas[x.e.i] = 1; TR.pie[x.e.i].forEach(function (y) { if (y[1] < 0.2) vistas[y[0]] = 1; });
+    o.push(x);
+  });
+  return o;
 }
-function lineasDe(e) { var v = {}; e.ln.forEach(function (k) { var l = TR.L[k]; v[l.r] = l.c; }); return Object.keys(v).map(function (r) { return { r: r, c: v[r] }; }); }
+/* Texto corto: estación más cercana a un lugar */
+function estacionDeLugar(ll) {
+  var x = estacionesCerca(ll, 2, 1)[0]; if (!x) return null;
+  return { e: x.e, k: x.k, html: '<b>' + esc(x.e.n) + '</b> ' + lineasDe(x.e).map(function (l) { return chipLinea(x.e.s, l.r, l.c); }).join('') + ' · ' + (x.k <= 1.6 ? walk(x.k) + ' a pie' : kmF(x.k)) };
+}
+/* Líneas de una estación y de su complejo (estaciones unidas a menos de 200 m, como Times Sq–42 St) */
+function lineasDe(e) {
+  var v = {}, ests = [e.i].concat(TR.pie[e.i].filter(function (x) { return x[1] < 0.2; }).map(function (x) { return x[0]; }));
+  ests.forEach(function (i) { TR.E[i].ln.forEach(function (k) { var l = TR.L[k]; v[l.r] = l.c; }); });
+  return Object.keys(v).sort(function (a, b) { return a.length - b.length || (a < b ? -1 : 1); }).map(function (r) { return { r: r, c: v[r] }; });
+}
 function chipLinea(s, r, c) { return '<span class="lchip" style="background:' + c + (/#(FFD100|ffd100|fccc0a|FCCC0A)/.test(c) ? ';color:#12344D' : '') + '">' + esc(s === 'dc' ? ({ R: 'Roja', O: 'Naranja', S: 'Plateada', B: 'Azul', Y: 'Amarilla', G: 'Verde' }[r] || r) : r) + '</span>'; }
 
 /* Mejor viaje en transporte público (hasta 2 transbordos), estilo RAPTOR */
@@ -252,19 +274,25 @@ function verMapa() { if (!pantallaAngosta()) return; var m = document.querySelec
 
 /* ---------- cómo llegar ---------- */
 var PLAN = null;
+function horaLlegada(min) { var d = new Date(Date.now() + min * 60000); return d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2); }
 function irA(dest) {
   if (tab !== 'mapa') go('mapa');
   stopTour();
   var pan = document.getElementById('panel');
-  pan.innerHTML = '<div class="pad"><span class="pill o">🧭 Cómo llegar</span><h2>' + esc(dest.n) + '</h2><div class="cargador"><i></i>Buscando tu ubicación y la mejor forma de llegar…</div></div>';
+  pan.innerHTML = '<div class="pad"><span class="pill o">🧭 Cómo llegar</span><h2>' + esc(dest.n) + '</h2><div class="cargador"><i></i>Buscando tu ubicación…</div></div>';
   conUbicacion(function (A) {
     var B = dest.ll, d = hav(A, B);
-    Promise.all([trListo().catch(function () { return null; }), rutaPie(A, B)]).then(function (res) {
-      var transp = res[0] && d > 0.7 ? trRuta(A, B) : null, pie = res[1];
-      var minPie = pie ? pie.min : minPieKm(d);
-      PLAN = { dest: dest, A: A, B: B, d: d, pie: pie, minPie: minPie, transp: transp };
-      if (transp) completarPiesTransporte(transp).then(function () { panelComoLlegar(); });
-      panelComoLlegar();
+    trListo().catch(function () { return null; }).then(function (tr) {
+      // 1) al instante: transporte (calculado en el teléfono) y distancia a pie
+      var plan = PLAN = { dest: dest, A: A, B: B, d: d, pie: null, minPie: minPieKm(d), transp: tr && d > 0.7 ? trRuta(A, B) : null, buscandoPie: navigator.onLine, modo: null };
+      panelComoLlegar(false);
+      // 2) cuando llega, la ruta calle por calle (con internet) actualiza el panel sin moverlo
+      rutaPie(A, B).then(function (pie) {
+        if (PLAN !== plan) return; plan.buscandoPie = false; if (pie) { plan.pie = pie; plan.minPie = pie.min; }
+        if (!NAV) return panelComoLlegar(true);
+        if (pie && NAV.modo === 'pie' && NAV.pasos.length === 1) { NAV.pasos = pie.pasos.map(function (s) { return { t: s.t, ic: s.ic, ll: s.ll, km: s.km }; }).concat([NAV.pasos[0]]); NAV.i = 0; NAV.minTotal = pie.min; dibujarPlan('pie'); navActualizar(); }
+      });
+      if (plan.transp) completarPiesTransporte(plan.transp).then(function () { if (PLAN === plan && !NAV) panelComoLlegar(true); });
     });
   });
 }
@@ -273,24 +301,25 @@ function completarPiesTransporte(t) {
   var tareas = t.pasos.map(function (p) { if (p.tipo !== 'pie' || p.km < 0.08) return Promise.resolve(); return rutaPie(p.de, p.a).then(function (r) { if (r) { p.ruta = r; p.min = r.min; p.km = r.km; } }); });
   return Promise.all(tareas).then(function () { t.min = t.pasos.reduce(function (s, p) { return s + (p.tipo === 'viaje' ? SIS_INFO[p.sis].espera + p.min : p.min); }, 0); });
 }
-function panelComoLlegar() {
+function panelComoLlegar(actualizar) {
   var P0 = PLAN; if (!P0) return;
-  var t = P0.transp, recPie = !t || P0.minPie <= t.min + 4 || P0.d < 1.1;
+  var t = P0.transp, recPie = !t || P0.minPie <= t.min + 4 || P0.d < 1.1, pan = document.getElementById('panel'), top = pan.scrollTop;
   var h = '<div class="pad"><div class="row spread"><span class="pill o">🧭 Cómo llegar</span><button class="btn sm" id="clVolver">‹ Volver</button></div><h2>' + esc(P0.dest.n) + '</h2><p>Desde donde estás: ' + kmF(P0.d) + ' en línea recta.</p><div class="opciones">';
-  h += '<button class="opcion' + (recPie ? ' rec' : '') + '" data-modo="pie"><b>🚶 A pie · ' + durTxt(Math.round(P0.minPie)) + '</b><small>' + kmF(P0.pie ? P0.pie.km : P0.d * 1.25) + (P0.pie ? ' por calles' : ' · sin internet: te guío con dirección y distancia') + '</small>' + (recPie ? '<span class="pill g">Recomendado</span>' : '') + '</button>';
+  h += '<button class="opcion' + (recPie ? ' rec' : '') + '" data-modo="pie"><b>🚶 A pie · ' + durTxt(Math.round(P0.minPie)) + '</b><small>Llegas ~' + horaLlegada(P0.minPie) + ' · ' + kmF(P0.pie ? P0.pie.km : P0.d * 1.25) + (P0.pie ? ' por calles' : P0.buscandoPie ? ' · <span class="buscando">buscando calles…</span>' : ' · sin internet: te guío con dirección y distancia') + '</small>' + (recPie ? '<span class="pill g">Recomendado</span>' : '') + '</button>';
   if (t) {
     var viajes = t.pasos.filter(function (p) { return p.tipo === 'viaje'; }), sis = viajes[0].sis;
-    h += '<button class="opcion' + (!recPie ? ' rec' : '') + '" data-modo="tr"><b>🚇 ' + esc(SIS_INFO[sis].n) + ' · ' + durTxt(Math.round(t.min)) + '</b><small>' + viajes.map(function (v) { return v.alts.map(function (a) { return chipLinea(v.sis, a.r, a.c); }).join(''); }).join(' → ') + ' · ' + tarifa(sis, null, viajes.reduce(function (s, v) { return s + v.km; }, 0)).txt + ' c/u</small>' + (!recPie ? '<span class="pill g">Recomendado</span>' : '') + '</button>';
+    h += '<button class="opcion' + (!recPie ? ' rec' : '') + '" data-modo="tr"><b>🚇 ' + esc(SIS_INFO[sis].n) + ' · ' + durTxt(Math.round(t.min)) + '</b><small>Llegas ~' + horaLlegada(t.min) + ' · ' + viajes.map(function (v) { return v.alts.map(function (a) { return chipLinea(v.sis, a.r, a.c); }).join(''); }).join(' → ') + ' · ' + tarifa(sis, null, viajes.reduce(function (s, v) { return s + v.km; }, 0)).txt + ' c/u</small>' + (!recPie ? '<span class="pill g">Recomendado</span>' : '') + '</button>';
   } else if (P0.d > 2) h += '<div class="warn">No hay metro o tren cerca de los dos puntos. Para esta distancia usen Uber.</div>';
   h += '</div><div id="clDetalle"></div><div class="row mt"><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=' + P0.A.join(',') + '&destination=' + P0.B.join(',') + '&travelmode=transit" target="_blank" rel="noopener">🕒 Horarios en vivo (Google Maps) ↗</a><a class="btn" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=' + P0.B[0] + '&dropoff[longitude]=' + P0.B[1] + '&dropoff[nickname]=' + encodeURIComponent(P0.dest.n) + '" target="_blank" rel="noopener">🚕 Uber ↗</a></div></div>';
-  var pan = document.getElementById('panel'); pan.innerHTML = h; pan.scrollTop = 0;
+  pan.innerHTML = h; pan.scrollTop = actualizar ? top : 0;
   document.getElementById('clVolver').onclick = function () { navTerminar(true); if (P0.dest.i != null) showPlace(P0.dest.i); else showCity(cur); };
   [].forEach.call(pan.querySelectorAll('[data-modo]'), function (b) { b.onclick = function () { detalleModo(b.dataset.modo); }; });
-  detalleModo(recPie ? 'pie' : 'tr');
-  verPanel();
+  detalleModo(actualizar && P0.modo && (P0.modo === 'pie' || t) ? P0.modo : (recPie ? 'pie' : 'tr'));
+  if (!actualizar) verPanel();
 }
 function detalleModo(modo) {
   var P0 = PLAN, det = document.getElementById('clDetalle'); if (!det) return;
+  P0.modo = modo;
   [].forEach.call(document.querySelectorAll('[data-modo]'), function (b) { b.classList.toggle('on', b.dataset.modo === modo); });
   var h = '';
   if (modo === 'pie') {
@@ -360,7 +389,8 @@ function navEmpezar(modo) {
       pasos.push({ t: 'Bájate en ' + TR.E[p.a].n + ' (' + p.paradas + ' parada' + (p.paradas > 1 ? 's' : '') + ')', ic: '⏏', ll: TR.E[p.a].ll, viaje: true });
     }
   });
-  NAV = { modo: modo, pasos: pasos, i: 0, dest: P0.dest, B: P0.B, fuera: 0, inicio: Date.now(), dijo: {} };
+  NAV = { modo: modo, pasos: pasos, i: 0, dest: P0.dest, B: P0.B, fuera: 0, inicio: Date.now(), dijo: {}, minTotal: modo === 'pie' ? P0.minPie : P0.transp.min, dTotal: Math.max(0.05, P0.d), full: false };
+  if (pantallaAngosta() && !document.body.classList.contains('mapa-full')) { pantallaCompleta(true); NAV.full = true; }
   seguir = true; var fy = document.getElementById('fabYo'); if (fy) fy.classList.add('on');
   document.body.classList.add('navegando');
   if ('wakeLock' in navigator) navigator.wakeLock.request('screen').then(function (w) { wakeLock = w; }).catch(function () {});
@@ -369,7 +399,8 @@ function navEmpezar(modo) {
   navActualizar(); verMapa(); toast('▶ Navegación iniciada');
 }
 function navTerminar(silencio) {
-  if (!NAV) return; NAV = null; document.body.classList.remove('navegando');
+  if (!NAV) return; if (NAV.full) pantallaCompleta(false); NAV = null; document.body.classList.remove('navegando');
+  var np = document.getElementById('navPie'); if (np) np.remove();
   var b = document.getElementById('navBanner'); if (b) b.hidden = true;
   if (wakeLock) { wakeLock.release().catch(function () {}); wakeLock = null; }
   if (planCapa && lmap) { lmap.removeLayer(planCapa); planCapa = null; }
@@ -385,18 +416,35 @@ function navActualizar() {
     var dPaso = hav(me, p.ll), dFin = hav(me, NAV.B);
     if (dFin < LLEGADA) { NAV.i = NAV.pasos.length - 1; p = NAV.pasos[NAV.i]; }
     else if (dPaso < (p.viaje ? 0.15 : 0.025) && NAV.i < NAV.pasos.length - 1) { NAV.i++; p = NAV.pasos[NAV.i]; if (navigator.vibrate) navigator.vibrate(60); }
-    if (!NAV.dijo[NAV.i]) { NAV.dijo[NAV.i] = 1; decir(p.t); }
+    if (!NAV.dijo[NAV.i] && !(p.fin && hav(me, NAV.B) >= LLEGADA)) { NAV.dijo[NAV.i] = 1; decir(p.t); }
   }
   var dP = me ? hav(me, p.ll) : null, dF = me ? hav(me, NAV.B) : null;
   var resto = 0; for (var k = NAV.i + 1; k < NAV.pasos.length; k++) resto += NAV.pasos[k].km || 0;
   b.hidden = false;
-  b.innerHTML = '<div class="nb-ic">' + (p.fin && dF != null && dF < LLEGADA ? '🎉' : p.ic) + '</div><div class="nb-tx"><b>' + esc(p.fin && dF != null && dF < LLEGADA ? '¡Llegaste a ' + NAV.dest.n + '!' : p.t) + '</b><small>' + (dP != null ? (p.viaje ? 'Faltan ' + kmF(dP) + ' en el tren' : 'en ' + kmF(dP)) : 'Esperando tu ubicación…') + (dF != null ? ' · destino a ' + kmF(dF) : '') + '</small>' + (p.lineas ? '<div>' + p.lineas.map(function (a) { return chipLinea(p.sis, a.r, a.c); }).join('') + '</div>' : '') + '</div>' +
+  var llegando = p.fin && dF != null && dF < LLEGADA, txt = llegando ? '¡Llegaste a ' + NAV.dest.n + '!' : p.fin && me ? 'Camina hacia el ' + cardinal(rumboEntre(me, NAV.B)) + ' hasta ' + NAV.dest.n : p.t;
+  b.innerHTML = '<div class="nb-ic">' + (llegando ? '🎉' : p.fin ? '🧭' : p.ic) + '</div><div class="nb-tx"><b>' + esc(txt) + '</b><small>' + (dP != null ? (p.viaje ? 'Faltan ' + kmF(dP) + ' en el tren' : 'en ' + kmF(dP)) : 'Esperando tu ubicación…') + (dF != null ? ' · destino a ' + kmF(dF) : '') + '</small>' + (p.lineas ? '<div>' + p.lineas.map(function (a) { return chipLinea(p.sis, a.r, a.c); }).join('') + '</div>' : '') + '</div>' +
     '<div class="nb-arrow" id="navFlecha" title="Dirección al destino">➤</div><div class="nb-btns"><button id="nbVoz" aria-label="Voz">' + (vozOn ? '🔊' : '🔈') + '</button>' + (NAV.i < NAV.pasos.length - 1 ? '<button id="nbSig" aria-label="Siguiente paso">›</button>' : '') + '<button id="nbFin" aria-label="Terminar">✕</button></div>';
   document.getElementById('nbFin').onclick = function () { navTerminar(); showCity(cur); };
   document.getElementById('nbVoz').onclick = function () { vozOn = !vozOn; try { localStorage.setItem('guiaVoz', vozOn ? '1' : '0'); } catch (e) {} navActualizar(); if (vozOn) decir(p.t); };
   var sg = document.getElementById('nbSig'); if (sg) sg.onclick = function () { NAV.i = Math.min(NAV.pasos.length - 1, NAV.i + 1); navActualizar(); };
-  navFlecha();
+  navFlecha(); navPie(dF);
   if (p.fin && dF != null && dF < LLEGADA && !NAV.llego) { NAV.llego = true; if (navigator.vibrate) navigator.vibrate([80, 60, 80]); decir('Llegaste a ' + NAV.dest.n); setTimeout(function () { if (NAV && NAV.llego) navTerminar(true); }, 15000); }
+}
+/* barra inferior: tiempo y distancia restantes, hora de llegada y progreso */
+function navPie(dF) {
+  var w = document.querySelector('.mapwrap'); if (!w || !NAV) return;
+  var np = document.getElementById('navPie');
+  if (!np) { np = document.createElement('div'); np.id = 'navPie'; np.className = 'navpie'; w.appendChild(np); }
+  var frac = dF == null ? 0 : Math.max(0, Math.min(1, 1 - dF / NAV.dTotal)), resta = Math.max(1, Math.round(NAV.minTotal * (1 - frac)));
+  np.innerHTML = '<div class="np-tx"><b>' + durTxt(resta) + '</b><span>' + (dF != null ? kmF(dF) + ' · ' : '') + 'llegas ~' + horaLlegada(resta) + '</span></div><div class="np-barra"><i style="width:' + Math.round(frac * 100) + '%"></i></div>' +
+    '<div class="np-btns"><button id="npPasos">☰ Pasos</button><button id="npFin" class="fin">Terminar</button></div>';
+  document.getElementById('npFin').onclick = function () { navTerminar(); showCity(cur); };
+  document.getElementById('npPasos').onclick = function () {
+    var lista = NAV.pasos.map(function (q, k) { return '<li class="' + (k < NAV.i ? 'hecho' : k === NAV.i ? 'actual' : '') + '"><i>' + q.ic + '</i><span>' + esc(q.t) + '</span></li>'; }).join('');
+    var hoja = document.getElementById('navHoja') || document.createElement('div'); hoja.id = 'navHoja'; hoja.className = 'navhoja';
+    hoja.innerHTML = '<div class="row spread"><b>Pasos</b><button class="btn sm" id="nhCerrar">Cerrar</button></div><ol class="pasos">' + lista + '</ol>';
+    w.appendChild(hoja); document.getElementById('nhCerrar').onclick = function () { hoja.remove(); };
+  };
 }
 function navFlecha() {
   var f = document.getElementById('navFlecha'); if (!f || !NAV || !UB.ll) return;

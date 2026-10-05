@@ -32,9 +32,11 @@ function horaNum(t) { var m = /(\d{1,2})[:.](\d{2})/.exec(t || ''); return m ? +
 function horaTxt(h) { var hh = Math.floor(h), mm = Math.round((h - hh) * 60); return hh + ':' + ('0' + mm).slice(-2); }
 
 /* Actividad del día que menciona el lugar (para tomar su hora) */
+/* palabras con que el itinerario nombra algunos lugares */
+var ALIAS_ACT = { 'Museo Afroamericano': ['afroamericana'], 'Memorial de MLK': ['mlk'], 'National Zoo': ['zoo'], 'Old Town Alexandria': ['mercado campesino'], 'Memorial del 11-S': ['11-s'], 'Toro de Wall Street': ['toro'], 'Bethesda Fountain': ['bethesda'], 'Bow Bridge': ['bow bridge'] };
 function actDe(p, d) {
   if (!d) return null;
-  var toks = sinTilde(p.n).split(/[^a-z0-9]+/).filter(function (t) { return t.length >= 5 && RUTA_STOP.indexOf(t) < 0; });
+  var toks = sinTilde(p.n).split(/[^a-z0-9]+/).filter(function (t) { return t.length >= 5 && RUTA_STOP.indexOf(t) < 0; }).concat(ALIAS_ACT[p.n] || []);
   for (var k = 0; k < d.acts.length; k++) {
     var a = sinTilde(d.acts[k][1]);
     if (toks.some(function (t) { return a.indexOf(t) > -1; })) return d.acts[k];
@@ -54,6 +56,7 @@ function horaFija(p, n) {
   var r = (act && luz(a, at)) || luz(h, ht != null ? ht : at);           // primero lo que dice el plan del día
   if (r) return r;
   if (/show|tour|tiquete|reserva/.test(h + ' ' + a)) { var t = at != null ? at : ht; if (t != null) return { t: t, por: /show/.test(h + a) ? 'show' : 'reserva' }; }
+  if (act && at != null) return { t: at, por: 'plan', act: act[1] };                      // hora del itinerario (auditado)
   var hasta = /hasta las (\d{1,2})/.exec(h);
   if (hasta) return { t: +hasta[1] - 2.5, por: 'temprano' };
   var rango = /\d{1,2}:\d{2}\s*(a|–|-)\s*\d/.test(h);                       // "10:00 a 17:00" es horario de apertura
@@ -142,6 +145,9 @@ function ordenPlan(n, ids) {
   return o;
 }
 
+/* ¿Las horas fijas van en orden? */
+function respetaHoras(orden, n) { var ult = -1; for (var k = 0; k < orden.length; k++) { if (P[orden[k]].cat === 'transporte') continue; var x = horaFija(P[orden[k]], n); if (!x) continue; if (x.t < ult) return false; ult = x.t; } return true; }
+
 /* Tramos con distancia y modo (a pie o transporte) */
 function tramos(orden) {
   var t = [];
@@ -166,7 +172,7 @@ function rutaDia(n) {
   }
   var r = { n: n, dia: diaDeN(n), ids: ids, plan: resumen(plan), cerca: resumen(cerca) };
   // si el orden "cercano" no mejora, se queda el del plan
-  if (esfuerzo(cerca) > esfuerzo(plan) + 0.01) r.cerca = r.plan;   // solo si el orden por cercanía sale peor
+  if (esfuerzo(cerca) > esfuerzo(plan) + 0.01 && respetaHoras(plan, n)) r.cerca = r.plan;   // el del plan solo si es más corto y respeta las horas
   r.ahorroKm = Math.max(0, (largo(plan) - largo(r.cerca.orden)) * 1.25);
   r.ahorroPie = Math.max(0, r.plan.kmPie - r.cerca.kmPie);
   r.yaOptimo = r.cerca.orden.join() === r.plan.orden.join();

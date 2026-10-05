@@ -37,12 +37,12 @@ function renderDias() {
 function tarjetaDia(d, k) {
   var go = ['col', 'ny', 'bal', 'phi', 'del'].indexOf(d.city) > -1, r = rutaDeTarjeta(d), it = r ? intensidad(r) : null, tipo = tipoDia(d, r);
   var h = '<article class="day' + (go ? ' go' : '') + (daysMode === 'full' ? ' open' : '') + '" data-k="' + k + '"><div class="dh" role="button" tabindex="0"><div class="dn"><small>' + (d.n.indexOf('–') > -1 ? 'Días' : 'Día') + '</small><b>' + d.n + '</b></div><div><h3>' + esc(d.title) + '</h3><p>' + esc(d.date) + ' · ' + esc(CITYNAME[d.city]) + ' · ' + esc(d.short) + '</p>' +
-    '<div class="dtags"><span class="pill ' + tipo.c + '">' + tipo.e + ' ' + tipo.t + '</span>' + (r ? '<span class="pill ' + it.c + '">' + it.e + ' ' + it.t + '</span><span class="pill">🚶 ' + kmF(r.cerca.kmPie) + '</span>' : '') + (d.w ? '<span class="pill">🌡️ ' + esc(d.w) + '</span>' : '') + '</div></div><div class="cost">' + dayCost(d) + '</div></div><div class="db">';
+    '<div class="dtags"><span class="pill ' + tipo.c + '">' + tipo.e + ' ' + tipo.t + '</span>' + (r ? '<span class="pill ' + it.c + '">' + it.e + ' ' + it.t + '</span><span class="pill">🚶 ' + kmF(r.cerca.kmPie) + '</span>' + (function () { var c = cronogramaDia(r.n); return c.avisos ? '<span class="pill r">⚠️ ' + c.avisos + ' aviso' + (c.avisos > 1 ? 's' : '') + '</span>' : '<span class="pill g">🕘 ' + hhmm(c.items[0] ? c.items[0].ini : 540) + '–' + hhmm(c.fin) + '</span>'; })() : '') + (d.w ? '<span class="pill">🌡️ ' + esc(d.w) + '</span>' : '') + '</div></div><div class="cost">' + dayCost(d) + '</div></div><div class="db">';
   h += '<div class="en3"><div' + (energy === 'alta' ? ' class="on"' : '') + '><small>⚡ ENERGÍA ALTA</small>' + esc(d.alta) + '</div><div' + (energy === 'media' ? ' class="on"' : '') + '><small>🙂 MEDIA</small>' + esc(d.media) + '</div><div' + (energy === 'baja' ? ' class="on"' : '') + '><small>😴 BAJA</small>' + esc(d.baja) + '</div></div>';
   h += '<div class="mt"><ul class="tl">' + d.acts.map(function (a) { return '<li><b>' + esc(a[0]) + '</b><span>' + esc(a[1]) + '</span></li>'; }).join('') + '</ul></div>';
   if (r) {
     var R = r.cerca, vistos = {};
-    h += '<div class="box rutadia mt"><h4>🧭 Ruta por cercanía · Día ' + r.n + '</h4><ol class="mini">' + R.orden.map(function (i, j) {
+    h += '<div class="box rutadia mt"><h4>🕘 Cronograma sugerido · Día ' + r.n + '</h4>' + cronogramaHTML(r.n, true) + '<h4 class="mt">🧭 Orden por cercanía</h4><ol class="mini">' + R.orden.map(function (i, j) {
       var reg = vistos[i]; vistos[i] = 1; var f = reg ? null : horaFija(P[i], r.n);
       return '<li><button data-pl="' + i + '"><i>' + (reg ? '↩' : j + 1) + '</i>' + esc(P[i].n) + (f ? ' <small>⏰' + horaTxt(f.t) + '</small>' : '') + '</button></li>';
     }).join('') + '</ol>';

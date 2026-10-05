@@ -108,6 +108,22 @@ Los datos están separados por tema en `js/datos/`:
 
 **Desde el computador:** edita los archivos, prueba con `python -m http.server` dentro de la carpeta y abre http://localhost:8000, luego `git add . && git commit -m "…" && git push`.
 
+## ✅ Auditoría de horarios (6 de octubre de 2026)
+
+Cada lugar del plan se verificó en su página oficial (NPS, Smithsonian, visitthecapitol.gov, loc.gov, Amtrak, MARC, SEPTA, etc.). Los horarios están en `js/datos/horarios.js`, con fuente y nivel de confianza. El **cronograma** de cada día (pestaña Días y ruta del día en el mapa) calcula llegadas, traslados y esperas, y avisa si algo está cerrado o no alcanza el tiempo. Hoy los 12 días con ruta quedan **sin avisos**.
+
+Cambios importantes que salieron de la auditoría:
+- **Washington Monument:** cerrado el miércoles 4 de noviembre por mantenimiento → pasó al **viernes 6 a las 9:00**. Los tiquetes salen el **7 de octubre a las 10:00** (hora del este).
+- **Kennedy Center:** edificio principal cerrado por renovación; el show gratis ahora es en The REACH (viernes y sábados) → pasó al **viernes 6 a las 18:00**. El jueves 5 se termina en la National Portrait Gallery (hasta las 19:00).
+- **Nueva York:** tren de **6:20** (llega ~9:45) y regreso **19:52**. No hay trenes a las 6:00 ni a las 19:35. El museo del 11-S está cerrado ese martes, aunque las fuentes sí se pueden ver. El árbol de Rockefeller todavía estará sin luces.
+- **Baltimore:** primer MARC del sábado a las **8:55**.
+- **Filadelfia:** Amtrak de las **6:30**. SEPTA a Wilmington a las **14:04** (los de 13:13 y 15:33 no llegan). Regreso Amtrak **20:32**.
+- **Old Town Alexandria:** el mercado se mudó a **100 N Royal St / Tavern Square** (sábados 7:00–12:00). El trolley pasa desde las 11:00. Mount Vernon se alcanza en el bus 101 de las 11:58.
+- **Amaneceres y atardeceres reales:** amanecer el 4 nov a las 6:38; atardeceres a las 17:07 (2 nov), 17:04 (4 nov), 16:44 (NY, 10 nov), 16:52 (Baltimore, 14 nov) y 16:50 (20 nov).
+- **Sin riesgo de cierre del gobierno federal** durante el viaje (financiado hasta el 11 de diciembre de 2026).
+
+En Inicio está la tarjeta **⏰ Reservas con fecha límite** y, durante el viaje, **📅 Hoy**, con el cronograma del día y un botón para ir a la próxima actividad.
+
 ## 📍 Ubicación, cómo llegar y transporte
 
 - **Ubicación en vivo:** punto azul con dirección, botón ◎ para seguirte y **✨ Para ti, ahora** en Inicio (lugares cercanos, estación más cercana y comida o atardecer según la hora). Los lugares se marcan como visitados al pasar cerca.

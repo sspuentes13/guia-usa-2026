@@ -23,7 +23,9 @@ function renderInicio(){
  var t=totals(g),ct=catTotals(g);
  var h='<div class="hero"><span class="pl">✈</span><span class="pill o">Guía flexible · no un horario</span><h2>Toma lo que quieras de cada día.</h2><p>Esto no es un itinerario para seguir al pie de la letra. Cada día tiene opciones según la energía, alternativas si llueve, qué comer, un reto de inglés, la foto del día y su canción.</p>'+
  '<div class="cd"><div><b>'+dd+'</b><small>días</small></div><div><b>'+hh+'</b><small>horas</small></div><div><b>'+P.filter(function(p){return p.c!=='col'}).length+'</b><small>lugares</small></div><div><b>'+FREE.filter(function(f){return f.st!=='no'}).length+'</b><small>gratis</small></div></div></div>';
+ h+='<div class="card paraTi hoy" id="hoyCard"></div>';
  h+='<div class="card paraTi" id="paraTi"></div>';
+ h+='<div class="card" id="reservasCard"></div>';
  h+='<div class="grid4"><div class="stat o"><small>Total para '+g+'</small><b>'+fmt(t.all,'COP')+'</b></div><div class="stat"><small>Cada persona</small><b>'+fmt(t.all/g,'COP')+'</b></div><div class="stat"><small>Gastos en EE. UU.</small><b>'+fmt(t.USD,'USD')+'</b></div><div class="stat"><small>Gastos en Colombia</small><b>'+fmt(t.COP,'COP')+'</b></div></div>';
  h+='<div class="card mt"><h3 style="margin:0 0 8px">Cómo usar la guía</h3><div class="grid2"><div class="box"><h4>🗓️ Días</h4>Cada día con su ruta ordenada por cercanía y la vista <b>📊 Análisis</b> para comparar km, costos e intensidad.</div><div class="box"><h4>🗺️ Mapa</h4>Tu ubicación en vivo, <b>🧭 Cómo llegar</b> a pie o en metro (línea, dirección, paradas y tarifa), <b>🏠 Volver a casa</b> y rutas de cada día. Funciona sin internet.</div><div class="box"><h4>🗣️ Inglés</h4>Más de 100 frases con voz normal o 🐢 lenta, práctica con 🎤 micrófono y simulacro de migración.</div><div class="box"><h4>📸 Fotos</h4>Poses para 1, 2, 3 y 4 personas y canciones para historias y publicaciones.</div><div class="box"><h4>💸 Gastos</h4>Anoten cada gasto en pesos o dólares, vean cuánto llevan y quién le debe a quién.</div><div class="box"><h4>📶 Sin internet</h4>Abran la guía una vez con wifi y toquen <b>Preparar para usar sin internet</b>.</div></div></div>';
  h+='<div class="card" id="offlineCard"></div>';
@@ -31,7 +33,7 @@ function renderInicio(){
  ['Desayuno','Almuerzo','Cena','Transporte','Entradas y otros'].forEach(function(c){h+='<tr><td>'+c+'</td>';[1,2,3,4].forEach(function(n){var o=catTotals(n)[c]||{USD:0,COP:0};h+='<td'+(n===g?' class="hl"':'')+'>'+fmt(o.COP+o.USD*RATE,'COP')+'</td>'});h+='</tr>'});
  h+='<tr class="t"><td>Total</td>';[1,2,3,4].forEach(function(n){h+='<td>'+fmt(totals(n).all,'COP')+'</td>'});h+='</tr><tr><td>Cada uno</td>';[1,2,3,4].forEach(function(n){h+='<td>'+fmt(totals(n).all/n,'COP')+'</td>'});h+='</tr></table></div><p class="warn">Dólares convertidos a $4.000 pesos aprox. Extras añadidos en el mapa: '+Object.keys(added).length+'. <label style="font-weight:700"><input type="checkbox" id="snowChk"'+(snowOn?' checked':'')+'> Sumar día de nieve en Big SNOW</label></p></div>';
  h+='<div class="card"><h3 style="margin:0 0 8px">Si van 2, 3 o 4</h3>'+GROUP.map(function(x){return '<div class="box mt"><h4>'+x[0]+'</h4>'+x[1]+'</div>'}).join('')+'</div>';
- var el=document.getElementById('v-inicio');el.innerHTML=h;renderOfflineCard(document.getElementById('offlineCard'));renderParaTi(document.getElementById('paraTi'));
+ var el=document.getElementById('v-inicio');el.innerHTML=h;renderOfflineCard(document.getElementById('offlineCard'));renderParaTi(document.getElementById('paraTi'));renderHoy(document.getElementById('hoyCard'));renderReservas(document.getElementById('reservasCard'));
  document.getElementById('snowChk').onchange=function(e){snowOn=e.target.checked;save();renderInicio();toast(snowOn?'Nieve sumada al presupuesto':'Nieve quitada')};
 }
 
@@ -172,6 +174,7 @@ function showPlace(i,fromTour){if(!fromTour)stopTour();var p=P[i];activeId=i;
  var fr=FK[p.n]!==undefined?FREE[FK[p.n]]:null;
  var h='<div class="ph'+(p.snow?' s':'')+'"><div class="img" id="img"></div><button class="back" id="back">‹ '+esc(CITYNAME[p.c])+'</button><span class="nb">'+(p.snow?'❄':numero(i))+'</span><span class="em">'+emo(p)+'</span><small>'+(p.core?'En el plan':'Sugerido · opcional')+(dayFilter?' · Día '+dayFilter:'')+'</small></div><div class="pad">';
  h+='<span class="pill '+(p.core?'o':'s')+'">'+esc(p.d)+'</span><h2>'+esc(p.n)+'</h2><p>'+esc(p.txt)+'</p><div id="warn"></div>';
+ h+='<div id="estCerca" class="estcerca"></div><div id="horarioLugar"></div>';
  h+='<div class="facts"><div class="fact"><small>Entrada c/u</small><b>'+(p.e?fmt(p.e,'USD'):'Gratis')+'</b></div><div class="fact"><small>Para '+g+'</small><b>'+(p.e?fmt(p.e*g,'USD'):'Gratis')+'</b></div><div class="fact" style="grid-column:1/-1"><small>Cuándo ir</small><b>'+esc(p.h)+'</b></div>'+(prev&&!p.snow?'<div class="fact"><small>Desde '+esc(prev.n)+'</small><b>'+(dk<=RUTA_A_PIE_MAX?kmF(dk*1.25):kmF(dk))+'</b></div><div class="fact"><small>'+(dk<=RUTA_A_PIE_MAX?'🚶 A pie, aprox.':'🚇 Metro, tren o Uber')+'</small><b>'+(dk<=RUTA_A_PIE_MAX?walk(dk):'~'+durTxt(minTransporte(dk)))+'</b></div>':'')+'</div>';
  if(fr)h+='<div class="box '+(fr.st==='res'?'o':'')+'"><h4>🎟️ '+(fr.st==='res'?'Gratis con reserva':'Gratis')+'</h4>'+esc(fr.s)+'<div class="row mt"><a class="btn pri" href="'+fr.u+'" target="_blank" rel="noopener">Reservar / ver página oficial ↗</a></div></div>';
  if(p.ig)h+='<div class="box mt"><h4>📸 Foto para Instagram</h4>'+esc(p.ig)+'</div>';
@@ -183,6 +186,8 @@ function showPlace(i,fromTour){if(!fromTour)stopTour();var p=P[i];activeId=i;
  document.getElementById('pv').onclick=function(){showPlace(all[(ap-1+all.length)%all.length])};
  document.getElementById('nx').onclick=function(){showPlace(all[(ap+1)%all.length])};
  document.getElementById('irAqui').onclick=function(){irA({ll:p.ll,n:p.n,i:i})};
+ if(p.c!=='snow')trListo().then(function(){var e=document.getElementById('estCerca'),x=estacionDeLugar(p.ll);if(e&&activeId===i)e.innerHTML=x?'🚇 Metro más cercano: '+x.html:''});
+ if(typeof horarioHTML==='function'){var hz=document.getElementById('horarioLugar');if(hz)hz.innerHTML=horarioHTML(i)}
  var ad=document.getElementById('add');if(ad)ad.onclick=function(){if(added[i])delete added[i];else added[i]=1;save();toast(added[i]?'Añadido a tu plan'+(p.e?' · +'+fmt(p.e*g,'USD'):''):'Quitado de tu plan');showPlace(i)};
  if(!fromTour)verPanel();
  wikiImg(p.w,function(u){if(activeId!==i)return;if(u){var im=new Image();im.crossOrigin='anonymous';im.onload=function(){var e=document.getElementById('img');if(e){e.style.backgroundImage='url("'+u+'")';e.classList.add('on')}};im.src=u}else if(photosBlocked){var w=document.getElementById('warn');if(w)w.innerHTML='<div class="warn">Sin internet no se cargan fotos. Toquen "Google Maps: fotos" cuando tengan conexión.</div>'}})}
@@ -225,7 +230,12 @@ function initMap(){var cc=document.getElementById('cityChips'),fc=document.getEl
  document.getElementById('cercaBtn').onclick=cercaDeMi;document.getElementById('fabYo').onclick=centrarEnMi;document.getElementById('fabCasa').onclick=volverACasa;document.getElementById('fullBtn').onclick=function(){pantallaCompleta()};
  document.getElementById('tour').onclick=function(){if(tourT)stopTour();else startTour()};
  document.getElementById('mode').onclick=toggleMode;
- showCity('dc');if(hasTiles())startEmbedded();else tryReal();window.addEventListener('resize',function(){updScale();if(lmap)lmap.invalidateSize()})}
+ showCity('dc');if(hasTiles())startEmbedded();else tryReal();mostrarTips();window.addEventListener('resize',function(){updScale();if(lmap)lmap.invalidateSize()})}
+
+/* guía rápida del mapa (solo la primera vez) */
+function mostrarTips(){try{if(localStorage.getItem('guiaTips'))return}catch(e){}var w=document.querySelector('.mapwrap'),t=document.createElement('div');t.className='tips';
+ t.innerHTML='<b>Cómo usar el mapa</b><ul><li>👆 Toca un lugar y luego <b>🧭 Cómo llegar</b></li><li>◎ Tu ubicación en vivo · 🏠 Volver a casa</li><li>🗓️ Elige un día arriba para ver su ruta y horario</li></ul><button class="btn or">Entendido</button>';
+ w.appendChild(t);t.querySelector('button').onclick=function(){t.remove();try{localStorage.setItem('guiaTips','1')}catch(e){}}}
 
 /* ---------- navegación ---------- */
 var mapReady=false;
@@ -237,4 +247,4 @@ function render(t){var f={inicio:renderInicio,dias:renderDias,comer:renderComer,
 [].forEach.call(document.querySelectorAll('.seg button'),function(b){b.classList.toggle('on',+b.dataset.g===g);b.onclick=function(){g=+b.dataset.g;save();[].forEach.call(document.querySelectorAll('.seg button'),function(x){x.classList.toggle('on',x===b)});toast('Presupuesto para '+g+(g>1?' personas':' persona'));if(tab==='mapa'){if(activeId!==null)showPlace(activeId,true);else showCity(cur)}else render(tab)}});
 (function(){var t=gxTabInicial();if(t)go(t);else renderInicio()})();
 /* prepara el mapa en segundo plano mientras ven Inicio */
-(window.requestIdleCallback||function(f){setTimeout(f,1500)})(function(){cargarScript('js/vendor/leaflet.js').catch(function(){})},{timeout:4000});
+(window.requestIdleCallback||function(f){setTimeout(f,1500)})(function(){cargarScript('js/vendor/leaflet.js').catch(function(){});trListo().catch(function(){})},{timeout:4000});
