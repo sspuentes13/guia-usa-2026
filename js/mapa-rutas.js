@@ -92,7 +92,7 @@ function panelDia() {
   R.orden.forEach(function (i, k) {
     if (k > 0) {
       var t = R.tramos[k - 1];
-      if (t.km >= 0.05) h += '<li class="tramo ' + (t.pie ? 'pie' : 'trans') + '">' + (t.pie ? '🚶 ' + kmF(t.km * 1.25) + ' · ' + durTxt(minPie(t.km)) + ' a pie' : '🚇 ' + kmF(t.km) + ' · metro, tren o Uber · ~' + durTxt(minTransporte(t.km))) + '</li>';
+      if (t.km >= 0.05) h += '<li class="tramo ' + (t.pie ? 'pie' : 'trans') + '"' + (t.pie ? '' : ' data-de="' + t.de + '" data-a="' + t.a + '"') + '>' + (t.pie ? '🚶 ' + kmF(t.km * 1.25) + ' · ' + durTxt(minPie(t.km)) + ' a pie' : '🚇 ' + kmF(t.km) + ' · buscando la línea…') + '</li>';
     }
     var p = P[i], reg = R.orden.indexOf(i) < k, f = reg ? null : horaFija(p, n);
     h += '<li class="parada"><button data-i="' + i + '"><span class="num' + (p.core ? '' : ' x') + '">' + (reg ? '↩' : numero(i)) + '</span><span><b>' + (reg ? 'Regreso · ' : '') + esc(p.n) + '</b><small>' + (f ? '⏰ ' + horaTxt(f.t) + ' · ' : '') + esc(p.h) + (p.c !== cur ? ' · ' + esc(CITYNAME[p.c]) : '') + '</small></span><span class="price">' + (reg ? '' : p.e ? fmt(p.e, 'USD') : 'Gratis') + '</span></button></li>';
@@ -105,6 +105,7 @@ function panelDia() {
   [].forEach.call(pan.querySelectorAll('.parada button'), function (b) { b.onclick = function () { showPlace(+b.dataset.i); }; });
   document.getElementById('verTodo').onclick = function () { setDay(null); };
   document.getElementById('verDia').onclick = function () { abrirDia(n); };
+  trListo().then(function () { [].forEach.call(pan.querySelectorAll('.tramo[data-de]'), function (li) { li.innerHTML = textoTramo(+li.dataset.de, +li.dataset.a); }); });
 }
 
 /* Abre el día en la pestaña Días */
@@ -128,7 +129,7 @@ function verRutaDia(n) {
 /* Lugar en lista */
 function itemLugar(i, extra) {
   var p = P[i], fr = FK[p.n] !== undefined ? FREE[FK[p.n]] : null;
-  return '<li><button data-i="' + i + '"><span class="num' + (p.snow ? ' snow' : '') + (p.core ? '' : ' x') + '">' + (p.snow ? '❄' : (p.c === cur ? numero(i) : emo(p))) + '</span><span><b>' + esc(p.n) + '</b><small>' + (extra ? extra + ' · ' : '') + esc(p.d) + ' · ' + esc(p.h) + (fr && fr.st === 'res' ? ' · 🎟️ reservar' : '') + '</small></span><span class="price">' + (p.e ? fmt(p.e, 'USD') : 'Gratis') + (added[i] ? ' ✓' : '') + '</span></button></li>';
+  return '<li><button data-i="' + i + '"><span class="num' + (p.snow ? ' snow' : '') + (p.core ? '' : ' x') + '">' + (p.snow ? '❄' : (p.c === cur ? numero(i) : emo(p))) + '</span><span><b>' + esc(p.n) + '</b><small>' + (extra ? extra + ' · ' : '') + esc(p.d) + ' · ' + esc(p.h) + (fr && fr.st === 'res' ? ' · 🎟️ reservar' : '') + '</small></span><span class="price">' + (p.e ? fmt(p.e, 'USD') : 'Gratis') + (added[i] ? ' ✓' : '') + (typeof VIS !== 'undefined' && VIS[i] ? ' <span class=\"pill g\">visitado</span>' : '') + '</span></button></li>';
 }
 function bindLista(cont) { [].forEach.call(cont.querySelectorAll('button[data-i]'), function (b) { b.onclick = function () { showPlace(+b.dataset.i); }; }); }
 
@@ -143,28 +144,45 @@ function buscarLugares(q) {
 }
 
 /* Lo más cercano a donde estoy */
-function cercaDeMi() {
-  if (!navigator.geolocation) { toast('Este dispositivo no comparte la ubicación'); return; }
-  if (myLL) panelCerca();
-  toast('Buscando tu ubicación…');
-  navigator.geolocation.getCurrentPosition(function (pos) { myLL = [pos.coords.latitude, pos.coords.longitude]; panelCerca(); },
-    function () { if (!myLL) toast('Activa la ubicación: Ajustes › Privacidad › Localización › Safari'); },
-    { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
-}
+function cercaDeMi() { conUbicacion(function () { panelCerca(); }); }
 function panelCerca() {
   stopTour();
-  var lista = P.map(function (p, i) { return { i: i, k: hav(myLL, p.ll) }; }).filter(function (x) { return P[x.i].cat !== 'nieve' && P[x.i].cat !== 'transporte'; })
-    .sort(function (a, b) { return a.k - b.k; }).slice(0, 10);
-  var h = '<div class="pad"><div class="row spread"><span class="pill g">📍 Cerca de ti</span><button class="btn sm" id="volver">‹ Volver</button></div><h2>Lo más cercano</h2><p>Ordenado por distancia desde donde estás ahora.</p>';
+  var ll = UB.ll, lista = P.map(function (p, i) { return { i: i, k: hav(ll, p.ll) }; }).filter(function (x) { return P[x.i].cat !== 'nieve' && P[x.i].cat !== 'transporte'; })
+    .sort(function (a, b) { return a.k - b.k; }).slice(0, 8);
+  var h = '<div class="pad"><div class="row spread"><span class="pill g">📍 Cerca de ti</span><button class="btn sm" id="volver">‹ Volver</button></div><h2>Lo más cercano</h2><p>Según tu ubicación en tiempo real' + (UB.acc ? ' (precisión ±' + Math.round(UB.acc) + ' m)' : '') + '.</p>';
   if (lista.length && lista[0].k > 50) h += '<div class="warn">Estás lejos de los lugares del viaje (' + kmF(lista[0].k) + '). Esto sirve cuando estén en EE. UU.</div>';
-  h += '<ul class="places">' + lista.map(function (x) { return itemLugar(x.i, x.k <= RUTA_A_PIE_MAX ? '🚶 ' + kmF(x.k * 1.25) + ' · ' + walk(x.k) : '🚇 ' + kmF(x.k)); }).join('') + '</ul></div>';
-  var pan = document.getElementById('panel'); pan.innerHTML = h; pan.scrollTop = 0; bindLista(pan);
+  h += '<div id="cEst"></div>';
+  recomendaciones(ll).slice(1).forEach(function (g) { h += '<h4 class="gh4">' + g.t + '</h4><ul class="places">' + g.l.map(filaReco).join('') + '</ul>'; });
+  h += '<h4 class="gh4">📍 Lugares del viaje más cerca</h4><ul class="places">' + lista.map(function (x) { return filaReco(x); }).join('') + '</ul>';
+  h += '<div class="row mt"><button class="btn pri" id="cCasa">🏠 ' + (casa() ? 'Volver a casa' : 'Guardar la casa') + '</button></div></div>';
+  var pan = document.getElementById('panel'); pan.innerHTML = h; pan.scrollTop = 0;
+  [].forEach.call(pan.querySelectorAll('[data-ir]'), function (b) { b.onclick = function () { var i = +b.dataset.ir; irA({ ll: P[i].ll, n: P[i].n, i: i }); }; });
   document.getElementById('volver').onclick = function () { showCity(cur); };
-  if (realOn && lmap) {
-    if (!meMarker) meMarker = L.circleMarker(myLL, { radius: 9, color: '#fff', weight: 3, fillColor: '#1A73E8', fillOpacity: 1 }).addTo(lmap).bindTooltip('Estás aquí');
-    else meMarker.setLatLng(myLL);
-    if (lista[0].k < 50) lmap.flyToBounds(L.latLngBounds([myLL].concat(lista.slice(0, 3).map(function (x) { return P[x.i].ll; }))).pad(.3), { duration: .8, maxZoom: 17 });
-  }
+  document.getElementById('cCasa').onclick = volverACasa;
+  verPanel();
+  if (realOn && lmap) { dibujarYo(); if (lista[0] && lista[0].k < 50) lmap.flyToBounds(L.latLngBounds([ll].concat(lista.slice(0, 3).map(function (x) { return P[x.i].ll; }))).pad(.3), { duration: .8, maxZoom: 17 }); }
+  trListo().then(function () {
+    var box = document.getElementById('cEst'); if (!box) return;
+    var est = estacionesCerca(ll, 1.5, 3);
+    box.innerHTML = est.length ? '<h4 class="gh4">🚇 Estaciones cercanas</h4>' + est.map(function (x, k) { return '<button class="estbtn" data-est="' + k + '"><span>🚇</span><span><b>' + esc(x.e.n) + '</b><small>' + walk(x.k) + ' a pie · ' + kmF(x.k) + '</small></span><span>' + lineasDe(x.e).map(function (l) { return chipLinea(x.e.s, l.r, l.c); }).join('') + '</span></button>'; }).join('') : '';
+    [].forEach.call(box.querySelectorAll('[data-est]'), function (b) { b.onclick = function () { var x = est[+b.dataset.est]; irA({ ll: x.e.ll, n: 'Estación ' + x.e.n }); }; });
+  });
+}
+
+/* Tramos especiales verificados (sin metro directo) */
+var TRAMOS_ESPECIALES = {
+  'Torpedo Factory>Mount Vernon': '🚇 Metro línea Amarilla hasta Huntington y bus 101 de Fairfax Connector hasta Mount Vernon (US$2,25).',
+  'Old Town Alexandria>Mount Vernon': '🚇 Metro línea Amarilla hasta Huntington y bus 101 de Fairfax Connector hasta Mount Vernon (US$2,25).',
+  "Elfreth's Alley>Christiana Mall": '🚆 Tren SEPTA Wilmington/Newark hasta Wilmington (~45 min; US$8,75 entre semana, US$8 fin de semana) y Uber al Christiana Mall (~15 min).'
+};
+/* Instrucción real de transporte para un tramo largo de la ruta del día */
+function textoTramo(de, a) {
+  var esp = TRAMOS_ESPECIALES[P[de].n + '>' + P[a].n]; if (esp) return esp;
+  var r = trRuta(P[de].ll, P[a].ll); if (!r) return '🚕 Sin metro directo: Uber o taxi.';
+  var v = r.pasos.filter(function (p) { return p.tipo === 'viaje'; });
+  return v.map(function (p) { var terms = []; p.alts.forEach(function (x) { x.term.forEach(function (t) { if (terms.indexOf(t) < 0) terms.push(t); }); });
+    return '🚇 ' + p.alts.map(function (x) { return chipLinea(p.sis, x.r, x.c); }).join('') + ' de <b>' + esc(TR.E[p.de].n) + '</b> dirección ' + esc(terms.join(' o ')) + ' · ' + p.paradas + ' parada' + (p.paradas > 1 ? 's' : '') + ' → <b>' + esc(TR.E[p.a].n) + '</b>'; }).join('<br>') +
+    '<br>~' + durTxt(Math.round(r.min)) + ' puerta a puerta · ' + tarifa(v[0].sis, null, v.reduce(function (s, p) { return s + p.km; }, 0)).txt + ' c/u';
 }
 
 /* Mapa en pantalla completa (útil con el teléfono horizontal) */

@@ -4,11 +4,11 @@
    - Fotos de Wikipedia y fuente: caché con actualización en segundo plano.
    - Gastos (Google Apps Script): nunca se guardan aquí.
    Al publicar cambios grandes, sube VERSION para forzar la actualización. */
-var VERSION='2026-10-05a';
+var VERSION='2026-10-05b';
 var SHELL='guia-app-'+VERSION, PREP='guia-tiles-prep', VIS='guia-tiles-vis', EXT='guia-ext';
 var ARCHIVOS=['./','index.html','manifest.webmanifest','css/leaflet.css','css/app.css','css/gastos.css','css/ui.css',
   'js/vendor/leaflet.js','js/datos/lugares.js','js/datos/ciudades.js','js/datos/presupuesto.js','js/datos/dias.js',
-  'js/datos/contenido.js','js/datos/ingles.js','js/datos/mapas.js','js/offline.js','js/rutas.js','js/mapa-rutas.js','js/vista-dias.js','js/ingles.js','js/gastos.js','js/app.js',
+  'js/datos/contenido.js','js/datos/ingles.js','js/datos/mapas.js','js/datos/geo/col.js','js/datos/geo/arl.js','js/datos/geo/dc.js','js/datos/geo/ny.js','js/datos/geo/bal.js','js/datos/geo/phi.js','js/datos/geo/del.js','js/datos/geo/snow.js','js/offline.js','js/rutas.js','js/mapa-rutas.js','js/navegar.js','js/datos/transporte.js','js/vista-dias.js','js/ingles.js','js/gastos.js','js/app.js',
   'iconos/icono-192.png','iconos/icono-512.png','iconos/apple-touch-icon.png'];
 var MAX_VIS=2500, MAX_EXT=150;
 

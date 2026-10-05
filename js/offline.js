@@ -32,8 +32,9 @@ function offBanner(txt,btn,fn){var b=document.getElementById('offBanner');if(!b)
 
 /* ---------- lista de tiles alrededor de cada lugar ---------- */
 function offTile(lat,lon,z){var n=Math.pow(2,z);return [Math.floor((lon+180)/360*n),Math.floor((1-Math.asinh(Math.tan(lat*Math.PI/180))/Math.PI)/2*n)]}
-function offLista(){var vistos={},urls=[];
-  P.forEach(function(p){(p.c==='snow'?OFF.NIEVE:OFF.NIVELES).forEach(function(nv){var z=nv[0],m=nv[1],lat=p.ll[0],lon=p.ll[1],dl=m/111320,dn=m/(111320*Math.cos(lat*Math.PI/180));
+/* puntos: lista de [lat,lon] (por defecto, todos los lugares del viaje); niveles: [[zoom, radio en metros], …] */
+function offLista(puntos,niveles){var vistos={},urls=[];
+  (puntos?puntos.map(function(ll){return {ll:ll,c:''}}):P).forEach(function(p){(niveles||(p.c==='snow'?OFF.NIEVE:OFF.NIVELES)).forEach(function(nv){var z=nv[0],m=nv[1],lat=p.ll[0],lon=p.ll[1],dl=m/111320,dn=m/(111320*Math.cos(lat*Math.PI/180));
     var a=offTile(lat-dl,lon-dn,z),b=offTile(lat+dl,lon+dn,z);
     for(var x=a[0];x<=b[0];x++)for(var y=b[1];y<=a[1];y++){var k=z+'/'+y+'/'+x;if(!vistos[k]){vistos[k]=1;urls.push(OFF.URL.replace('{z}',z).replace('{y}',y).replace('{x}',x))}}})});
   return urls}
@@ -42,12 +43,12 @@ function offEstado(){try{return JSON.parse(localStorage.getItem('guiaOffline')||
 function offGuardarEstado(o){try{localStorage.setItem('guiaOffline',JSON.stringify(o))}catch(e){}}
 
 /* ---------- descarga ---------- */
-function offPreparar(onProg){
+function offPreparar(onProg,urlsExtra){
   if(OFF.corriendo)return Promise.resolve();
   if(!('caches' in window))return Promise.reject(new Error('Este navegador no permite guardar mapas.'));
   if(!navigator.onLine)return Promise.reject(new Error('Conéctate a internet (ideal wifi) para descargar.'));
   OFF.corriendo=true;OFF.cancelar=false;
-  var urls=offLista(),total=urls.length,hechas=0,bytes=0,fallas=0,i=0;
+  var urls=urlsExtra||offLista(),total=urls.length,hechas=0,bytes=0,fallas=0,i=0;
   OFF.prog={hechas:0,total:total,bytes:0,fallas:0};
   return caches.open(OFF.CACHE).then(function(cache){
     function uno(url,intento){
@@ -69,9 +70,11 @@ function offPreparar(onProg){
   }).then(function(){
     OFF.corriendo=false;
     var o={fecha:new Date().toISOString(),tiles:hechas-fallas,total:total,bytes:bytes,fallas:fallas,completo:!OFF.cancelar&&fallas<=total*0.01};
-    offGuardarEstado(o);return o;
+    if(!urlsExtra)offGuardarEstado(o);return o;
   },function(e){OFF.corriendo=false;throw e});
 }
+/* Guarda el satélite alrededor de unos puntos (p. ej. la casa) */
+function offPrepararPuntos(puntos,niveles){if(OFF.corriendo||!navigator.onLine)return Promise.resolve(null);return offPreparar(null,offLista(puntos,niveles))}
 function offBorrar(){return caches.delete(OFF.CACHE).then(function(){try{localStorage.removeItem('guiaOffline')}catch(e){}})}
 
 /* ---------- tarjeta en Inicio ---------- */

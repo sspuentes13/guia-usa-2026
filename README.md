@@ -108,6 +108,25 @@ Los datos están separados por tema en `js/datos/`:
 
 **Desde el computador:** edita los archivos, prueba con `python -m http.server` dentro de la carpeta y abre http://localhost:8000, luego `git add . && git commit -m "…" && git push`.
 
+## 📍 Ubicación, cómo llegar y transporte
+
+- **Ubicación en vivo:** punto azul con dirección, botón ◎ para seguirte y **✨ Para ti, ahora** en Inicio (lugares cercanos, estación más cercana y comida o atardecer según la hora). Los lugares se marcan como visitados al pasar cerca.
+- **🧭 Cómo llegar** (en cada lugar, estación o casa): compara a pie y en transporte público.
+  - Metro: qué línea tomar, en qué dirección, cuántas paradas y dónde bajarse, con tarifa y cómo pagar.
+  - A pie: calle por calle con internet; sin internet, una flecha y la distancia.
+  - **Navegación en vivo** con aviso por voz opcional; la pantalla no se apaga y avisa al llegar.
+- **🏠 Casa:** se guarda **solo en el teléfono** (no se publica) y descarga el satélite de los alrededores para volver sin internet.
+- **Transporte incluido:** Metro de Washington, metro de Nueva York, SEPTA Metro (líneas L y B) de Filadelfia, y Light Rail y Metro de Baltimore. Las estaciones y el orden de las paradas vienen de OpenStreetMap (© colaboradores de OSM). Para regenerarlos: descargar las rutas con Overpass y correr `node herramientas/armar-transporte.js <carpeta>` (las consultas están dentro del archivo).
+- **Tarifas verificadas en octubre de 2026** en las páginas oficiales:
+  - Metro de Washington: US$2,25–6,75 entre semana y US$2,25–2,50 noches y fines de semana ([wmata.com](https://www.wmata.com/fares/basic.cfm)).
+  - Nueva York: US$3 ([mta.info](https://www.mta.info/fares-tolls/2025-changes)).
+  - SEPTA Metro: US$2,90.
+  - Baltimore Light Rail y Metro: US$2.
+  - Tren SEPTA a Wilmington: US$8,75 entre semana y US$8 fin de semana.
+  - Bus 101 de Fairfax Connector a Mount Vernon: US$2,25.
+  - El DC Circulator dejó de funcionar en diciembre de 2024.
+- Los horarios en vivo y las alertas de servicio se consultan con el botón **🕒 Horarios en vivo (Google Maps)**.
+
 El mapa de Google My Maps / Organic Maps está en [`datos/viaje-google-my-maps.kml`](datos/viaje-google-my-maps.kml).
 
 ## Estructura
