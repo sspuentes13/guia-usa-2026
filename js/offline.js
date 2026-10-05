@@ -1,4 +1,4 @@
-/* Guía USA · uso sin internet: service worker, aviso de versión nueva y descarga de mapas satelitales */
+/* JD & Santi On Tour · uso sin internet: service worker, aviso de versión nueva y descarga de mapas satelitales */
 var OFF={
   CACHE:'guia-tiles-prep',                // mismo nombre que en sw.js
   URL:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',

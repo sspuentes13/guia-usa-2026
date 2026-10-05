@@ -1,6 +1,6 @@
-# Guía USA 2026 ✈️
+# JD & Santi On Tour ✈️
 
-Guía de viaje (itinerario, mapa satelital, presupuesto, inglés, fotos, lugares gratis y **registro de gastos**) que funciona en iPad y celular, **con o sin internet**.
+La app del viaje de Juan David y Santiago (30 oct – 24 nov 2026): plan día a día que se puede cambiar, mapa satelital con cómo llegar, reservas, restaurantes baratos, presupuesto, inglés, fotos, lugares gratis y **registro de gastos**. Funciona en computador, iPad y celular, **con o sin internet**.
 
 **Abrir la guía:** https://sspuentes13.github.io/guia-usa-2026/
 
@@ -25,6 +25,51 @@ En Android: Chrome → menú ⋮ → **Instalar app**.
 En el mapa, el botón de arriba a la izquierda cambia entre **🛰️ satélite** y **✏️ mapa dibujado** (este último funciona siempre, sin descargar nada).
 
 ---
+
+## 🗓️ El plan: seguirlo al pie de la letra o cambiarlo
+
+El plan recomendado está pensado para seguirlo tal cual:
+
+| Fechas | Qué |
+|---|---|
+| dom 1 – mar 3 nov | Llegada y Arlington: cementerio, Iwo Jima, Air Force; Roosevelt Island y Gravelly Point |
+| mié 4 – vie 6 nov | DC: National Mall al amanecer; Capitolio, Library y museos; Washington Monument, Georgetown y show |
+| sáb 7 nov | Old Town Alexandria (el mercado solo es los sábados) y Mount Vernon opcional |
+| lun 9 – mar 10 nov | Zoológico y catedral; National Gallery, Museo Afroamericano y The Wharf |
+| jue 12 nov | Nueva York en un día (tren de entre semana; el museo del 11-S abre) |
+| sáb 14 nov | Baltimore (el Walters y el Monumento abren) |
+| lun 16 – mié 18 nov | Libres en Arlington: compras y un día comodín para lo pendiente |
+| jue 19 nov | Filadelfia y compras sin impuesto en Delaware |
+| vie 20 – dom 22 nov | Último día en DC, Pentagon City, maletas y despedida |
+
+Los días 8, 11, 13 y 15 son de descanso.
+
+**Si algo cambia, todo se reajusta solo** (pestaña **Días**):
+- **🔀 Cambiar de día:** intercambia un día con otro. Antes de elegir, la app muestra con ✓ o ⚠️ qué días sirven: lo que cierra ese día de la semana o ese festivo (por ejemplo, la Library of Congress el 11 nov), el mercado de Old Town que solo es los sábados, trenes de entre semana, la hora del atardecer de esa fecha y dos viajes largos seguidos.
+- **⇄ en cada lugar** (o **📅 Cambiar de día** en su ficha del mapa): pasa un solo lugar a otro día o lo quita. También sirve para agregar un extra (por ejemplo, Ben's Chili Bowl) a un día.
+- **✓ Lo hicimos / ✗ No fuimos:** lo que no se hizo queda en **🗂️ Pendientes**, con un botón para pasarlo a otro día (por ejemplo, al día comodín).
+- La ruta, el cronograma, las reservas, la tarjeta **Hoy** y los restaurantes cercanos se recalculan con la fecha nueva. **↺ Volver al recomendado** deshace todo, pero conserva las reservas marcadas.
+- **Compartir:** si Gastos está conectado, el plan viaja por la misma hoja privada y gana el último cambio. Si no, **📲 Compartir plan** manda un enlace que aplica el mismo plan en el otro teléfono.
+
+## 🎟️ Reservas
+
+En Inicio, **🎟️ Reservas según su plan** calcula cuándo salen los pases **para el día en que está cada actividad**, con hora del este y hora de Colombia. Por ejemplo, el Washington Monument del vie 6 nov sale el mié 7 oct a las 10:00 (9:00 en Colombia). Cada reserva explica:
+- qué hacer si se agotan (segunda oportunidad);
+- qué pasa si reservan y no van, y cómo cambiar la fecha;
+- cuánta plata está en riesgo.
+
+Marquen ✓ al reservar: queda guardada la fecha. Si después mueven ese día, la app avisa en rojo que esa reserva hay que cambiarla.
+
+En resumen: los pases gratis (Capitolio, Library, museos y Zoo) no cuestan nada si no van. El Washington Monument y el Independence Hall cuestan US$1 por persona. Lo único con plata grande es **Amtrak**: compren apenas confirmen la fecha, con tarifa **Flex** si no están seguros, o cancelen dentro de las 24 horas. El **MARC** no se compra antes.
+
+## 🍽️ Comer rico y barato
+
+La pestaña **Comer** trae 50 restaurantes verificados en octubre de 2026, en DC, Arlington, Old Town, Nueva York, Baltimore, Filadelfia y Delaware. Cada uno tiene precio por persona, qué pedir, por qué vale la pena, horario y **🧭 Cómo llegar**. Hay filtros por ciudad y por **● Abierto ahora**, y aparecen los más cercanos a ti cuando la ubicación está activa. Cada día de paseo muestra también **lo rico y barato cerca de su ruta, abierto ese día**. Los lugares cerrados (Ray's Hell Burger, Good Stuff Eatery y otros) están listados para no ir.
+
+## 🖥️ Pantallas
+
+- En **computador y iPad horizontal**, las pestañas pasan a una barra lateral, el contenido usa todo el ancho y el mapa llena la pantalla. El botón ⛶ de arriba pone la app en pantalla completa.
+- En **celular**, funciona en vertical y horizontal. Instalada desde Safari o Chrome, ya abre a pantalla completa.
 
 ## 💸 Gastos: crear la Google Sheet (una sola vez)
 
@@ -83,6 +128,7 @@ Los archivos `apps-script/.clasp.json` (ID del script) y `apps-script/.despliegu
 - También se puede corregir directamente en la hoja (monto, descripción, etc.): el cambio llega a todos los teléfonos. Para borrar desde la hoja escribe **sí** en la columna `borrado` (no borres la fila). Las columnas `id`, `creado` y `modificado` no se tocan.
 - Exportar: **Reportes → CSV** (abre en Excel y Google Sheets) o **JSON** (respaldo). Importar JSON en **Ajustes → Respaldo**.
 - Si se pierde un teléfono: cambia la clave (menú **Gastos de la guía → Cambiar la clave**) y conecta de nuevo los demás.
+- La misma conexión comparte el **plan del viaje** (orden de los días, lugares movidos, días hechos y reservas marcadas). Se guarda en la pestaña *Config*, filas 3 y 4. Gana el último cambio.
 
 ---
 
@@ -92,8 +138,10 @@ Los datos están separados por tema en `js/datos/`:
 
 | Archivo | Qué tiene |
 |---|---|
-| `dias.js` | Itinerario día a día (`DAYS`) |
-| `lugares.js` | Lugares del mapa (`P`): nombre, coordenadas, día, precio, foto |
+| `dias.js` | Bloques del itinerario (`BLOQUES`), plan recomendado (`PLAN_BASE`: qué bloque va en cada fecha) y clima (`CLIMA`) |
+| `lugares.js` | Lugares del mapa (`P`): nombre, coordenadas, bloque (`b`), precio, foto |
+| `horarios.js` | Horarios verificados, cierres por fecha (`cerradoFechas`), duración y reservas |
+| `restaurantes.js` | Restaurantes baratos (`RESTAURANTES`), supermercados y lugares cerrados |
 | `presupuesto.js` | Presupuesto planeado (`BUDGET`) y tasa (`RATE`) |
 | `contenido.js` | Lugares gratis, comida, canciones, poses |
 | `ingles.js` | Frases de inglés con tips de pronunciación, simulacro de migración y sonidos difíciles |
@@ -110,19 +158,21 @@ Los datos están separados por tema en `js/datos/`:
 
 ## ✅ Auditoría de horarios (6 de octubre de 2026)
 
-Cada lugar del plan se verificó en su página oficial (NPS, Smithsonian, visitthecapitol.gov, loc.gov, Amtrak, MARC, SEPTA, etc.). Los horarios están en `js/datos/horarios.js`, con fuente y nivel de confianza. El **cronograma** de cada día (pestaña Días y ruta del día en el mapa) calcula llegadas, traslados y esperas, y avisa si algo está cerrado o no alcanza el tiempo. Hoy los 12 días con ruta quedan **sin avisos**.
+Cada lugar del plan se verificó en su página oficial (NPS, Smithsonian, visitthecapitol.gov, loc.gov, Amtrak, MARC, SEPTA, etc.). Los horarios están en `js/datos/horarios.js`, con fuente y nivel de confianza. El **cronograma** de cada día (pestaña Días y ruta del día en el mapa) calcula llegadas, traslados y esperas, y avisa si algo está cerrado o no alcanza el tiempo. Con el plan recomendado, los 13 días con ruta quedan **sin avisos**. Si cambian el plan, se vuelve a revisar con las fechas nuevas.
 
 Cambios importantes que salieron de la auditoría:
-- **Washington Monument:** cerrado el miércoles 4 de noviembre por mantenimiento → pasó al **viernes 6 a las 9:00**. Los tiquetes salen el **7 de octubre a las 10:00** (hora del este).
-- **Kennedy Center:** edificio principal cerrado por renovación; el show gratis ahora es en The REACH (viernes y sábados) → pasó al **viernes 6 a las 18:00**. El jueves 5 se termina en la National Portrait Gallery (hasta las 19:00).
-- **Nueva York:** tren de **6:20** (llega ~9:45) y regreso **19:52**. No hay trenes a las 6:00 ni a las 19:35. El museo del 11-S está cerrado ese martes, aunque las fuentes sí se pueden ver. El árbol de Rockefeller todavía estará sin luces.
+- **Washington Monument:** cerrado el miércoles 4 de noviembre por mantenimiento → va el **viernes 6 a las 9:00**. Los tiquetes salen el **7 de octubre a las 10:00** (hora del este).
+- **Kennedy Center:** edificio principal cerrado por renovación; el show gratis ahora es en The REACH (viernes y sábados) → va el **viernes 6 a las 18:00**. El jueves 5 se termina en la National Portrait Gallery (hasta las 19:00).
+- **Nueva York (jueves 12):** tren de **6:20** (llega ~9:45) y regreso **19:52**. No hay trenes a las 6:00 ni a las 19:35. El museo del 11-S no abre los martes de noviembre: por eso Nueva York pasó a jueves. El árbol de Rockefeller todavía estará sin luces.
+- **Library of Congress:** cierra el 11 de noviembre (Veterans Day).
+- **1 de noviembre:** termina el horario de verano; desde ese día Washington tiene la misma hora de Colombia.
 - **Baltimore:** primer MARC del sábado a las **8:55**.
 - **Filadelfia:** Amtrak de las **6:30**. SEPTA a Wilmington a las **14:04** (los de 13:13 y 15:33 no llegan). Regreso Amtrak **20:32**.
 - **Old Town Alexandria:** el mercado se mudó a **100 N Royal St / Tavern Square** (sábados 7:00–12:00). El trolley pasa desde las 11:00. Mount Vernon se alcanza en el bus 101 de las 11:58.
-- **Amaneceres y atardeceres reales:** amanecer el 4 nov a las 6:38; atardeceres a las 17:07 (2 nov), 17:04 (4 nov), 16:44 (NY, 10 nov), 16:52 (Baltimore, 14 nov) y 16:50 (20 nov).
+- **Amaneceres y atardeceres:** se calculan para cada fecha y ciudad (±2 min). Por ejemplo, amanecer el 4 nov a las 6:38 y atardecer a las 17:04; en Nueva York el 12 nov, a las 16:42. Si mueven un día con atardecer, la hora se ajusta.
 - **Sin riesgo de cierre del gobierno federal** durante el viaje (financiado hasta el 11 de diciembre de 2026).
 
-En Inicio está la tarjeta **⏰ Reservas con fecha límite** y, durante el viaje, **📅 Hoy**, con el cronograma del día y un botón para ir a la próxima actividad.
+Durante el viaje, Inicio muestra **📅 Hoy**: el cronograma del día, la próxima actividad, las notas de la fecha (madrugar para el tren, festivos) y un botón para cambiar el plan.
 
 ## 📍 Ubicación, cómo llegar y transporte
 
@@ -152,10 +202,15 @@ index.html              página principal
 manifest.webmanifest    datos para instalarla como app
 sw.js                   service worker: guarda la app y los mapas para usar sin internet
 css/                    estilos (app, gastos, interfaz y pantallas, Leaflet)
-js/app.js               guía: inicio, mapa, comer, fotos, gratis
+js/app.js               guía: inicio, mapa, fotos, gratis
+js/plan.js              plan dinámico: qué bloque va en cada fecha, cambios, avisos, sol y sincronización
 js/rutas.js             orden por cercanía de los lugares de cada día (respeta horas fijas)
+js/cronograma.js        horas de llegada, esperas y cierres de cada día
+js/hoy.js               reservas calculadas con el plan y la tarjeta Hoy
 js/mapa-rutas.js        mapa interactivo: ruta del día, cerca de mí, búsqueda, pantalla completa
-js/vista-dias.js        pestaña Días con su ruta y la vista 📊 Análisis
+js/navegar.js           ubicación en vivo, cómo llegar, metro y navegación
+js/vista-dias.js        pestaña Días: plan, cambiar de día, pendientes y 📊 Análisis
+js/comer.js             pestaña Comer: restaurantes, abiertos ahora y cerca de cada día
 js/ingles.js            práctica de inglés: voz lenta, micrófono, tarjetas al azar
 js/gastos.js            registro de gastos, reportes y sincronización
 js/offline.js           descarga de mapas y aviso de versión nueva

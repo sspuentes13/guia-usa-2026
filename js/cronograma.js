@@ -1,13 +1,13 @@
-/* Guía USA · cronograma de cada día: horas de llegada, espera, visita y traslados,
+/* JD & Santi On Tour · cronograma de cada día: horas de llegada, espera, visita y traslados,
    revisando horarios de apertura y cierre verificados (js/datos/horarios.js). */
 
 var DIAS_SEM = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
-function fechaDia(n) { var d = new Date(2026, 9, 30, 12); d.setDate(d.getDate() + n - 1); return d; }
 function hhmm(m) { m = Math.round(m); var h = Math.floor(m / 60) % 24, mm = m % 60; return h + ':' + ('0' + mm).slice(-2); }
 function horario(i) { return (typeof HORARIOS !== 'undefined' && HORARIOS[P[i].n]) || null; }
 /* [abre, cierra] en minutos para un día de la semana; null = cerrado; undefined = sin dato */
-function abreCierra(H, dow) {
+function abreCierra(H, dow, iso) {
   if (!H || !H.h) return undefined;
+  if (iso && H.cerradoFechas && H.cerradoFechas.indexOf(iso) > -1) return null;
   if (H.h === '24h') return [0, 24 * 60];
   var x = H.h[dow]; if (!x) return null;
   return [Math.round(x[0] * 60), Math.round(x[1] * 60)];
@@ -49,8 +49,8 @@ function cronogramaDia(n, modo) {
     if (f && f.act) { if (actsUsadas[f.act]) f = null; else actsUsadas[f.act] = 1; }
     if (f && f.t * 60 > ini) ini = f.t * 60;
     if (f && f.t >= 0 && llega > f.t * 60 + 20) av.push('Llegan tarde a la hora planeada (' + hhmm(f.t * 60) + ')');
-    var H = horario(i), oc = reg ? undefined : abreCierra(H, dow);
-    if (oc === null) { av.push('Cerrado los ' + DIAS_SEM[dow]); }
+    var H = horario(i), oc = reg ? undefined : abreCierra(H, dow, isoFecha(fecha));
+    if (oc === null) { av.push(H.cerradoFechas && H.cerradoFechas.indexOf(isoFecha(fecha)) > -1 ? 'Cerrado ese día (' + fechaCorta(n) + ')' : 'Cerrado los ' + DIAS_SEM[dow]); }
     else if (oc) {
       if (ini < oc[0]) { ini = oc[0]; }
       if (ini >= oc[1]) av.push('Llegan después del cierre (' + hhmm(oc[1]) + ')');
@@ -87,7 +87,7 @@ function horarioHTML(i) {
     for (var d = 1; d <= 7; d++) { var k = d % 7, x = H.h[k], v = x ? hhmm(x[0] * 60) + '–' + hhmm(x[1] * 60) : 'cerrado', g = grupos[grupos.length - 1]; if (g && g.v === v) g.b = k; else grupos.push({ a: k, b: k, v: v }); }
     txt = grupos.map(function (g) { return (g.a === g.b ? DIAS_SEM[g.a] : DIAS_SEM[g.a] + '–' + DIAS_SEM[g.b]) + ' ' + g.v; }).join(' · ');
   }
-  var plan = dias.filter(function (n) { return n >= 1 && n <= 26; }).map(function (n) { var dow = fechaDia(n).getDay(), oc = abreCierra(H, dow); return 'Día ' + n + ' (' + DIAS_SEM[dow] + '): ' + (oc === null ? '⚠️ cerrado' : oc ? hhmm(oc[0]) + '–' + hhmm(oc[1]) : '—'); });
+  var plan = dias.filter(function (n) { return n >= 1 && n <= 26; }).map(function (n) { var dow = fechaDia(n).getDay(), oc = abreCierra(H, dow, isoDia(n)); return 'Día ' + n + ' (' + fechaCorta(n) + '): ' + (oc === null ? '⚠️ cerrado' : oc ? hhmm(oc[0]) + '–' + hhmm(oc[1]) : '—'); });
   return '<div class="box horario"><h4>🕘 Horario verificado</h4>' + esc(txt) + (plan.length ? '<br><b>' + esc(plan.join(' · ')) + '</b>' : '') + (H.reserva ? '<br>🎟️ ' + esc(H.reserva) : '') + (H.precio ? '<br>💵 ' + esc(H.precio) : '') + (H.nota ? '<br>💡 ' + esc(H.nota) : '') +
     (H.fuente ? '<br><a href="' + esc(H.fuente) + '" target="_blank" rel="noopener">Fuente oficial ↗</a>' : '') + (H.conf && H.conf !== 'alta' ? ' <small>(verificar cerca de la fecha)</small>' : '') + '</div>';
 }

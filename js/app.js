@@ -1,4 +1,4 @@
-/* Guía USA · lógica principal */
+/* JD & Santi On Tour · lógica principal */
 var TILES={}; /*__TILES__*/
 
 var g=2,tab='inicio',daysMode='res',energy='media',snowOn=false,added={},cur='',activeId=null,filter='todo',imgCache={},photosBlocked=false;
@@ -21,7 +21,7 @@ function totBar(){var t=totals(g);return '<div class="tot"><div><small>Total del
 function renderInicio(){
  var start=new Date('2026-10-30T20:30:00-05:00'),now=new Date(),ms=start-now,dd=Math.max(0,Math.floor(ms/864e5)),hh=Math.max(0,Math.floor(ms%864e5/36e5));
  var t=totals(g),ct=catTotals(g);
- var h='<div class="hero"><span class="pl">✈</span><span class="pill o">Guía flexible · no un horario</span><h2>Toma lo que quieras de cada día.</h2><p>Esto no es un itinerario para seguir al pie de la letra. Cada día tiene opciones según la energía, alternativas si llueve, qué comer, un reto de inglés, la foto del día y su canción.</p>'+
+ var h='<div class="hero"><span class="pl">✈</span><span class="pill o">JD &amp; Santi On Tour · 2026</span><h2>Washington, Nueva York y más, a su manera.</h2><p>Un plan listo para seguir al pie de la letra, con horarios verificados. Si algo cambia, muevan un día o un lugar y todo se reajusta solo: rutas, horas, reservas y lo que toca hoy.</p>'+
  '<div class="cd"><div><b>'+dd+'</b><small>días</small></div><div><b>'+hh+'</b><small>horas</small></div><div><b>'+P.filter(function(p){return p.c!=='col'}).length+'</b><small>lugares</small></div><div><b>'+FREE.filter(function(f){return f.st!=='no'}).length+'</b><small>gratis</small></div></div></div>';
  h+='<div class="card paraTi hoy" id="hoyCard"></div>';
  h+='<div class="card paraTi" id="paraTi"></div>';
@@ -39,16 +39,7 @@ function renderInicio(){
 
 /* ---------- DÍAS: ver js/vista-dias.js ---------- */
 
-/* ---------- COMER ---------- */
-function renderComer(){
- var h='<h2 class="big">Qué comer</h2><p class="lead">Lo típico de cada ciudad con precio aproximado por persona y la frase para pedirlo. Toquen 🔊 para escucharla.</p>';
- ['dc','arl','ny','bal','phi','del','col'].forEach(function(c){var f=FOOD.filter(function(x){return x.c===c});if(!f.length)return;
-  h+='<div class="card"><h3 style="margin:0 0 8px">'+CITYNAME[c]+'</h3>';
-  f.forEach(function(x){h+='<div class="phr"><div><b>'+esc(x.w)+' <span class="pill o">~US$'+x.p+' c/u · '+fmt(x.p*g,'USD')+' para '+g+'</span></b><small>'+esc(x.d)+' · '+esc(x.t)+'</small>'+(x.en?'<small><i>“'+esc(x.en)+'”</i></small>':'')+'</div>'+(x.en?'<button class="say" data-say="'+esc(x.en)+'" aria-label="Escuchar">🔊</button>':'<span></span>')+'</div>'});
-  h+='</div>'});
- h+='<p class="warn">Precios aproximados; pueden cambiar. En EE. UU. en restaurantes con mesero se deja propina de 15–20 %. En food trucks y mostradores es opcional.</p>';
- document.getElementById('v-comer').innerHTML=h;bindSay('v-comer');
-}
+/* ---------- COMER: ver js/comer.js ---------- */
 
 /* ---------- INGLÉS ---------- */
 var voice=null;
@@ -72,10 +63,12 @@ function renderFotos(){
 }
 
 /* ---------- GRATIS ---------- */
+function cuandoGratis(f){var k=FREE.indexOf(f),r=null;P.forEach(function(p){if(FK[p.n]===k&&!r)r=RESERVAS.filter(function(x){return x.lugar===p.n})[0]||null});if(!r)return f.when;var x=filaReserva(r,new Date(),hechas());return x?(x.cuando||x.est):f.when}
+function diaGratis(f){var k=FREE.indexOf(f),ns=[];P.forEach(function(p){if(FK[p.n]===k)diasDe(p).forEach(function(n){if(ns.indexOf(n)<0)ns.push(n)})});return ns.length?ns.sort(function(x,y){return x-y}).map(etiquetaDia).join(' y '):(f.day&&!/D[ií]a \d/.test(f.day)?f.day:'Cuando quieran')}
 function renderGratis(){
  var lab={ok:['Gratis, sin reserva','g'],res:['Gratis con reserva','o'],no:['No aplica','r']};
  var h='<h2 class="big">Lo gratis y cómo reclamarlo</h2><p class="lead">Verificado en páginas oficiales. Los enlaces necesitan internet.</p>';
- h+='<div class="card"><h3 style="margin:0 0 8px">📅 Qué reservar y cuándo</h3><div class="tw"><table class="bt"><tr><th>Qué</th><th style="text-align:left">Cuándo reservar</th><th style="text-align:left">Para</th></tr>'+FREE.filter(function(f){return f.st==='res'}).map(function(f){return '<tr><td><a href="'+f.u+'" target="_blank" rel="noopener">'+esc(f.n)+' ↗</a></td><td style="text-align:left;white-space:normal">'+esc(f.when)+'</td><td style="text-align:left">'+esc(f.day)+'</td></tr>'}).join('')+'</table></div></div>';
+ h+='<div class="card"><h3 style="margin:0 0 8px">📅 Qué reservar y cuándo</h3><div class="tw"><table class="bt"><tr><th>Qué</th><th style="text-align:left">Cuándo reservar</th><th style="text-align:left">Para</th></tr>'+FREE.filter(function(f){return f.st==='res'}).map(function(f){return '<tr><td><a href="'+f.u+'" target="_blank" rel="noopener">'+esc(f.n)+' ↗</a></td><td style="text-align:left;white-space:normal">'+esc(cuandoGratis(f))+'</td><td style="text-align:left">'+esc(diaGratis(f))+'</td></tr>'}).join('')+'</table></div></div>';
  var last='';FREE.forEach(function(f){if(f.g!==last){if(last)h+='</ul></div>';h+='<div class="card"><h3 style="margin:0 0 8px">'+f.g+'</h3><ul class="free">';last=f.g}
   h+='<li><b>'+esc(f.n)+'</b> <span class="pill '+lab[f.st][1]+'">'+lab[f.st][0]+'</span><small>'+esc(f.s)+'</small><a class="btn" href="'+f.u+'" target="_blank" rel="noopener">Abrir página oficial ↗</a></li>'});
  h+='</ul></div>';
@@ -153,9 +146,9 @@ function showCity(id){activeId=null;
  if(dayFilter)return panelDia();
  var c=CITIES.filter(function(x){return x.id===id})[0],ps=MAPS[id].pins.map(function(x){return P[x.i]}),ct=cityTotals(id),dias=diasConLugares(id);
  var core=ps.filter(function(p){return p.core}),tk=0;for(var q=1;q<core.length;q++)tk+=hav(core[q-1].ll,core[q].ll);
- var h='<div class="pad"><span class="pill o">'+esc(c.day)+'</span><h2>'+esc(c.name)+'</h2><p>'+esc(c.desc)+'</p>';
+ var h='<div class="pad"><span class="pill o">'+esc(/^D[ií]as? \d/.test(c.day)&&dias.length?(dias.length>1?'Días '+dias.slice(0,-1).join(', ')+' y '+dias[dias.length-1]:'Día '+dias[0]):c.day)+'</span><h2>'+esc(c.name)+'</h2><p>'+esc(c.desc)+'</p>';
  if(id!=='snow')h+='<div class="facts"><div class="fact"><small>Presupuesto aquí ('+g+')</small><b>'+both(ct)+'</b></div><div class="fact"><small>Lugares · días</small><b>'+ps.length+' · '+(dias.length||'—')+'</b></div></div>';
- if(dias.length)h+='<div class="diasgrid">'+dias.map(function(n){var r=rutaDia(n),R=r.cerca,it=intensidad(r),d=r.dia;return '<button class="diabtn" data-dia="'+n+'"><b>Día '+n+'</b><small>'+esc(d?d.title:'')+'</small><span>'+it.e+' '+kmF(R.kmPie)+' a pie</span></button>'}).join('')+'</div>';
+ if(dias.length)h+='<div class="diasgrid">'+dias.map(function(n){var r=rutaDia(n),R=r.cerca,it=intensidad(r),d=r.dia;return '<button class="diabtn" data-dia="'+n+'"><b>Día '+n+' · '+fechaCorta(n)+'</b><small>'+esc(d?d.title:'')+'</small><span>'+it.e+' '+kmF(R.kmPie)+' a pie</span></button>'}).join('')+'</div>';
  h+='<div class="buscar"><input id="buscar" type="search" placeholder="🔎 Buscar en todo el viaje" autocomplete="off" aria-label="Buscar lugar"><button class="btn" id="cercaP" type="button">📍 Cerca de mí</button></div>';
  h+='<ul class="places" id="lista"></ul></div>';
  var pan=document.getElementById('panel');pan.innerHTML=h;pan.scrollTop=0;buscarLugares('');
@@ -173,12 +166,12 @@ function showPlace(i,fromTour){if(!fromTour)stopTour();var p=P[i];activeId=i;
  var order=dayFilter?ordenActual():pins.map(function(x){return x.i}).filter(function(k){return P[k].core}),pos=order.indexOf(i),prev=pos>0?P[order[pos-1]]:null,dk=prev?hav(prev.ll,p.ll):0;
  var fr=FK[p.n]!==undefined?FREE[FK[p.n]]:null;
  var h='<div class="ph'+(p.snow?' s':'')+'"><div class="img" id="img"></div><button class="back" id="back">‹ '+esc(CITYNAME[p.c])+'</button><span class="nb">'+(p.snow?'❄':numero(i))+'</span><span class="em">'+emo(p)+'</span><small>'+(p.core?'En el plan':'Sugerido · opcional')+(dayFilter?' · Día '+dayFilter:'')+'</small></div><div class="pad">';
- h+='<span class="pill '+(p.core?'o':'s')+'">'+esc(p.d)+'</span><h2>'+esc(p.n)+'</h2><p>'+esc(p.txt)+'</p><div id="warn"></div>';
+ h+='<span class="pill '+(p.core?'o':'s')+'">'+esc(etiquetaLugar(p))+'</span><h2>'+esc(p.n)+'</h2><p>'+esc(p.txt)+'</p><div id="warn"></div>';
  h+='<div id="estCerca" class="estcerca"></div><div id="horarioLugar"></div>';
  h+='<div class="facts"><div class="fact"><small>Entrada c/u</small><b>'+(p.e?fmt(p.e,'USD'):'Gratis')+'</b></div><div class="fact"><small>Para '+g+'</small><b>'+(p.e?fmt(p.e*g,'USD'):'Gratis')+'</b></div><div class="fact" style="grid-column:1/-1"><small>Cuándo ir</small><b>'+esc(p.h)+'</b></div>'+(prev&&!p.snow?'<div class="fact"><small>Desde '+esc(prev.n)+'</small><b>'+(dk<=RUTA_A_PIE_MAX?kmF(dk*1.25):kmF(dk))+'</b></div><div class="fact"><small>'+(dk<=RUTA_A_PIE_MAX?'🚶 A pie, aprox.':'🚇 Metro, tren o Uber')+'</small><b>'+(dk<=RUTA_A_PIE_MAX?walk(dk):'~'+durTxt(minTransporte(dk)))+'</b></div>':'')+'</div>';
  if(fr)h+='<div class="box '+(fr.st==='res'?'o':'')+'"><h4>🎟️ '+(fr.st==='res'?'Gratis con reserva':'Gratis')+'</h4>'+esc(fr.s)+'<div class="row mt"><a class="btn pri" href="'+fr.u+'" target="_blank" rel="noopener">Reservar / ver página oficial ↗</a></div></div>';
  if(p.ig)h+='<div class="box mt"><h4>📸 Foto para Instagram</h4>'+esc(p.ig)+'</div>';
- h+='<div class="row mt"><button class="btn or" id="irAqui">🧭 Cómo llegar</button>'+(!p.core?'<button class="btn" id="add">'+(added[i]?'✓ En mi plan · quitar':'＋ Añadir a mi plan')+'</button>':'')+'<a class="btn pri" href="'+gmPlace(p)+'" target="_blank" rel="noopener">Google Maps: fotos ↗</a>'+(prev&&!p.snow?'<a class="btn" href="'+gmDir(prev,p)+'" target="_blank" rel="noopener">Cómo llegar ↗</a>':'')+'</div>';
+ h+='<div class="row mt"><button class="btn or" id="irAqui">🧭 Cómo llegar</button>'+(p.c!=='col'&&p.cat!=='transporte'&&!p.snow?'<button class="btn" id="cambiarDia">📅 '+(diasDe(p).length?'Cambiar de día':'Agregar a un día')+'</button>':'')+(!p.core?'<button class="btn" id="add">'+(added[i]?'✓ En mi plan · quitar':'＋ Añadir a mi plan')+'</button>':'')+'<a class="btn pri" href="'+gmPlace(p)+'" target="_blank" rel="noopener">Google Maps: fotos ↗</a>'+(prev&&!p.snow?'<a class="btn" href="'+gmDir(prev,p)+'" target="_blank" rel="noopener">Cómo llegar ↗</a>':'')+'</div>';
  h+='<div class="row mt"><button class="btn" id="pv">‹ Anterior</button><button class="btn" id="nx">Siguiente ›</button></div></div>';
  var pan=document.getElementById('panel');pan.innerHTML=h;pan.scrollTop=0;
  var all=(dayFilter?ordenActual():pins.map(function(x){return x.i})).filter(function(k){return visible(P[k])}),ap=all.indexOf(i);
@@ -186,6 +179,7 @@ function showPlace(i,fromTour){if(!fromTour)stopTour();var p=P[i];activeId=i;
  document.getElementById('pv').onclick=function(){showPlace(all[(ap-1+all.length)%all.length])};
  document.getElementById('nx').onclick=function(){showPlace(all[(ap+1)%all.length])};
  document.getElementById('irAqui').onclick=function(){irA({ll:p.ll,n:p.n,i:i})};
+ var cd=document.getElementById('cambiarDia');if(cd)cd.onclick=function(){var bs=bloquesDe(p),de=dayFilter&&diaDeN(dayFilter)&&bs.indexOf(diaDeN(dayFilter).id)>-1?diaDeN(dayFilter).id:bs[0]||null;elegirDiaLugar(i,de)};
  if(p.c!=='snow')trListo().then(function(){var e=document.getElementById('estCerca'),x=estacionDeLugar(p.ll);if(e&&activeId===i)e.innerHTML=x?'🚇 Metro más cercano: '+x.html:''});
  if(typeof horarioHTML==='function'){var hz=document.getElementById('horarioLugar');if(hz)hz.innerHTML=horarioHTML(i)}
  var ad=document.getElementById('add');if(ad)ad.onclick=function(){if(added[i])delete added[i];else added[i]=1;save();toast(added[i]?'Añadido a tu plan'+(p.e?' · +'+fmt(p.e*g,'USD'):''):'Quitado de tu plan');showPlace(i)};
@@ -246,5 +240,13 @@ function render(t){var f={inicio:renderInicio,dias:renderDias,comer:renderComer,
 [].forEach.call(document.querySelectorAll('#tabs button'),function(b){b.onclick=function(){go(b.dataset.t)}});
 [].forEach.call(document.querySelectorAll('.seg button'),function(b){b.classList.toggle('on',+b.dataset.g===g);b.onclick=function(){g=+b.dataset.g;save();[].forEach.call(document.querySelectorAll('.seg button'),function(x){x.classList.toggle('on',x===b)});toast('Presupuesto para '+g+(g>1?' personas':' persona'));if(tab==='mapa'){if(activeId!==null)showPlace(activeId,true);else showCity(cur)}else render(tab)}});
 (function(){var t=gxTabInicial();if(t)go(t);else renderInicio()})();
+/* alto real del encabezado: el mapa llena el resto de la pantalla en computador y tableta */
+(function(){var t=document.querySelector('.top');function m(){document.documentElement.style.setProperty('--toph',t.offsetHeight+'px');if(typeof lmap!=='undefined'&&lmap)setTimeout(function(){lmap.invalidateSize()},60)}m();addEventListener('resize',m);if(window.ResizeObserver)new ResizeObserver(m).observe(t)})();
+/* botón de pantalla completa (si el navegador lo permite y la app no está instalada) */
+(function(){var b=document.getElementById('pcBtn'),de=document.documentElement,inst=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone,rq=de.requestFullscreen||de.webkitRequestFullscreen;if(!b||inst||!rq)return;b.hidden=false;
+ b.onclick=function(){if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen||document.webkitExitFullscreen).call(document);else rq.call(de)};
+ document.addEventListener('fullscreenchange',function(){var on=!!document.fullscreenElement;b.textContent=on?'🗗':'⛶';b.title=on?'Salir de pantalla completa':'Pantalla completa'})})();
 /* prepara el mapa en segundo plano mientras ven Inicio */
-(window.requestIdleCallback||function(f){setTimeout(f,1500)})(function(){cargarScript('js/vendor/leaflet.js').catch(function(){});trListo().catch(function(){})},{timeout:4000});
+(window.requestIdleCallback||function(f){setTimeout(f,1500)})(function(){cargarScript('js/vendor/leaflet.js').catch(function(){});trListo().catch(function(){});
+ /* trae el plan del otro teléfono por la hoja de Gastos, si está conectada */
+ gxCargar().then(function(){if(gx.conn){gxProgramarSync(300);if(tab==='dias')renderDias()}}).catch(function(){})},{timeout:4000});

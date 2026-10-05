@@ -1,4 +1,4 @@
-/* Guía USA · ubicación en tiempo real, "cómo llegar" a pie o en transporte público,
+/* JD & Santi On Tour · ubicación en tiempo real, "cómo llegar" a pie o en transporte público,
    navegación paso a paso, volver a casa y recomendaciones según dónde estén.
    - Estaciones y líneas: js/datos/transporte.js (OpenStreetMap). Funciona sin internet.
    - Rutas a pie calle por calle: routing.openstreetmap.de (con internet). Sin internet: dirección y distancia en línea recta.

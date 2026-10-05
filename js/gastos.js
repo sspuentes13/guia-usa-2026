@@ -1,4 +1,4 @@
-/* Guía USA · registro de gastos
+/* JD & Santi On Tour · registro de gastos
    Los gastos se guardan primero en este dispositivo (IndexedDB) y luego se sincronizan con una
    Google Sheet privada a través de Google Apps Script (ver apps-script/Codigo.gs).
    La URL del script y la clave NO están en el código: cada dispositivo las escribe una vez. */
@@ -92,11 +92,11 @@ function gxSync(){
  if(gx.syncP)return gx.syncP;
  var pend=gx.items.filter(function(x){return x._pend});
  gx.sync.estado='sync';gxPintarEstado();
- gx.syncP=gxApi({accion:'sync',clave:gx.conn.clave,gastos:pend.map(gxLimpio),config:gx.cfgPend?gx.cfg:null}).then(gxAplicar).then(function(){
+ gx.syncP=gxApi({accion:'sync',clave:gx.conn.clave,gastos:pend.map(gxLimpio),config:gx.cfgPend?gx.cfg:null,plan:typeof planParaSync==='function'?planParaSync():null}).then(gxAplicar).then(function(){
   gx.sync={estado:'ok',cuando:Date.now(),error:''};return gxKv('ultimaSync',gx.sync.cuando)
  }).catch(function(e){gx.sync.estado='error';gx.sync.error=e.message;console.warn('sync',e)}).then(function(){gx.syncP=null;gxPintarEstado();gxRefrescarSiSeguro()});
  return gx.syncP}
-function gxAplicar(j){var map={},cambios=[];gx.items.forEach(function(x){map[x.id]=x});
+function gxAplicar(j){if(j.plan&&typeof planRemoto==='function')planRemoto(j.plan);var map={},cambios=[];gx.items.forEach(function(x){map[x.id]=x});
  (j.gastos||[]).forEach(function(s){s=gxNormal(s);var l=map[s.id];
   if(!l||(!l._pend&&s.modificado!==l.modificado)||(l._pend&&s.modificado>=l.modificado)){s._pend=0;map[s.id]=s;cambios.push(s)}});
  gx.items=Object.keys(map).map(function(k){return map[k]});

@@ -1,4 +1,4 @@
-/* Guía USA · rutas del día ordenadas por cercanía y análisis de actividades.
+/* JD & Santi On Tour · rutas del día ordenadas por cercanía y análisis de actividades.
    Regla: lo que tiene hora fija (amanecer, atardecer, de noche, tour con reserva, show, tren)
    se queda en su momento; el resto se acomoda donde agregue menos camino. */
 
@@ -7,26 +7,7 @@ var RUTA_STOP = ['memorial', 'museo', 'museum', 'center', 'market', 'park', 'sta
 
 function sinTilde(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
 
-/* "Día 6 y 22", "Días 12, 16 y 21", "Días 10–11" → [6,22] … */
-function diasDe(p) {
-  var m = /D[ií]as?\s+([\d ,y–-]+)/.exec(p.d || ''), o = [];
-  if (!m) return o;
-  m[1].split(/[ ,y]+/).forEach(function (x) {
-    if (!x) return;
-    var r = x.split(/[–-]/);
-    if (r.length === 2) { for (var i = +r[0]; i <= +r[1]; i++) o.push(i); }
-    else if (+x) o.push(+x);
-  });
-  return o;
-}
-
-function diaDeN(n) {
-  for (var k = 0; k < DAYS.length; k++) {
-    var p = String(DAYS[k].n).split('–'), a = +p[0], z = +(p[1] || p[0]);
-    if (n >= a && n <= z) return DAYS[k];
-  }
-  return null;
-}
+/* diasDe(p) y diaDeN(n) están en js/plan.js: dependen del plan que eligieron */
 
 function horaNum(t) { var m = /(\d{1,2})[:.](\d{2})/.exec(t || ''); return m ? +m[1] + m[2] / 60 : null; }
 function horaTxt(h) { var hh = Math.floor(h), mm = Math.round((h - hh) * 60); return hh + ':' + ('0' + mm).slice(-2); }
@@ -54,6 +35,10 @@ function horaFija(p, n) {
     return null;
   }
   var r = (act && luz(a, at)) || luz(h, ht != null ? ht : at);           // primero lo que dice el plan del día
+  if (r && r.por === 'atardecer' && typeof solDia === 'function') {       // si el día cambió, el sol se pone a otra hora
+    var d = diaDeN(n), s = solDia(n, d ? d.city : 'dc').puesta / 60;
+    if (r.t > s + 5 / 60) r.t = s - 25 / 60;
+  }
   if (r) return r;
   if (/show|tour|tiquete|reserva/.test(h + ' ' + a)) { var t = at != null ? at : ht; if (t != null) return { t: t, por: /show/.test(h + a) ? 'show' : 'reserva' }; }
   if (act && at != null) return { t: at, por: 'plan', act: act[1] };                      // hora del itinerario (auditado)

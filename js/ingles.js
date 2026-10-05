@@ -1,4 +1,4 @@
-/* Guía USA · pestaña Inglés: frases con voz normal o lenta, práctica con micrófono,
+/* JD & Santi On Tour · pestaña Inglés: frases con voz normal o lenta, práctica con micrófono,
    tarjetas al azar, simulacro de migración y sonidos difíciles. */
 var ING = { cat: '', q: '', lento: false, hechas: {}, carta: null, ver: false };
 try { var _ig = JSON.parse(localStorage.getItem('guiaIngles') || '{}'); ING.hechas = _ig.hechas || {}; ING.lento = !!_ig.lento; } catch (e) {}

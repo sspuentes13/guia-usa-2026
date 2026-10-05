@@ -120,15 +120,17 @@ function atender_(req) {
   try {
     var hojas = prepararHojas_();
     if (req.accion === 'probar') {
-      return { ok: true, config: leerConfig_(hojas.config) };
+      return { ok: true, config: leerConfig_(hojas.config), plan: leerPlan_(hojas.config) };
     }
     if (req.accion === 'sync') {
       var config = leerConfig_(hojas.config);
       if (req.config && Number(req.config.modificado) >= Number(config.modificado || 0)) {
         config = guardarConfig_(hojas.config, req.config);
       }
+      var plan = leerPlan_(hojas.config);
+      if (req.plan && Number(req.plan.modificado) > Number(plan.modificado || 0)) plan = guardarPlan_(hojas.config, req.plan);
       var gastos = guardarGastos_(hojas.gastos, Array.isArray(req.gastos) ? req.gastos : []);
-      return { ok: true, gastos: gastos, config: config, ahora: Date.now() };
+      return { ok: true, gastos: gastos, config: config, plan: plan.orden ? plan : null, ahora: Date.now() };
     }
     return { ok: false, error: 'accion' };
   } finally {
@@ -153,6 +155,30 @@ function guardarConfig_(hoja, c) {
   };
   hoja.getRange(1, 2, 2, 1).setValues([[JSON.stringify(limpio)], [Number(c.modificado) || Date.now()]]);
   limpio.modificado = Number(c.modificado) || Date.now();
+  return limpio;
+}
+
+/* ---------- plan del viaje (orden de los días, lugares movidos, días hechos y reservas) ----------
+   Va en la pestaña Config, filas 3 y 4. El último cambio gana. */
+function leerPlan_(hoja) {
+  var v = hoja.getRange(3, 2, 2, 1).getValues();
+  var p = {};
+  try { p = JSON.parse(v[0][0] || '{}'); } catch (e) { p = {}; }
+  p.modificado = Number(v[1][0] || 0);
+  return p;
+}
+
+function guardarPlan_(hoja, p) {
+  var obj = function (x) { return x && typeof x === 'object' && !Array.isArray(x) ? x : {}; };
+  var limpio = {
+    orden: Array.isArray(p.orden) ? p.orden.map(String).slice(0, 40) : [],
+    mov: obj(p.mov), est: obj(p.est), res: obj(p.res)
+  };
+  var texto = JSON.stringify(limpio);
+  if (texto.length > 40000) return leerPlan_(hoja);
+  hoja.getRange(3, 1, 2, 2).setValues([['plan', texto], ['plan_modificado', Number(p.modificado) || Date.now()]]);
+  hoja.getRange('B3').setNumberFormat('@');
+  limpio.modificado = Number(p.modificado) || Date.now();
   return limpio;
 }
 

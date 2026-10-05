@@ -1,4 +1,4 @@
-/* Guía USA · mapa interactivo: ruta de cada día ordenada por cercanía, "cerca de mí",
+/* JD & Santi On Tour · mapa interactivo: ruta de cada día ordenada por cercanía, "cerca de mí",
    búsqueda de lugares y pantalla completa. Usa las funciones de rutas.js y app.js. */
 var dayFilter = null, routeMode = 'cerca', myLL = null, legLayer = null, meMarker = null;
 try { var _mr = JSON.parse(localStorage.getItem('guiaRuta') || '{}'); if (_mr.modo === 'plan' || _mr.modo === 'cerca') routeMode = _mr.modo; } catch (e) {}
@@ -82,6 +82,8 @@ function panelDia() {
   var lug = r.ids.filter(function (i) { return P[i].cat !== 'transporte'; }).length;
   var h = '<div class="pad"><div class="row spread"><span class="pill o">Día ' + n + (d ? ' · ' + esc(d.date) : '') + '</span><button class="btn sm" id="verTodo">✕ Todos los lugares</button></div>';
   h += '<h2>' + esc(d ? d.title : 'Día ' + n) + '</h2><p>' + esc(d ? d.short : '') + '</p>';
+  var avB = d ? avisosBloque(d.id, n) : [];
+  if (avB.length) h += '<div class="box avisos">' + avB.map(function (a) { return '<p>⚠️ ' + esc(a) + '</p>'; }).join('') + '</div>';
   h += '<div class="toggle2 full" role="group" aria-label="Orden"><button data-rm="cerca"' + (routeMode === 'cerca' ? ' class="on"' : '') + '>🧭 Más cercano</button><button data-rm="plan"' + (routeMode === 'plan' ? ' class="on"' : '') + '>📋 Orden del plan</button></div>';
   if (r.yaOptimo) h += '<div class="box g mt">✓ El orden del plan ya era el más cercano respetando los horarios.</div>';
   else if (routeMode === 'cerca') h += '<div class="box o mt">🧭 Ordenado por cercanía' + (r.ahorroPie > 0.05 ? ': caminan <b>' + kmF(r.ahorroPie) + ' menos</b>' : '') + '. Lo que tiene ⏰ hora fija se respeta.</div>';
@@ -99,7 +101,7 @@ function panelDia() {
     var p = P[i], reg = R.orden.indexOf(i) < k, f = reg ? null : horaFija(p, n);
     h += '<li class="parada"><button data-i="' + i + '"><span class="num' + (p.core ? '' : ' x') + '">' + (reg ? '↩' : numero(i)) + '</span><span><b>' + (reg ? 'Regreso · ' : '') + esc(p.n) + '</b><small>' + (cr[i] && !reg ? '<span class="hora">🕘 ' + hhmm(cr[i].ini) + (cr[i].fin > cr[i].ini ? '–' + hhmm(cr[i].fin) : '') + '</span> ' : '') + (f && /amanecer|atardecer|noche|show|reserva/.test(f.por) ? '⏰ ' + esc(f.por) + ' · ' : '') + esc(p.h) + (p.c !== cur ? ' · ' + esc(CITYNAME[p.c]) : '') + '</small>' + (cr[i] && !reg && cr[i].espera >= 10 ? '<small>⏳ Llegan ' + hhmm(cr[i].llega) + ', esperan ' + durTxt(cr[i].espera) + '</small>' : '') + (cr[i] && !reg ? cr[i].avisos.map(function (a) { return '<small class="av">⚠️ ' + esc(a) + '</small>'; }).join('') : '') + '</span><span class="price">' + (reg ? '' : p.e ? fmt(p.e, 'USD') : 'Gratis') + '</span></button></li>';
   });
-  h += '</ol><div class="row mt"><a class="btn pri" href="' + gmRuta(R.orden) + '" target="_blank" rel="noopener">🗺️ Ruta en Google Maps ↗</a><button class="btn" id="verDia">🗓️ Ver el día completo</button></div>';
+  h += '</ol><div class="row mt"><a class="btn pri" href="' + gmRuta(R.orden) + '" target="_blank" rel="noopener">🗺️ Ruta en Google Maps ↗</a><button class="btn" id="verDia">🗓️ Ver el día completo</button>' + (d && !d.fijo ? '<button class="btn" id="cambiarBloque">🔀 Cambiar de día</button>' : '') + '</div>';
   if (R.orden.length > 11) h += '<p class="gnota">Google Maps abre hasta 9 paradas intermedias; el resto síganlo aquí.</p>';
   h += '</div>';
   var pan = document.getElementById('panel'); pan.innerHTML = h; pan.scrollTop = 0;
@@ -107,6 +109,7 @@ function panelDia() {
   [].forEach.call(pan.querySelectorAll('.parada button'), function (b) { b.onclick = function () { showPlace(+b.dataset.i); }; });
   document.getElementById('verTodo').onclick = function () { setDay(null); };
   document.getElementById('verDia').onclick = function () { abrirDia(n); };
+  var cb = document.getElementById('cambiarBloque'); if (cb) cb.onclick = function () { elegirDiaBloque(d.id); };
   trListo().then(function () { [].forEach.call(pan.querySelectorAll('.tramo[data-de]'), function (li) { li.innerHTML = textoTramo(+li.dataset.de, +li.dataset.a); }); });
 }
 
@@ -131,7 +134,7 @@ function verRutaDia(n) {
 /* Lugar en lista */
 function itemLugar(i, extra) {
   var p = P[i], fr = FK[p.n] !== undefined ? FREE[FK[p.n]] : null;
-  return '<li><button data-i="' + i + '"><span class="num' + (p.snow ? ' snow' : '') + (p.core ? '' : ' x') + '">' + (p.snow ? '❄' : (p.c === cur ? numero(i) : emo(p))) + '</span><span><b>' + esc(p.n) + '</b><small>' + (extra ? extra + ' · ' : '') + esc(p.d) + ' · ' + esc(p.h) + (fr && fr.st === 'res' ? ' · 🎟️ reservar' : '') + '</small></span><span class="price">' + (p.e ? fmt(p.e, 'USD') : 'Gratis') + (added[i] ? ' ✓' : '') + (typeof VIS !== 'undefined' && VIS[i] ? ' <span class=\"pill g\">visitado</span>' : '') + '</span></button></li>';
+  return '<li><button data-i="' + i + '"><span class="num' + (p.snow ? ' snow' : '') + (p.core ? '' : ' x') + '">' + (p.snow ? '❄' : (p.c === cur ? numero(i) : emo(p))) + '</span><span><b>' + esc(p.n) + '</b><small>' + (extra ? extra + ' · ' : '') + esc(etiquetaLugar(p)) + ' · ' + esc(p.h) + (fr && fr.st === 'res' ? ' · 🎟️ reservar' : '') + '</small></span><span class="price">' + (p.e ? fmt(p.e, 'USD') : 'Gratis') + (added[i] ? ' ✓' : '') + (typeof VIS !== 'undefined' && VIS[i] ? ' <span class=\"pill g\">visitado</span>' : '') + '</span></button></li>';
 }
 function bindLista(cont) { [].forEach.call(cont.querySelectorAll('button[data-i]'), function (b) { b.onclick = function () { showPlace(+b.dataset.i); }; }); }
 
