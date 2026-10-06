@@ -17,8 +17,8 @@ var PREPARAR = [
     { id: 'pesar', t: 'Pesar las maletas de regreso (23 kg)', cuando: 'Sáb 21 nov', fecha: '2026-11-21T18:00:00-05:00', d: 'Una balanza de mano cuesta ~US$10 en CVS o Target. Lo pesado va en la maleta de bodega.' }
   ] },
   { g: '🩺 Salud y seguro', items: [
-    { id: 'seguro', t: 'Comprar el seguro de viaje', cuando: 'Antes del 20 oct', fecha: '2026-10-20T19:00:00-05:00', d: 'Recomendado: SURA Plan Total (US$75.000 de cobertura médica en EE. UU.), en sura.co. Seguros Éxito vende el mismo seguro de SURA: cómprenlo donde salga más barato. Pongan las fechas de los vuelos internacionales (31 oct – 23 nov). No tomen el plan Esencial (US$35.000): en EE. UU. una sola urgencia lo puede agotar. Guarden el número de asistencia en 🆘.', u: 'https://www.sura.co/seguros/personas/salud/viajes/digital' },
-    { id: 'tarjetaseguro', t: 'Revisar si su tarjeta de crédito trae seguro', d: 'Las Visa Signature/Infinite y Mastercard Black suelen cubrir hasta US$150.000 si pagaron el 100 % de los tiquetes internacionales con esa tarjeta. Pidan el certificado (visa.com/benefitsportal) y que el banco confirme por escrito. Sirve como respaldo: suele ser por reembolso.' },
+    { id: 'tarjetaseguro', t: 'Primero: ¿su tarjeta de crédito trae seguro gratis?', cuando: 'Antes del 15 oct', fecha: '2026-10-15T18:00:00-05:00', d: 'Tarjetas de crédito Bancolombia (Clásica, Oro, Platinum; no E-card ni Ideal): asistencia AXA gratis de US$40.000–65.000, sin deducible. Pidan el certificado al 01 8000 954000 o por WhatsApp al 316 434 8887, y pregunten si exigen haber pagado el tiquete con la tarjeta. Cubre al titular (y cónyuge): si no son pareja, cada uno necesita su tarjeta. Visa Platinum/Signature de otros bancos: hay que haber pagado el tiquete con la tarjeta (certificado en visa.com/portalbeneficios). La tarjeta Nu NO trae seguro médico.', u: 'https://www.bancolombia.com/centro-de-ayuda/preguntas-frecuentes/que-ofrece-axa-siempre-protegido' },
+    { id: 'seguro', t: 'Si no tienen tarjeta que cubra: seguro barato', cuando: 'Antes del 20 oct', fecha: '2026-10-20T19:00:00-05:00', d: 'Atlas America (WorldTrips) de US$100.000 con deducible de US$250: ~US$49 por persona (~COP 313.000 los dos, para 28 años, cotizado el 6 oct). Más barato: Patriot America Plus US$100.000 (~COP 279.000 los dos) o Atlas US$50.000 (~COP 250.000). Fechas: 31 oct – 23 nov. Eviten los planes de "beneficio fijo" y los de menos de US$50.000. Guarden el número de asistencia en 🆘.', u: 'https://www.americanvisitorinsurance.com/world-trips/atlas-america-insurance.asp' },
     { id: 'meds', t: 'Medicamentos con fórmula y botiquín', d: 'Lo que tomen siempre, en su caja original y con la fórmula. Botiquín básico: acetaminofén, antialérgico, curitas, sales de rehidratación. En CVS y Walgreens se consiguen sin fórmula.' },
     { id: 'vacuna', t: 'Vacuna de la influenza (recomendable)', cuando: '2 semanas antes', fecha: '2026-10-16T18:00:00-05:00', d: 'Noviembre es temporada de gripa en EE. UU. Consulten con su EPS o farmacia: tarda unas 2 semanas en proteger.' }
   ] },
@@ -61,7 +61,8 @@ var EMERGENCIA = {
       '3. La visa de EE. UU. no se puede renovar dentro de EE. UU. El I-94 sigue sirviendo para salir. Después se pide una visa nueva en Bogotá.'
     ] },
     { t: '🤒 Si se enferman', p: [
-      '1. Llamen o escriban PRIMERO a la asistencia del seguro: los dirige y autoriza. Lo que paguen por su cuenta sin autorización puede no cubrirse (SURA: +57 315 275 7888 o +1 833 740 2955 desde EE. UU.; confirmen el número en su póliza).',
+      '1. Llamen o escriban PRIMERO a la asistencia del seguro: los dirige y autoriza. Lo que paguen por su cuenta sin autorización puede no cubrirse. El número está en el certificado o la póliza: guárdenlo arriba en este 🆘.',
+      'Con Atlas America: busquen primero un hospital o urgent care de la red UnitedHealthcare (sale más barato) y paguen el deducible de US$250.',
       '2. Algo leve: la telemedicina del seguro o la farmacia (CVS Clarendon, 3141 Wilson Blvd, ~7:00–24:00).',
       '3. Fiebre, torcedura, puntos: urgent care (~US$150–300). Cerca: PMA Immediate Care Clarendon, 3301 Wilson Blvd, 703-522-1860 (lun–vie 8–19, fin de semana 9–14).',
       '4. Algo grave (pecho, respiración, accidente): 911 o sala de urgencias (ER), y avisen al seguro en las 36 horas siguientes.',
@@ -76,13 +77,14 @@ var EMERGENCIA = {
 };
 
 var GUIA = [
-  { e: '🩺', t: 'Seguro médico: ¿SURA o Éxito?', u: 'https://www.sura.co/seguros/personas/salud/viajes/digital', ut: 'Cotizar en SURA', p: [
-    'Seguros Éxito vende el seguro de SURA: misma aseguradora y misma asistencia (Global Excel). Elijan por precio o por Puntos Colombia.',
-    'Recomendado: SURA Plan Total, con US$75.000 de cobertura médica, equipaje y documentos robados. Plan Plus: US$50.000. Esencial (US$35.000): poco para EE. UU.',
-    'Precio estimado para los dos por ~24 días: COP 500.000–800.000. Coticen con las fechas exactas, porque el precio es en dólares a la tasa del día.',
-    'Si alguno tiene póliza de salud SURA (no la EPS), ya trae US$50.000–60.000 en el exterior y se suma al seguro de viaje.',
-    'Patinar en una pista pública no está excluido. Eviten competencias o carreras.',
-    'COVID: se cubre como cualquier enfermedad, pero la prueba no.'
+  { e: '🩺', t: 'Seguro médico barato', u: 'https://www.americanvisitorinsurance.com/world-trips/atlas-america-insurance.asp', ut: 'Cotizar Atlas America', p: [
+    '1) Gratis: si alguno tiene tarjeta de crédito Bancolombia (Clásica, Oro o Platinum), trae asistencia AXA de US$40.000–65.000 sin deducible. Pidan el certificado al 01 8000 954000 y confirmen las condiciones. Cubre al titular y a su cónyuge: si no son pareja, cada uno necesita su tarjeta.',
+    '2) Barato: Atlas America (WorldTrips), US$100.000 con deducible de US$250. Cuesta ~COP 313.000 los dos por 24 días (cotizado el 6 oct, para 28 años; a los 30–39 sube a ~COP 400.000). Cubre COVID como cualquier enfermedad y tiene red de hospitales UnitedHealthcare.',
+    'Aún más barato: Patriot America Plus US$100.000 (~COP 279.000 los dos) o Atlas US$50.000 (~COP 250.000). Debajo de US$50.000 no vale la pena en EE. UU.',
+    'El deducible son los primeros US$250 que pagan ustedes en cada atención. Los trámites son en inglés y a veces toca pagar y pedir reembolso.',
+    'Eviten los planes de "beneficio fijo" (Visitors Care, Visit USA Budget): pagan un monto fijo, no la cuenta real del hospital.',
+    'Más caros, sin deducible y en español: Universal Assistance (~COP 1,1 millones los dos, con 25 % de descuento en octubre), Assist Card (~COP 1,6 millones) y SURA o Seguros Éxito, que venden el mismo seguro.',
+    'Patinar en una pista pública no está excluido. El hockey sobre hielo sí.'
   ] },
   { e: '💵', t: 'Impuestos y propinas', p: [
     'Los precios NO incluyen el impuesto: se suma en la caja.',
