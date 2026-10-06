@@ -40,7 +40,7 @@ var RESERVAS = [
     segunda: 'Los boletos del día siguiente salen a las 17:00 (hora del este) del día anterior.', noVan: 'El US$1 no se devuelve.', cambio: 'Se puede modificar hasta la medianoche (hora del este) del día anterior.', plata: 'US$1 por persona' },
   { id: 'marc', n: 'Tren MARC a Baltimore', lugar: 'Monumento a Washington', horaTren: 1, sale: { tipo: 'nada' }, u: 'https://www.mta.maryland.gov/',
     que: 'No lo compren antes: el tiquete no tiene fecha, vale 6 meses y no se devuelve.', porque: 'Sábado: el Walters y el Monumento abren (lunes y martes cierran).',
-    segunda: 'Cómprenlo ese día en la app CharmPass o en la máquina de Union Station (~US$8).', noVan: 'Si no lo compraron antes, no pierden nada.', cambio: 'No hace falta: sirve cualquier día.', plata: 'Nada si compran ese día' }
+    segunda: 'Cómprenlo ese día en la app CharmPass o en la máquina de Union Station (US$9).', noVan: 'Si no lo compraron antes, no pierden nada.', cambio: 'No hace falta: sirve cualquier día.', plata: 'Nada si compran ese día' }
 ];
 function reservasDeBloque(id) { return RESERVAS.filter(function (r) { var i = idxLugar(r.lugar); return i > -1 && bloquesDe(P[i]).indexOf(id) > -1; }); }
 function idxLugar(n) { for (var k = 0; k < P.length; k++) if (P[k].n === n) return k; return -1; }

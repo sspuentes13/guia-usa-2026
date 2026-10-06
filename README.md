@@ -71,6 +71,26 @@ Otros planes:
 
 Ojo: el edificio principal del Kennedy Center sigue cerrado. El show gratis del plan es en The REACH. Las funciones de noche en Broadway chocan con el tren de las 19:52.
 
+## 🧳 Antes de viajar, guía práctica, 🆘 y calendario
+
+- **🧳 Antes de viajar** (Inicio): 21 pendientes con su explicación: documentos, Avianca, seguro, plata, eSIM, maleta y aduana. Los ✓ se comparten por la hoja de Gastos.
+- **🧭 Guía práctica** (Inicio), verificada el 6 oct 2026:
+  - **Seguro:** Seguros Éxito vende el mismo seguro de SURA. Se recomienda el Plan Total (US$75.000) y no el Esencial.
+  - **Impuestos y propinas:** Arlington 11 % en restaurantes, DC 10 %, NY 8,875 % (la ropa de menos de US$110 no paga), Delaware 0 %.
+  - **Transporte:** en el metro de DC se paga acercando la tarjeta o el celular; OMNY cuesta US$3 y el MARC US$9.
+  - **eSIM:** T-Mobile U.S. Pass, US$50 por 30 días.
+  - **Aduana DIAN:** US$2.000 por persona sin pagar.
+  - **Escala en Bogotá, Black Friday y clima.**
+- **🆘** (arriba, siempre visible y sin internet): llama con un toque al 911, a la Cancillería (1-888-764-3326) y al Consulado. También explica qué hacer si pierden el pasaporte o se enferman. El número del seguro y la dirección donde se quedan se guardan **solo en el teléfono**.
+- **📅 Calendario:** exporta a Google Calendar o al iPhone, con alarmas:
+  - cuándo salen las reservas (por ejemplo, el Washington Monument a las 10:00 hora del este);
+  - los check-in y los pendientes con fecha;
+  - las actividades del plan.
+
+  Si cambian el plan, vuelvan a exportar.
+- **Presupuesto:** las comidas de afuera suman ~15 % de impuestos y propina.
+- **Partidos baratos** (en Planes extra): Wizards (NBA) desde ~US$5–15, con fecha sugerida el lun 16 nov, y Capitals (NHL) desde ~US$29.
+
 ## 🎟️ Reservas
 
 En Inicio, **🎟️ Reservas según su plan** calcula cuándo salen los pases **para el día en que está cada actividad**, con hora del este y hora de Colombia. Por ejemplo, el Washington Monument del vie 6 nov sale el mié 7 oct a las 10:00 (9:00 en Colombia). Cada reserva explica:

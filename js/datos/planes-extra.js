@@ -152,5 +152,30 @@ var PLANES_EXTRA = [
   "por": "El único musical de Broadway con función el jueves en la tarde, a precio de mochilero.",
   "u": "https://www.broadway.com/shows/outsiders/",
   "conf": "precio y hora de la matiné"
+ },
+ {
+  "tipo": "deporte",
+  "lugar": "Wizards (NBA) en el Capital One Arena",
+  "t": "Partido de la NBA: Washington Wizards",
+  "precio": "Desde ~US$5–15",
+  "idioma": "Show",
+  "cuando": "Mié 4, jue 12, dom 15 y lun 16 nov a las 19:00",
+  "como": "Boletas de reventa en Gametime, TickPick o SeatGeek; el mismo día suelen bajar.",
+  "por": "Ver NBA en vivo por menos de lo que cuesta un almuerzo.",
+  "u": "https://www.espn.com/nba/team/schedule/_/name/wsh",
+  "sugerido": "libre",
+  "conf": "horas de los partidos"
+ },
+ {
+  "tipo": "deporte",
+  "lugar": "Capitals (NHL) en el Capital One Arena",
+  "t": "Hockey de la NHL: Washington Capitals",
+  "precio": "Desde ~US$29–74",
+  "idioma": "Show",
+  "cuando": "Mar 3 nov 19:00 (o dom 1, sáb 7, sáb 14, jue 19)",
+  "como": "Reventa en el nivel 400; miren precios unos días antes.",
+  "por": "El deporte que más se vive en DC, con el arena lleno de rojo.",
+  "u": "https://www.nhl.com/capitals/news/capitals-announce-2026-27-regular-season-schedule",
+  "sugerido": "naturaleza"
  }
 ];

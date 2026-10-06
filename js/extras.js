@@ -2,7 +2,7 @@
    Cada plan es un lugar del mapa (P): se agrega a un día con el mismo selector del plan
    y entra a la ruta, al cronograma, a los avisos y al presupuesto de ese día. */
 
-var TIPOS_EXTRA = { misa: '⛪ Misa del domingo', hielo: '⛸️ Patinar en hielo', teatro: '🎭 Teatro y shows baratos' };
+var TIPOS_EXTRA = { misa: '⛪ Misa del domingo', hielo: '⛸️ Patinar en hielo', teatro: '🎭 Teatro y shows baratos', deporte: '🏀 Partidos baratos' };
 
 function idxExtra(x) { return idxLugar(x.lugar); }
 /* Días en que se puede hacer (según funciones, temporada o domingos) */

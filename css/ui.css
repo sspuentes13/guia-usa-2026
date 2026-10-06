@@ -428,7 +428,7 @@ small.av{color:#C53030}
 }
 
 .reservas small b{display:inline;font-size:inherit}
-@media (max-width:600px){.topbtn{display:none}}
+@media (max-width:600px){#pcBtn{display:none}.sosbtn{width:34px;height:34px;font-size:15px}}
 @media (min-width:1100px) and (min-height:541px){#v-inicio>#paraTi{grid-column:1/-1}ul.reservas{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* ---------- planes extra ---------- */
@@ -445,3 +445,37 @@ small.av{color:#C53030}
 .extra-p{display:flex;flex-wrap:wrap;gap:4px}
 .extra p{margin:0;font-size:14px;line-height:1.45}
 .extra .row{margin-top:4px}
+
+/* ---------- antes de viajar, guía práctica y emergencia ---------- */
+.sosbtn{background:#FBE4E4;margin-left:auto}
+.sosbtn+.topbtn{margin-left:0}
+.prog{height:8px;border-radius:99px;background:var(--sky-2);overflow:hidden;margin:6px 0 4px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),var(--green));border-radius:99px;transition:width .3s}
+.prepg>summary{cursor:pointer;font-weight:800;font-size:13px;color:var(--orange-deep);padding:6px 0}
+.prepg .gh4 small{font-weight:700;color:var(--ink-2)}
+ul.prep{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:6px}
+.prep li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start;border:2px solid var(--sky-2);border-radius:14px;padding:8px 10px}
+.prep li.ok{opacity:.6}.prep li.ok .rchk{background:var(--green)}
+.prep li.urge{border-color:#F5B5B5;background:#FFF5F5}
+.prep summary{cursor:pointer;list-style:none}.prep summary::-webkit-details-marker{display:none}
+.prep summary b{display:block;font-size:14px}.prep summary small{display:block;font-size:12px;color:var(--ink-2)}
+.prep p{margin:6px 0;font-size:13px;line-height:1.5;color:var(--ink-2)}
+.prep a{font-size:12px;font-weight:800}
+.guia{display:grid;gap:6px}
+.guia details{background:var(--sky-2);border-radius:14px;padding:10px 12px}
+.guia summary{cursor:pointer;display:flex;gap:10px;align-items:center;list-style:none}
+.guia summary::-webkit-details-marker{display:none}
+.guia summary span{font-size:20px}.guia summary b{font-size:15px}
+.guia ul{margin:8px 0;padding-left:18px;display:grid;gap:5px;font-size:14px;line-height:1.5}
+.sos{display:grid;gap:10px}
+.sosbig{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.sos a.btn{flex-direction:column;align-items:flex-start;border-radius:16px;padding:10px 14px;gap:0}
+.sos a.btn b{font-size:18px}.sos a.btn small{font-size:12px;font-weight:600;line-height:1.3}
+.btn.sosr{background:#C53030;color:#fff}
+.sosf{display:grid;gap:6px}
+.sosf input{font:inherit;font-size:15px;border:2px solid var(--sky-2);border-radius:12px;padding:9px 11px;width:100%;box-sizing:border-box}
+.sosdir{font-size:20px;font-weight:800;margin:4px 0;color:var(--ink)}
+.sos details summary{cursor:pointer}
+.sos ul{margin:6px 0;padding-left:18px;font-size:14px;line-height:1.5;display:grid;gap:4px}
+@media (min-width:1100px) and (min-height:541px){#v-inicio>#prepCard{grid-column:1}#v-inicio>#guiaCard{grid-column:2}}
+.prep .rchk,.reservas .rchk{width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;padding:0;align-self:start;margin-top:2px}

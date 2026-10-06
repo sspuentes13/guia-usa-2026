@@ -158,7 +158,7 @@ function guardarConfig_(hoja, c) {
   return limpio;
 }
 
-/* ---------- plan del viaje (orden de los días, lugares movidos, días hechos y reservas) ----------
+/* ---------- plan del viaje (orden de los días, lugares movidos, días hechos, reservas y lista de preparación) ----------
    Va en la pestaña Config, filas 3 y 4. El último cambio gana. */
 function leerPlan_(hoja) {
   var v = hoja.getRange(3, 2, 2, 1).getValues();
@@ -172,7 +172,7 @@ function guardarPlan_(hoja, p) {
   var obj = function (x) { return x && typeof x === 'object' && !Array.isArray(x) ? x : {}; };
   var limpio = {
     orden: Array.isArray(p.orden) ? p.orden.map(String).slice(0, 40) : [],
-    mov: obj(p.mov), est: obj(p.est), res: obj(p.res)
+    mov: obj(p.mov), est: obj(p.est), res: obj(p.res), chk: obj(p.chk)
   };
   var texto = JSON.stringify(limpio);
   if (texto.length > 40000) return leerPlan_(hoja);

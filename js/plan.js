@@ -20,7 +20,7 @@ function fechaIsoTxt(iso) { var d = fechaDeIso(iso); return SEMANA[d.getDay()] +
 function diaDeIso(iso) { return Math.round((fechaDeIso(iso) - fechaDia(1)) / 864e5) + 1; }
 
 /* ---------- estado ---------- */
-function planVacio() { return { orden: PLAN_BASE.slice(), mov: {}, est: {}, res: {}, modificado: 0, pend: 0 }; }
+function planVacio() { return { orden: PLAN_BASE.slice(), mov: {}, est: {}, res: {}, chk: {}, modificado: 0, pend: 0 }; }
 function planOrdenValido(o) {
   if (!Array.isArray(o) || o.length !== PLAN_BASE.length) return false;
   var vistos = {};
@@ -34,7 +34,7 @@ function planOrdenValido(o) {
 function planNormal(x) {
   var p = planVacio();
   if (x && planOrdenValido(x.orden)) p.orden = x.orden.slice();
-  ['mov', 'est', 'res'].forEach(function (k) { if (x && x[k] && typeof x[k] === 'object') p[k] = x[k]; });
+  ['mov', 'est', 'res', 'chk'].forEach(function (k) { if (x && x[k] && typeof x[k] === 'object') p[k] = x[k]; });
   p.modificado = x && +x.modificado || 0; p.pend = x && x.pend ? 1 : 0;
   return p;
 }
@@ -73,12 +73,12 @@ function planRefrescar() {
 }
 
 /* ---------- sincronización con la hoja de Gastos (la usa js/gastos.js) ---------- */
-function planParaSync() { return MIPLAN.pend ? { orden: MIPLAN.orden, mov: MIPLAN.mov, est: MIPLAN.est, res: MIPLAN.res, modificado: MIPLAN.modificado } : null; }
+function planParaSync() { return MIPLAN.pend ? { orden: MIPLAN.orden, mov: MIPLAN.mov, est: MIPLAN.est, res: MIPLAN.res, chk: MIPLAN.chk, modificado: MIPLAN.modificado } : null; }
 function planRemoto(x) {
   if (!x || !planOrdenValido(x.orden)) return;
   var m = +x.modificado || 0;
   if (m < MIPLAN.modificado) return;                       // lo de este teléfono es más nuevo: se sube en la próxima sincronización
-  var cambio = m > MIPLAN.modificado && JSON.stringify([x.orden, x.mov, x.est, x.res]) !== JSON.stringify([MIPLAN.orden, MIPLAN.mov, MIPLAN.est, MIPLAN.res]);
+  var cambio = m > MIPLAN.modificado && JSON.stringify([x.orden, x.mov, x.est, x.res, x.chk || {}]) !== JSON.stringify([MIPLAN.orden, MIPLAN.mov, MIPLAN.est, MIPLAN.res, MIPLAN.chk]);
   MIPLAN = planNormal(x); MIPLAN.pend = 0;
   planAplicar(); planGuardar(true);
   if (cambio) { planRefrescar(); toast('🔄 El plan se actualizó desde el otro teléfono'); }
@@ -145,7 +145,7 @@ function planEstado(id, est) {
   if (!est || MIPLAN.est[id] === est) delete MIPLAN.est[id]; else MIPLAN.est[id] = est;
   planCambio(MIPLAN.est[id] === 'hecho' ? '✓ ¡Día hecho!' : MIPLAN.est[id] === 'saltado' ? 'Quedó en Pendientes: pueden pasarlo a otro día' : 'Estado quitado');
 }
-function planReiniciar() { var res = MIPLAN.res; MIPLAN = planVacio(); MIPLAN.res = res; planCambio('↺ Volvieron al plan recomendado'); }
+function planReiniciar() { var res = MIPLAN.res, chk = MIPLAN.chk; MIPLAN = planVacio(); MIPLAN.res = res; MIPLAN.chk = chk; planCambio('↺ Volvieron al plan recomendado'); }
 
 /* Lo que quedó sin hacer: días marcados "no fuimos" y lugares quitados de su día */
 function pendientes() {
@@ -183,6 +183,7 @@ var NOTAS_FECHA = {
 function notasDia(n) {
   var o = [], d = diaDeN(n); if (!d) return o;
   if (NOTAS_FECHA[isoDia(n)]) o.push(NOTAS_FECHA[isoDia(n)]);
+  (d.notas || []).forEach(function (x) { o.push(x); });
   var sig = diaDeN(n + 1);
   if (sig && BLOQUES[sig.id].viaje) {
     var h0 = null; for (var k = 0; k < sig.acts.length; k++) { h0 = horaNum(sig.acts[k][0]); if (h0 != null) break; }
