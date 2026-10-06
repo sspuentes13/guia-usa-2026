@@ -1,0 +1,156 @@
+/* Planes extra verificados el 6 oct 2026 (webs oficiales y prensa local). lugar = nombre en P. sugerido = bloque donde encaja mejor. */
+var PLANES_EXTRA = [
+ {
+  "tipo": "misa",
+  "lugar": "Basílica del Santuario Nacional",
+  "t": "Misa en español en la Basílica",
+  "precio": "Gratis",
+  "idioma": "Español",
+  "cuando": "Domingos 14:30 (en el plan: dom 8 nov). Lleguen 13:30 para ver las capillas.",
+  "como": "Confesión en español 13:15–14:15. Si prefieren coro y órgano: misa solemne a las 12:00.",
+  "por": "La iglesia católica más grande de Norteamérica: un lugar muy especial para orar.",
+  "u": "https://www.nationalshrine.org/mass-confession-times/",
+  "sugerido": "descanso"
+ },
+ {
+  "tipo": "misa",
+  "lugar": "Iglesia de St. Charles Borromeo",
+  "t": "Misa en español en Clarendon",
+  "precio": "Gratis",
+  "idioma": "Español",
+  "cuando": "Domingos 12:00",
+  "como": "",
+  "por": "A 5 minutos del Metro Clarendon: para los otros domingos (1, 15 y 22 nov).",
+  "u": "https://www.stcharleschurch.org/",
+  "sugerido": "domingo"
+ },
+ {
+  "tipo": "misa",
+  "lugar": "Catedral de San Mateo",
+  "t": "Misa en español en la Catedral",
+  "precio": "Gratis",
+  "idioma": "Español",
+  "cuando": "Domingos 13:00",
+  "como": "",
+  "por": "La catedral de Washington, fácil por Metro (Dupont Circle o Farragut North).",
+  "u": "https://www.stmatthewscathedral.org/schedule-worship-services"
+ },
+ {
+  "tipo": "hielo",
+  "lugar": "Pista de hielo de Bryant Park",
+  "t": "Patinar gratis en Bryant Park (NY)",
+  "precio": "Gratis · patines desde ~US$19",
+  "cuando": "En el plan: jue 12 nov, turno de las 10:00, al bajar del tren (hielo 10:20–11:10)",
+  "como": "Reserven el turno gratis en bryantpark.org apenas confirmen el viaje a NY. Si llevan patines propios, no pagan nada.",
+  "por": "Queda detrás de la Biblioteca: se patina en Manhattan sin salirse de la ruta.",
+  "u": "https://bryantpark.org/activities/the-rink",
+  "sugerido": "ny"
+ },
+ {
+  "tipo": "hielo",
+  "lugar": "Wollman Rink",
+  "t": "Wollman Rink en Central Park (NY)",
+  "precio": "US$16–40 + patines US$12",
+  "cuando": "Jueves 10:00–21:00",
+  "como": "Tiquete con fecha en wollmanrinknyc.com (lo más barato: horario valle).",
+  "por": "La alternativa si prefieren patinar en Central Park en vez de Bryant Park.",
+  "u": "https://wollmanrinknyc.com/"
+ },
+ {
+  "tipo": "hielo",
+  "lugar": "Pista de Rockefeller Center",
+  "t": "The Rink at Rockefeller Center (NY)",
+  "precio": "Desde US$22 + patines US$12",
+  "cuando": "Todos los días; turnos de 60 min",
+  "como": "Precio dinámico: miren temprano en la mañana entre semana.",
+  "por": "La más famosa, pero la más cara: solo si es un sueño.",
+  "u": "https://www.rockefellercenter.com/tickets/the-rink-at-rockefeller-center",
+  "conf": "precio exacto del 12 nov"
+ },
+ {
+  "tipo": "hielo",
+  "lugar": "Pista de hielo Westpost",
+  "t": "Pista de Pentagon City (Arlington)",
+  "precio": "US$12–14 + patines US$6",
+  "cuando": "Abierta todo noviembre: tardes entre semana, desde las 10:00 los fines de semana",
+  "como": "Compren en línea (US$2 menos).",
+  "por": "Barata, al aire libre y junto a las compras finales del sáb 21.",
+  "u": "https://westpostva.com/experiences/",
+  "sugerido": "pentagon",
+  "conf": "precios 2026"
+ },
+ {
+  "tipo": "hielo",
+  "lugar": "MedStar Capitals Iceplex",
+  "t": "Pista techada de los Capitals (Ballston)",
+  "precio": "US$9 + patines US$5",
+  "cuando": "Patinaje público según el calendario semanal",
+  "como": "Inscríbanse antes en línea (no se devuelve).",
+  "por": "La más barata y sirve aunque llueva o haga mucho frío.",
+  "u": "https://www.medstarcapitalsiceplex.com/recreation",
+  "sugerido": "libre",
+  "conf": "horario de la semana"
+ },
+ {
+  "tipo": "teatro",
+  "lugar": "GALA Hispanic Theatre",
+  "t": "Flamenco en GALA (en el plan: dom 15 nov)",
+  "precio": "US$25",
+  "idioma": "Baile y música",
+  "cuando": "«Entre dos sombras» dom 15 nov 14:00. Otras: 5–8 y 20–22 nov (jue–sáb 20:00, dom 14:00)",
+  "como": "Balcón a US$25 en galatheatre.org. Gratis: «Flamenco en familia» el sáb 14.",
+  "por": "Flamenco en vivo en el teatro latino más importante de DC.",
+  "u": "https://www.galatheatre.org/post/xxii-fuego-flamenco-festival",
+  "sugerido": "domingo"
+ },
+ {
+  "tipo": "teatro",
+  "lugar": "Concierto gratis de Edmar Castañeda",
+  "t": "Arpa colombiana gratis en la Library of Congress (en el plan: jue 5 nov)",
+  "precio": "Gratis",
+  "idioma": "Música",
+  "cuando": "Jue 5 nov 20:00 (otros conciertos gratis: 6, 9, 13 y 19 nov)",
+  "como": "Boletas gratis en Eventbrite (salen a las 10:00 hora del este) o la fila RUSH 2 h antes.",
+  "por": "Un colombiano tocando arpa llanera con jazz en la biblioteca más grande del mundo.",
+  "u": "https://www.loc.gov/events/concerts-from-the-library-of-congress/concerts/upcoming-concerts/",
+  "sugerido": "capitolio",
+  "conf": "fecha de salida de las boletas"
+ },
+ {
+  "tipo": "teatro",
+  "lugar": "Teatro Ford",
+  "t": "Teatro Ford: donde mataron a Lincoln",
+  "precio": "Gratis",
+  "idioma": "Inglés (museo)",
+  "cuando": "Todos los días 9:00–17:00 (última entrada 16:00)",
+  "como": "Boletos gratis en taquilla desde las 8:30. «A Christmas Carol» desde el 19 nov (preestreno gratis por lotería).",
+  "por": "Historia pura: el palco, el museo y la casa donde murió Lincoln.",
+  "u": "https://fords.org/performance/a-christmas-carol-2026/",
+  "sugerido": "ultimo"
+ },
+ {
+  "tipo": "teatro",
+  "lugar": "Synetic Theater · Sleepy Hollow",
+  "t": "Teatro sin palabras: Sleepy Hollow (Arlington)",
+  "precio": "US$30 (menores de 35)",
+  "idioma": "Sin palabras",
+  "cuando": "6–22 nov; descuento los jueves en la noche y la matiné del sábado 13:30",
+  "como": "Compren en synetictheater.org con el descuento para menores de 35.",
+  "por": "Teatro físico espectacular, sin barrera de idioma.",
+  "u": "https://synetictheater.org/seasons/2026-2027/",
+  "sugerido": "pentagon",
+  "conf": "horas exactas y si el descuento aplica a esta obra"
+ },
+ {
+  "tipo": "teatro",
+  "lugar": "Broadway · The Outsiders",
+  "t": "Broadway: The Outsiders (matiné del jueves 12)",
+  "precio": "US$30 (menores de 30)",
+  "idioma": "Inglés",
+  "cuando": "Jue 12 nov 13:00 (~2 h 30)",
+  "como": "US$30 en taquilla desde las 10:00 del mismo día con documento; lotería US$49 el día anterior; o TKTS en Times Square.",
+  "por": "El único musical de Broadway con función el jueves en la tarde, a precio de mochilero.",
+  "u": "https://www.broadway.com/shows/outsiders/",
+  "conf": "precio y hora de la matiné"
+ }
+];

@@ -47,6 +47,7 @@ function barraPlan() {
 function renderDias() {
   var h = '<h2 class="big">Día a día</h2><p class="lead">El plan está ordenado para seguirlo al pie de la letra. Si algo cambia, ustedes eligen y todo se recalcula.</p>';
   h += barraPlan();
+  if (typeof planesExtraHTML === 'function' && daysMode !== 'ana') h += planesExtraHTML();
   h += '<div class="row dtools"><div class="toggle2" role="group" aria-label="Vista"><button data-m="res"' + (daysMode === 'res' ? ' class="on"' : '') + '>Resumido</button><button data-m="full"' + (daysMode === 'full' ? ' class="on"' : '') + '>Completo</button><button data-m="ana"' + (daysMode === 'ana' ? ' class="on"' : '') + '>📊 Análisis</button></div>';
   if (daysMode !== 'ana') h += '<div class="toggle2" role="group" aria-label="Energía"><button data-e="alta"' + (energy === 'alta' ? ' class="on"' : '') + '>⚡ Alta</button><button data-e="media"' + (energy === 'media' ? ' class="on"' : '') + '>🙂 Media</button><button data-e="baja"' + (energy === 'baja' ? ' class="on"' : '') + '>😴 Baja</button></div>';
   h += '</div>';
@@ -70,6 +71,7 @@ function renderDias() {
   on('[data-rest]', function (b) { irRest(+b.dataset.rest); });
   var rs = document.getElementById('planReset'); if (rs) rs.onclick = function () { if (confirm('¿Volver al plan recomendado? Se deshacen los cambios de días y lugares (las reservas marcadas se conservan).')) planReiniciar(); };
   document.getElementById('planCompartir').onclick = compartirPlan;
+  if (typeof bindExtras === 'function') bindExtras(el);
 }
 function compartirPlan() {
   var u = planEnlace(), t = 'Nuestro plan del viaje (JD & Santi On Tour)';
@@ -150,7 +152,7 @@ function elegirDiaLugar(i, deB) {
     var d = DAYS[n - 1], L = lugaresDeBloque(d.id).filter(function (j) { return P[j].cat !== 'transporte'; });
     var km = L.length ? Math.min.apply(0, L.map(function (j) { return hav(P[j].ll, p.ll); })) : null;
     var H = typeof horario === 'function' ? horario(i) : null, oc = H ? abreCierra(H, fechaDia(n).getDay(), isoDia(n)) : undefined;
-    return { km: km, html: '<button class="opdia' + (oc !== null && km != null && km < 1.5 ? ' ok' : '') + '" data-n="' + n + '"><span class="opf"><b>' + fechaTxt(n) + '</b><small>Día ' + n + '</small></span><span class="opt"><b>' + esc(d.title) + '</b><small>' + (km != null ? 'Queda a ' + kmF(km) + ' de lo de ese día' : 'Día libre') + '</small>' + (oc === null ? '<small class="av">⚠️ Cerrado ese día</small>' : '') + '</span></button>' };
+    return { km: km, html: '<button class="opdia' + (oc !== null && km != null && km < 1.5 ? ' ok' : '') + '" data-n="' + n + '"><span class="opf"><b>' + fechaTxt(n) + '</b><small>Día ' + n + '</small></span><span class="opt"><b>' + esc(d.title) + '</b><small>' + (km != null ? 'Queda a ' + kmF(km) + ' de lo de ese día' : 'Día libre') + '</small>' + (oc === null ? '<small class="av">⚠️ ' + esc(H.txtCierre || 'Cerrado ese día') + '</small>' : '') + '</span></button>' };
   });
   var cerca = filas.filter(function (x) { return x.km != null && x.km < 1.5; }).sort(function (a, b) { return a.km - b.km; });
   var h = '<p class="gnota"><b>' + esc(p.n) + '</b>' + (ya.length ? ' está el ' + ya.map(fechaCorta).join(' y ') + '.' : ' no tiene día todavía.') + ' Escojan a qué día pasarlo: la ruta y el cronograma se rehacen.</p>';

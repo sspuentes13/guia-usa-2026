@@ -206,8 +206,8 @@ function avisosBloque(id, n) {
   (REGLAS[id] || []).forEach(function (r) { if ((r.solo && r.solo.indexOf(dow) < 0) || (r.no && r.no.indexOf(dow) > -1)) { o.push(r.txt); (r.cubre || []).forEach(function (x) { cubiertos[x] = 1; }); } });
   lugaresDeBloque(id).forEach(function (i) {
     if (P[i].cat === 'transporte' || cubiertos[P[i].n] || typeof horario !== 'function') return;
-    var oc = abreCierra(horario(i), dow, iso);
-    if (oc === null) o.push(P[i].n + ' está cerrado ese día (' + SEMANA_L[dow] + ' ' + f.getDate() + ').');
+    var H = horario(i), oc = abreCierra(H, dow, iso);
+    if (oc === null) o.push(H.txtCierre ? P[i].n + ': ' + H.txtCierre.charAt(0).toLowerCase() + H.txtCierre.slice(1) + ' (' + SEMANA_L[dow] + ' ' + f.getDate() + ').' : P[i].n + ' está cerrado ese día (' + SEMANA_L[dow] + ' ' + f.getDate() + ').');
   });
   b.acts.forEach(function (a) {
     var t = horaNum(a[0]); if (t == null || !/atardecer/i.test(a[1])) return;

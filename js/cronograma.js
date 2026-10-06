@@ -8,6 +8,7 @@ function horario(i) { return (typeof HORARIOS !== 'undefined' && HORARIOS[P[i].n
 function abreCierra(H, dow, iso) {
   if (!H || !H.h) return undefined;
   if (iso && H.cerradoFechas && H.cerradoFechas.indexOf(iso) > -1) return null;
+  if (iso && ((H.desde && iso < H.desde) || (H.hasta && iso > H.hasta))) return null;   // temporada (obras, pistas de hielo)
   if (H.h === '24h') return [0, 24 * 60];
   var x = H.h[dow]; if (!x) return null;
   return [Math.round(x[0] * 60), Math.round(x[1] * 60)];
@@ -50,7 +51,7 @@ function cronogramaDia(n, modo) {
     if (f && f.t * 60 > ini) ini = f.t * 60;
     if (f && f.t >= 0 && llega > f.t * 60 + 20) av.push('Llegan tarde a la hora planeada (' + hhmm(f.t * 60) + ')');
     var H = horario(i), oc = reg ? undefined : abreCierra(H, dow, isoFecha(fecha));
-    if (oc === null) { av.push(H.cerradoFechas && H.cerradoFechas.indexOf(isoFecha(fecha)) > -1 ? 'Cerrado ese día (' + fechaCorta(n) + ')' : 'Cerrado los ' + DIAS_SEM[dow]); }
+    if (oc === null) { av.push(H.txtCierre ? H.txtCierre : H.cerradoFechas && H.cerradoFechas.indexOf(isoFecha(fecha)) > -1 ? 'Cerrado ese día (' + fechaCorta(n) + ')' : 'Cerrado los ' + DIAS_SEM[dow]); }
     else if (oc) {
       if (ini < oc[0]) { ini = oc[0]; }
       if (ini >= oc[1]) av.push('Llegan después del cierre (' + hhmm(oc[1]) + ')');

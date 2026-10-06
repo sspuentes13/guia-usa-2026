@@ -51,6 +51,26 @@ Los días 8, 11, 13 y 15 son de descanso.
 - La ruta, el cronograma, las reservas, la tarjeta **Hoy** y los restaurantes cercanos se recalculan con la fecha nueva. **↺ Volver al recomendado** deshace todo, pero conserva las reservas marcadas.
 - **Compartir:** si Gastos está conectado, el plan viaja por la misma hoja privada y gana el último cambio. Si no, **📲 Compartir plan** manda un enlace que aplica el mismo plan en el otro teléfono.
 
+## ✨ Planes extra: teatro barato, patinaje y misa
+
+En la pestaña **Días**, la tarjeta **✨ Planes extra** tiene 13 planes verificados el 6 oct 2026. Cada uno se puede agregar a un día, cambiar o quitar. Al agregarlo entra a la ruta, al cronograma, a los avisos y al presupuesto, y la app solo sugiere días en que hay función o abre.
+
+Ya quedaron en el plan (los opcionales se pueden quitar):
+
+| Día | Plan |
+|---|---|
+| jue 5 nov, 20:00 | Concierto gratis de **Edmar Castañeda** (arpa colombiana) en la Library of Congress (opcional) |
+| dom 8 nov, 13:30 | **Basílica del Santuario Nacional**: capillas y **misa en español a las 14:30** |
+| jue 12 nov, 10:00 | **Patinar gratis en Bryant Park** (NY), al bajar del tren; solo se paga el alquiler de patines (desde ~US$19). Para que quepa se acortaron Rockefeller y San Patricio, y Central Park pasó a las 13:45 (opcional) |
+| dom 15 nov, 14:00 | **Flamenco en GALA Hispanic Theatre**, US$25 en balcón (opcional) |
+
+Otros planes:
+- **Misa en español** en St. Charles Borromeo, Clarendon (domingos 12:00), y en la Catedral de San Mateo (13:00).
+- **Patinaje:** Wollman Rink y Rockefeller (NY), la pista de Pentagon City (US$12–14) y la pista techada de los Capitals en Ballston (US$9).
+- **Teatro:** Teatro Ford (gratis, donde mataron a Lincoln), Synetic «Sleepy Hollow» (sin palabras, US$30 para menores de 35) y Broadway «The Outsiders» (matiné del jueves 12, US$30 para menores de 30).
+
+Ojo: el edificio principal del Kennedy Center sigue cerrado. El show gratis del plan es en The REACH. Las funciones de noche en Broadway chocan con el tren de las 19:52.
+
 ## 🎟️ Reservas
 
 En Inicio, **🎟️ Reservas según su plan** calcula cuándo salen los pases **para el día en que está cada actividad**, con hora del este y hora de Colombia. Por ejemplo, el Washington Monument del vie 6 nov sale el mié 7 oct a las 10:00 (9:00 en Colombia). Cada reserva explica:
