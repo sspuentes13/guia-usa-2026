@@ -84,7 +84,7 @@ var GUIA = [
     'Qué es el deducible: lo primero que pagan ustedes. Con US$1.000, una consulta de urgent care (US$150–300) la pagan ustedes, pero una fractura, apendicitis o accidente (US$25.000–80.000) la paga el seguro. Es un seguro para lo grave, que es lo que de verdad arruina un viaje.',
     'Patriot Plus cubre COVID y las crisis repentinas de enfermedades previas, y paga 100 % en su red de hospitales (UnitedHealthcare). Los trámites son en inglés y se paga en dólares con tarjeta.',
     'Eviten los planes de "beneficio fijo" (Visitors Care, Visit USA Budget): pagan un monto fijo, no la cuenta real del hospital.',
-    'Más caros, sin deducible y en español: Universal Assistance (~COP 1,1 millones los dos, con 25 % de descuento en octubre), Assist Card (~COP 1,6 millones) y SURA o Seguros Éxito, que venden el mismo seguro.',
+    'Más caros, sin deducible y en español (cotizados el 6 oct, 31 oct – 23 nov, los dos): SURA Esencial COP 994.046 (US$60.000 en EE. UU.), Plus 1.056.907, Total 1.156.148; Universal Assistance ~1,1 millones; Assist Card ~1,6 millones. Seguros Éxito hoy no vende seguro de viaje en línea (era el mismo de SURA).',
     'Patinar en una pista pública no está excluido. El hockey sobre hielo sí.'
   ] },
   { e: '💵', t: 'Impuestos y propinas', p: [
