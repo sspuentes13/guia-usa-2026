@@ -18,7 +18,7 @@ var PREPARAR = [
   ] },
   { g: '🩺 Salud y seguro', items: [
     { id: 'tarjetaseguro', t: 'Primero: ¿su tarjeta de crédito trae seguro gratis?', cuando: 'Antes del 15 oct', fecha: '2026-10-15T18:00:00-05:00', d: 'Tarjetas de crédito Bancolombia (Clásica, Oro, Platinum; no E-card ni Ideal): asistencia AXA gratis de US$40.000–65.000, sin deducible. Pidan el certificado al 01 8000 954000 o por WhatsApp al 316 434 8887, y pregunten si exigen haber pagado el tiquete con la tarjeta. Cubre al titular (y cónyuge): si no son pareja, cada uno necesita su tarjeta. Visa Platinum/Signature de otros bancos: hay que haber pagado el tiquete con la tarjeta (certificado en visa.com/portalbeneficios). La tarjeta Nu NO trae seguro médico.', u: 'https://www.bancolombia.com/centro-de-ayuda/preguntas-frecuentes/que-ofrece-axa-siempre-protegido' },
-    { id: 'seguro', t: 'Si no tienen tarjeta que cubra: seguro barato', cuando: 'Antes del 20 oct', fecha: '2026-10-20T19:00:00-05:00', d: 'Atlas America (WorldTrips) de US$100.000 con deducible de US$250: ~US$49 por persona (~COP 313.000 los dos, para 28 años, cotizado el 6 oct). Más barato: Patriot America Plus US$100.000 (~COP 279.000 los dos) o Atlas US$50.000 (~COP 250.000). Fechas: 31 oct – 23 nov. Eviten los planes de "beneficio fijo" y los de menos de US$50.000. Guarden el número de asistencia en 🆘.', u: 'https://www.americanvisitorinsurance.com/world-trips/atlas-america-insurance.asp' },
+    { id: 'seguro', t: 'Si no tienen tarjeta que cubra: seguro barato', cuando: 'Antes del 20 oct', fecha: '2026-10-20T19:00:00-05:00', d: 'Recomendado: Patriot America Plus (IMG), US$50.000 con deducible de US$1.000: US$27,07 por persona, US$54 los dos (~COP 175.000–181.000 con la comisión del banco). Cotizado el 6 oct para 24 y 27 años, del 31 oct al 23 nov. Lo más barato aceptable: el mismo con deducible de US$2.500 (US$47 los dos, ~COP 152.000). Cubre COVID y las urgencias de verdad: lo pequeño (una consulta) lo pagan ustedes. Eviten los planes de "beneficio fijo". Guarden el número de asistencia en 🆘.', u: 'https://www.americanvisitorinsurance.com/' },
     { id: 'meds', t: 'Medicamentos con fórmula y botiquín', d: 'Lo que tomen siempre, en su caja original y con la fórmula. Botiquín básico: acetaminofén, antialérgico, curitas, sales de rehidratación. En CVS y Walgreens se consiguen sin fórmula.' },
     { id: 'vacuna', t: 'Vacuna de la influenza (recomendable)', cuando: '2 semanas antes', fecha: '2026-10-16T18:00:00-05:00', d: 'Noviembre es temporada de gripa en EE. UU. Consulten con su EPS o farmacia: tarda unas 2 semanas en proteger.' }
   ] },
@@ -62,7 +62,7 @@ var EMERGENCIA = {
     ] },
     { t: '🤒 Si se enferman', p: [
       '1. Llamen o escriban PRIMERO a la asistencia del seguro: los dirige y autoriza. Lo que paguen por su cuenta sin autorización puede no cubrirse. El número está en el certificado o la póliza: guárdenlo arriba en este 🆘.',
-      'Con Atlas America: busquen primero un hospital o urgent care de la red UnitedHealthcare (sale más barato) y paguen el deducible de US$250.',
+      'Con Patriot o Atlas: busquen primero un hospital o urgent care de la red UnitedHealthcare (sale más barato).',
       '2. Algo leve: la telemedicina del seguro o la farmacia (CVS Clarendon, 3141 Wilson Blvd, ~7:00–24:00).',
       '3. Fiebre, torcedura, puntos: urgent care (~US$150–300). Cerca: PMA Immediate Care Clarendon, 3301 Wilson Blvd, 703-522-1860 (lun–vie 8–19, fin de semana 9–14).',
       '4. Algo grave (pecho, respiración, accidente): 911 o sala de urgencias (ER), y avisen al seguro en las 36 horas siguientes.',
@@ -77,11 +77,12 @@ var EMERGENCIA = {
 };
 
 var GUIA = [
-  { e: '🩺', t: 'Seguro médico barato', u: 'https://www.americanvisitorinsurance.com/world-trips/atlas-america-insurance.asp', ut: 'Cotizar Atlas America', p: [
+  { e: '🩺', t: 'Seguro médico barato', u: 'https://www.americanvisitorinsurance.com/', ut: 'Patriot America Plus (IMG)', p: [
     '1) Gratis: si alguno tiene tarjeta de crédito Bancolombia (Clásica, Oro o Platinum), trae asistencia AXA de US$40.000–65.000 sin deducible. Pidan el certificado al 01 8000 954000 y confirmen las condiciones. Cubre al titular y a su cónyuge: si no son pareja, cada uno necesita su tarjeta.',
-    '2) Barato: Atlas America (WorldTrips), US$100.000 con deducible de US$250. Cuesta ~COP 313.000 los dos por 24 días (cotizado el 6 oct, para 28 años; a los 30–39 sube a ~COP 400.000). Cubre COVID como cualquier enfermedad y tiene red de hospitales UnitedHealthcare.',
-    'Aún más barato: Patriot America Plus US$100.000 (~COP 279.000 los dos) o Atlas US$50.000 (~COP 250.000). Debajo de US$50.000 no vale la pena en EE. UU.',
-    'El deducible son los primeros US$250 que pagan ustedes en cada atención. Los trámites son en inglés y a veces toca pagar y pedir reembolso.',
+    '2) Barato (cotizado el 6 oct para 24 y 27 años, 31 oct – 23 nov): Patriot America Plus, US$50.000 con deducible de US$1.000. Cuesta US$54 los dos (~COP 175.000–181.000).',
+    'Lo más barato aceptable: el mismo con deducible de US$2.500, US$47 los dos (~COP 152.000). Con más cobertura: Patriot Plus US$100.000 por US$69,50 los dos (~COP 225.000) o Atlas America US$100.000 con deducible de US$250 (~COP 313.000).',
+    'Qué es el deducible: lo primero que pagan ustedes. Con US$1.000, una consulta de urgent care (US$150–300) la pagan ustedes, pero una fractura, apendicitis o accidente (US$25.000–80.000) la paga el seguro. Es un seguro para lo grave, que es lo que de verdad arruina un viaje.',
+    'Patriot Plus cubre COVID y las crisis repentinas de enfermedades previas, y paga 100 % en su red de hospitales (UnitedHealthcare). Los trámites son en inglés y se paga en dólares con tarjeta.',
     'Eviten los planes de "beneficio fijo" (Visitors Care, Visit USA Budget): pagan un monto fijo, no la cuenta real del hospital.',
     'Más caros, sin deducible y en español: Universal Assistance (~COP 1,1 millones los dos, con 25 % de descuento en octubre), Assist Card (~COP 1,6 millones) y SURA o Seguros Éxito, que venden el mismo seguro.',
     'Patinar en una pista pública no está excluido. El hockey sobre hielo sí.'

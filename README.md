@@ -75,7 +75,7 @@ Ojo: el edificio principal del Kennedy Center sigue cerrado. El show gratis del 
 
 - **🧳 Antes de viajar** (Inicio): 21 pendientes con su explicación: documentos, Avianca, seguro, plata, eSIM, maleta y aduana. Los ✓ se comparten por la hoja de Gastos.
 - **🧭 Guía práctica** (Inicio), verificada el 6 oct 2026:
-  - **Seguro barato:** primero, revisen si una tarjeta de crédito Bancolombia les da la asistencia AXA gratis (US$40.000–65.000). Si no, Atlas America de US$100.000 con deducible de US$250 cuesta ~COP 313.000 los dos (cotizado el 6 oct).
+  - **Seguro barato:** primero, revisen si una tarjeta de crédito Bancolombia les da la asistencia AXA gratis (US$40.000–65.000). Si no, Patriot America Plus de US$50.000 con deducible de US$1.000 cuesta US$54 los dos, unos COP 175.000 (cotizado el 6 oct para 24 y 27 años).
   - **Impuestos y propinas:** Arlington 11 % en restaurantes, DC 10 %, NY 8,875 % (la ropa de menos de US$110 no paga), Delaware 0 %.
   - **Transporte:** en el metro de DC se paga acercando la tarjeta o el celular; OMNY cuesta US$3 y el MARC US$9.
   - **eSIM:** T-Mobile U.S. Pass, US$50 por 30 días.
