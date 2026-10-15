@@ -35,14 +35,14 @@ El plan recomendado está pensado para seguirlo tal cual:
 | dom 1 – mar 3 nov | Llegada y Arlington: cementerio, Iwo Jima, Air Force; Roosevelt Island y Gravelly Point |
 | mié 4 – vie 6 nov | DC: National Mall al amanecer; Capitolio, Library y museos; Washington Monument, Georgetown y show |
 | sáb 7 nov | Old Town Alexandria (el mercado solo es los sábados) y Mount Vernon opcional |
-| lun 9 – mar 10 nov | Zoológico y catedral; National Gallery, Museo Afroamericano y The Wharf |
-| jue 12 nov | Nueva York en un día (tren de entre semana; el museo del 11-S abre) |
+| lun 9 – mar 10 nov | **Nueva York en 2 días**: bus Greyhound (8:30 lun / 16:50 mar), noche en el American Dream (Gramercy), museo del 11-S gratis el lunes 17:30, patinaje en Bryant Park el martes |
+| jue 12 – vie 13 nov | Zoológico y catedral; National Gallery, Museo Afroamericano y The Wharf |
 | sáb 14 nov | Baltimore (el Walters y el Monumento abren) |
 | lun 16 – mié 18 nov | Libres en Arlington: compras y un día comodín para lo pendiente |
 | jue 19 nov | Filadelfia y compras sin impuesto en Delaware |
 | vie 20 – dom 22 nov | Último día en DC, Pentagon City, maletas y despedida |
 
-Los días 8, 11, 13 y 15 son de descanso.
+Los días 8, 11 y 15 son de descanso.
 
 **Si algo cambia, todo se reajusta solo** (pestaña **Días**):
 - **🔀 Cambiar de día:** intercambia un día con otro. Antes de elegir, la app muestra con ✓ o ⚠️ qué días sirven: lo que cierra ese día de la semana o ese festivo (por ejemplo, la Library of Congress el 11 nov), el mercado de Old Town que solo es los sábados, trenes de entre semana, la hora del atardecer de esa fecha y dos viajes largos seguidos.

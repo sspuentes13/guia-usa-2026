@@ -29,9 +29,21 @@ var RESERVAS = [
   { id: 'mv', n: 'Mount Vernon (opcional)', lugar: 'Mount Vernon', sale: { tipo: 'antes', dias: 3 }, u: 'https://www.mountvernon.org/plan-your-visit',
     que: 'US$28 en línea con 3 días de anticipación (US$30 en taquilla).', porque: 'Sábado: se combina con Old Town y el bus 101 desde Huntington.',
     segunda: 'Se puede comprar en la taquilla el mismo día (US$2 más).', noVan: 'Probablemente no devuelven el dinero: compren solo si están seguros.', cambio: 'Llamen al 703-780-2000 para cambiar la fecha.', plata: 'US$28 por persona' },
-  { id: 'amtrakny', n: 'Amtrak a Nueva York (ida y regreso)', lugar: 'Penn Station', horaTren: 1, sale: { tipo: 'compra' }, u: 'https://www.amtrak.com',
-    que: 'Ida 6:20 desde Union Station, regreso 19:52. Desde ~US$29 por trayecto.', porque: 'Entre semana es más barato, y el museo del 11-S abre los jueves (los martes de noviembre no).',
-    segunda: 'Si se agotan las tarifas baratas: Acela o bus (Megabus/FlixBus) desde Union Station.', noVan: 'Si no viajan y no cancelan antes de la salida, pierden el 100 %.', cambio: 'Flex: cambio o reembolso completo. Value: 30 % de penalidad. Sale: 50 %. Cualquier tarifa: reembolso total si cancelan dentro de las 24 h después de comprar.', plata: 'Según la tarifa (Flex 0 %, Value 30 %, Sale 50 %)' },
+  { id: 'busny', n: 'Bus Greyhound a Nueva York (ida y regreso)', lugar: 'Port Authority (llegada)', horaTren: 'bus de las', sale: { tipo: 'compra' }, u: 'https://www.greyhound.com',
+    que: 'Ida lun 9 a las 8:30 desde Union Station (bus deck), llega a Port Authority 13:05: US$14,99. Regreso mar 10 a las 16:50 desde Port Authority, llega 22:35: US$30,99. Más US$3,99 de servicio por compra.', porque: 'Es ~4 veces más barato que Amtrak y llega a Port Authority, a 6 cuadras de Times Square.',
+    segunda: 'FlixBus a la misma hora y precio (8:00, llega a la calle 31 con 8.ª Av.). De regreso: Greyhound 18:45 (llega 23:40) o FlixBus 16:00 directo a Rosslyn.', noVan: 'Greyhound devuelve un bono (no plata): 100 % si cancelan con 30 días o más, 70 % con 7–29 días, 40 % con 2–6 días y 20 % con menos de 2.', cambio: 'Se puede cambiar hasta 15 minutos antes de salir, pagando la diferencia.', plata: '~US$50 por persona' },
+  { id: 'hotelny', n: 'Hotel en Manhattan (noche del 9 nov)', lugar: 'Hotel American Dream', sale: { tipo: 'antes', dias: 2 }, u: 'https://www.booking.com/hotel/us/american-dream-new-york.html',
+    que: 'American Dream (Gramercy): camarote para dos, baño compartido y desayuno, ~US$153 con impuestos. Cancelación gratis hasta el 7 nov y se paga en el hotel.', porque: 'Es la opción más barata con 2 camas, desayuno y cancelación gratis. El Gallivant sale ~US$322 con 2 camas (cobra US$40 de resort fee más impuestos y retiene US$500 de depósito).',
+    segunda: 'HI NYC Hostel (~US$158 los dos en dormitorio), Pod 51 (~US$211, camarote) o Mayfair Times Square (~US$221, 1 cama).', noVan: 'Cancelando antes del 7 nov no pagan nada.', cambio: 'Se cambia gratis en Booking hasta el 7 nov.', plata: 'Nada si cancelan antes del 7 nov' },
+  { id: 'museo911', n: 'Museo del 11-S gratis (lunes 17:30)', lugar: 'Memorial del 11-S', sale: { tipo: 'dias', dias: 0, h: 7 }, u: 'https://www.911memorial.org/visit/visit-museum',
+    que: 'Los lunes el museo es gratis de 17:30 a 19:00. Los tiquetes salen ese mismo lunes a las 7:00 (hora de NY) en 911memorial.org y se acaban rápido.', porque: 'El martes 10 el museo no abre; el lunes es gratis al final de la tarde.',
+    segunda: 'Si se agotan: tiquete pago (US$24–36) para antes de las 17:30, o solo las fuentes del Memorial (gratis).', noVan: 'Gratis: no pierden nada.', cambio: 'Solo aplica los lunes.', plata: 'Nada' },
+  { id: 'bryant', n: 'Turno para patinar en Bryant Park', lugar: 'Pista de hielo de Bryant Park', sale: { tipo: 'ya' }, u: 'https://bryantpark.org/activities/the-rink',
+    que: 'Entrada gratis con turno de hora obligatorio; el hielo empieza 20 min después. Alquiler de patines desde ~US$19.', porque: 'Queda al lado de la Biblioteca, en la ruta del martes.',
+    segunda: 'Si no hay turnos: Wollman Rink en Central Park (US$16–40).', noVan: 'Gratis: no pierden nada (los patines se pagan allá).', cambio: 'Reserven otro turno.', plata: 'Nada' },
+  { id: 'tv', n: 'Grabación gratis de TV (Fallon, Seth Meyers, Daily Show)', lugar: 'Rockefeller Center', sale: { tipo: 'ya' }, u: 'https://1iota.com',
+    que: 'Boletas gratis en 1iota.com (16+ para NBC, 18+ para The Daily Show). Las fechas de noviembre salen ~1 mes antes.', porque: 'Es gratis y muy de Nueva York. Para el lunes en la tarde o el martes temprano, si hay grabación.',
+    segunda: 'Standby para Fallon: tarjetas de 8:00 a 15:00 el día de la grabación en la NBC Shop de 30 Rock.', noVan: 'Gratis, pero tener boleta no garantiza entrar: lleguen temprano.', cambio: 'Pidan otra fecha.', plata: 'Nada' },
   { id: 'amtrakphi', n: 'Amtrak a Filadelfia y regreso desde Wilmington', lugar: 'Escaleras de Rocky', horaTren: 1, sale: { tipo: 'compra' }, u: 'https://www.amtrak.com',
     que: 'Ida 6:30 a Filadelfia; regreso 20:32 desde Wilmington.', porque: 'Lejos de Acción de Gracias (26 nov), cuando los trenes se llenan y suben de precio.',
     segunda: 'SEPTA regional + MARC es más barato pero más lento.', noVan: 'Si no viajan y no cancelan antes de la salida, pierden el 100 %.', cambio: 'Flex: cambio o reembolso completo. Value: 30 %. Sale: 50 %. Reembolso total dentro de las 24 h después de comprar.', plata: 'Según la tarifa' },
@@ -72,7 +84,7 @@ function filaReserva(r, ahora, hc) {
   var i = idxLugar(r.lugar), n = i > -1 ? diasDe(P[i])[0] : 0;
   if (!n) return null;
   var c = cuandoSale(r, n), hecha = hc[r.id], f = horaFija(P[i], n), hora = f ? horaTxt(f.t) : '';
-  if (r.horaTren) { var acts = diaDeN(n).acts; for (var q = 0; q < acts.length; q++) if (horaNum(acts[q][0]) != null) { hora = 'tren de las ' + acts[q][0]; break; } }
+  if (r.horaTren) { var acts = diaDeN(n).acts; for (var q = 0; q < acts.length; q++) if (horaNum(acts[q][0]) != null) { hora = (typeof r.horaTren === 'string' ? r.horaTren : 'tren de las') + ' ' + acts[q][0]; break; } }
   var otra = hecha && hecha.f && hecha.f !== isoDia(n);
   var est, cl, orden;
   if (hecha && !otra) { est = 'Lista'; cl = 'g'; orden = 9e15; }
@@ -110,10 +122,10 @@ function renderReservas(el) {
   });
   h += '</ul>';
   h += '<details class="rdet faq"><summary>🤔 ¿Son las mejores fechas? ¿Y si reservamos y no vamos?</summary><ul class="insights">' +
-    '<li><b>Fechas:</b> ' + (av ? 'hay ' + av + ' aviso' + (av > 1 ? 's' : '') + ' en el plan actual: ábranlos en la pestaña Días.' : 'con el plan actual todo abre el día que van y no hay choques de horario.') + ' Arlington va primero (llegan a casa), luego DC entre semana (menos filas), Nueva York un jueves (más barato y el museo del 11-S abre), Baltimore un sábado (el Walters abre) y al final compras.</li>' +
+    '<li><b>Fechas:</b> ' + (av ? 'hay ' + av + ' aviso' + (av > 1 ? 's' : '') + ' en el plan actual: ábranlos en la pestaña Días.' : 'con el plan actual todo abre el día que van y no hay choques de horario.') + ' Arlington va primero (llegan a casa), luego DC entre semana (menos filas), Nueva York lunes y martes con una noche de hotel (el lunes el museo del 11-S es gratis en la tarde), Baltimore un sábado (el Walters abre) y al final compras.</li>' +
     '<li><b>Pases gratis</b> (Capitolio, Library, museos, Zoo): si no van no pierden nada. Cancelen para liberar el cupo y saquen otro para el día nuevo.</li>' +
     '<li><b>Washington Monument e Independence Hall:</b> pierden US$1 por persona. El Monument tiene una segunda oportunidad el día anterior a las 15:00 (hora del este).</li>' +
-    '<li><b>Amtrak:</b> es lo único con plata grande. Compren apenas confirmen con Juan; si no están seguros, tarifa <b>Flex</b> (reembolso completo) o aprovechen las 24 h para cancelar gratis.</li>' +
+    '<li><b>Lo que cuesta plata:</b> el Amtrak a Filadelfia (compren con tarifa <b>Flex</b> o cancelen dentro de las 24 h), el bus a Nueva York (Greyhound devuelve un bono, no plata) y el hotel (cancelación gratis hasta el 7 nov).</li>' +
     '<li><b>MARC:</b> no lo compren antes; sirve cualquier día.</li>' +
     '<li>Si cambian un día en la pestaña Días, esta lista recalcula las fechas y les avisa qué reserva hay que mover.</li></ul></details>';
   el.innerHTML = h;

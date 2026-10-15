@@ -40,18 +40,18 @@ var PLANES_EXTRA = [
   "lugar": "Pista de hielo de Bryant Park",
   "t": "Patinar gratis en Bryant Park (NY)",
   "precio": "Gratis · patines desde ~US$19",
-  "cuando": "En el plan: jue 12 nov, turno de las 10:00, al bajar del tren (hielo 10:20–11:10)",
+  "cuando": "En el plan: mar 10 nov, turno de las 11:30 (hielo 11:50–12:40)",
   "como": "Reserven el turno gratis en bryantpark.org apenas confirmen el viaje a NY. Si llevan patines propios, no pagan nada.",
   "por": "Queda detrás de la Biblioteca: se patina en Manhattan sin salirse de la ruta.",
   "u": "https://bryantpark.org/activities/the-rink",
-  "sugerido": "ny"
+  "sugerido": "ny2"
  },
  {
   "tipo": "hielo",
   "lugar": "Wollman Rink",
   "t": "Wollman Rink en Central Park (NY)",
   "precio": "US$16–40 + patines US$12",
-  "cuando": "Jueves 10:00–21:00",
+  "cuando": "Todos los días 10:00–21:00 (queda en Central Park)",
   "como": "Tiquete con fecha en wollmanrinknyc.com (lo más barato: horario valle).",
   "por": "La alternativa si prefieren patinar en Central Park en vez de Bryant Park.",
   "u": "https://wollmanrinknyc.com/"
@@ -143,15 +143,16 @@ var PLANES_EXTRA = [
  },
  {
   "tipo": "teatro",
-  "lugar": "Broadway · The Outsiders",
-  "t": "Broadway: The Outsiders (matiné del jueves 12)",
-  "precio": "US$30 (menores de 30)",
+  "lugar": "Broadway con TKTS",
+  "t": "Broadway barato (lun 9 en la noche)",
+  "precio": "~US$40–90 con TKTS o lotería",
   "idioma": "Inglés",
-  "cuando": "Jue 12 nov 13:00 (~2 h 30)",
-  "como": "US$30 en taquilla desde las 10:00 del mismo día con documento; lotería US$49 el día anterior; o TKTS en Times Square.",
-  "por": "El único musical de Broadway con función el jueves en la tarde, a precio de mochilero.",
-  "u": "https://www.broadway.com/shows/outsiders/",
-  "conf": "precio y hora de la matiné"
+  "cuando": "Lun 9: Six, Chicago, Harry Potter o The Great Gatsby (19:00–20:00). TKTS abre lun–mar 15:00–20:00",
+  "como": "TKTS en Times Square (hasta 50 % menos + US$8) o loterías en TodayTix (~US$40). Reemplaza el Puente de Brooklyn de esa noche.",
+  "por": "Con la noche en Nueva York, ya pueden ver un musical de Broadway.",
+  "u": "https://www.tdf.org/discount-ticket-programs/tkts-by-tdf/tkts-live/",
+  "conf": "obras y horas del lun 9",
+  "sugerido": "ny1"
  },
  {
   "tipo": "deporte",

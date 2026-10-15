@@ -75,7 +75,8 @@ function planRefrescar() {
 /* ---------- sincronización con la hoja de Gastos (la usa js/gastos.js) ---------- */
 function planParaSync() { return MIPLAN.pend ? { orden: MIPLAN.orden, mov: MIPLAN.mov, est: MIPLAN.est, res: MIPLAN.res, chk: MIPLAN.chk, modificado: MIPLAN.modificado } : null; }
 function planRemoto(x) {
-  if (!x || !planOrdenValido(x.orden)) return;
+  if (!x) return;
+  if (!planOrdenValido(x.orden)) x = Object.assign({}, x, { orden: MIPLAN.orden });   // plan guardado con una versión vieja de los días: se conservan reservas, checks y estados
   var m = +x.modificado || 0;
   if (m < MIPLAN.modificado) return;                       // lo de este teléfono es más nuevo: se sube en la próxima sincronización
   var cambio = m > MIPLAN.modificado && JSON.stringify([x.orden, x.mov, x.est, x.res, x.chk || {}]) !== JSON.stringify([MIPLAN.orden, MIPLAN.mov, MIPLAN.est, MIPLAN.res, MIPLAN.chk]);
@@ -187,7 +188,7 @@ function notasDia(n) {
   var sig = diaDeN(n + 1);
   if (sig && BLOQUES[sig.id].viaje) {
     var h0 = null; for (var k = 0; k < sig.acts.length; k++) { h0 = horaNum(sig.acts[k][0]); if (h0 != null) break; }
-    if (h0 != null && h0 <= 7.5) o.push('🌙 Mañana madrugan (' + sig.title + ', tren a las ' + horaTxt(h0) + '): preparen sándwiches, carguen los celulares y a dormir a las 21:00.');
+    if (h0 != null && h0 <= 9) o.push('🌙 Mañana madrugan (' + sig.title + ', salen a las ' + horaTxt(h0) + '): preparen sándwiches, carguen los celulares y a dormir temprano.');
   }
   if (d.city !== 'col') { var s = solDia(n, d.city); o.push('☀️ Sale el sol a las ' + hhmm(s.sale) + ' y se pone a las ' + hhmm(s.puesta) + '.'); }
   return o;
@@ -197,8 +198,8 @@ function notasDia(n) {
 var REGLAS = {
   oldtown: [{ solo: [6], cubre: ['Old Town Alexandria'], txt: 'El mercado campesino de Old Town solo es los sábados (7:00–12:00).' }],
   baltimore: [{ solo: [6], txt: 'Las horas del tren MARC del plan son las del sábado: ese día confirmen el horario.' }],
-  ny: [{ solo: [1, 2, 3, 4, 5], txt: 'Los trenes del plan son de entre semana: el fin de semana cambian las horas y suele ser más caro.' },
-    { no: [2], txt: 'El museo del 11-S no abre los martes de noviembre (las fuentes sí).' }],
+  ny1: [{ no: [2], txt: 'El museo del 11-S no abre los martes de noviembre (las fuentes sí): el día 1 de Nueva York no debe ser martes.' },
+    { solo: [1], txt: 'El museo del 11-S es gratis solo los lunes de 17:30 a 19:00; otro día cuesta US$24–36.' }],
   georgetown: [{ solo: [5, 6], txt: 'El show gratis del Millennium Stage es sobre todo viernes y sábado a las 18:00: revisen el programa de ese día.' }],
   phi: [{ solo: [1, 2, 3, 4, 5], txt: 'Los trenes del plan (Amtrak y SEPTA) son de entre semana: el fin de semana cambian las horas.' }]
 };
@@ -215,7 +216,9 @@ function avisosBloque(id, n) {
     var s = solDia(n, b.city).puesta;
     if (t * 60 > s + 5) o.push('Ese día el sol se pone a las ' + hhmm(s) + ': para el atardecer lleguen antes de las ' + hhmm(s - 25) + '.');
   });
-  if (b.viaje) [n - 1, n + 1].forEach(function (m) { var d = diaDeN(m); if (d && BLOQUES[d.id].viaje) o.push('Queda pegado a otro viaje largo (' + d.title + '): van a llegar muy cansados.'); });
+  if (id === 'ny1' && DIA_DE.ny2 !== n + 1) o.push('El día 2 de Nueva York tiene que ir justo después (hay noche de hotel).');
+  if (id === 'ny2' && DIA_DE.ny1 !== n - 1) o.push('El día 1 de Nueva York tiene que ir justo antes (hay noche de hotel).');
+  if (b.viaje) [n - 1, n + 1].forEach(function (m) { var d = diaDeN(m); if (d && BLOQUES[d.id].viaje && !(/^ny\d/.test(id) && /^ny\d/.test(d.id))) o.push('Queda pegado a otro viaje largo (' + d.title + '): van a llegar muy cansados.'); });
   if (typeof reservasDeBloque === 'function') reservasDeBloque(id).forEach(function (r) {
     var x = MIPLAN.res[r.id]; if (x && x.f && x.f !== iso) o.push('Ya tienen reserva de ' + r.n + ' para el ' + fechaIsoTxt(x.f) + '. ' + r.cambio);
   });
