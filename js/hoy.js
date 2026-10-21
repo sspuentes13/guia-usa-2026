@@ -50,6 +50,12 @@ var RESERVAS = [
   { id: 'indep', n: 'Independence Hall', lugar: 'Independence Hall', sale: { tipo: 'dias', dias: 30 }, u: 'https://www.nps.gov/inde/planyourvisit/independencehalltickets.htm',
     que: 'Tour con hora en recreation.gov (US$1). Plan B sin reserva: entrada libre 9:00–10:30 (lleguen 8:30).', porque: 'El plan empieza en las Escaleras de Rocky (9:00) y llega a Independence después de las 10:30: a esa hora se necesita boleto.',
     segunda: 'Los boletos del día siguiente salen a las 17:00 (hora del este) del día anterior.', noVan: 'El US$1 no se devuelve.', cambio: 'Se puede modificar hasta la medianoche (hora del este) del día anterior.', plata: 'US$1 por persona' },
+  { id: 'holocausto', n: 'Museo del Holocausto (pase con hora)', lugar: 'Museo del Holocausto', sale: { tipo: 'ya' }, u: 'https://www.ushmm.org/information/visit-the-museum/plan-your-visit/admission-tickets',
+    que: 'Pase gratis con hora para la exposición permanente (en línea cobran US$1 de servicio). Los de noviembre ya están a la venta.', porque: 'El de las 13:30 deja la mañana para dormir después de Nueva York y para la Oficina de Grabado, que queda al lado.',
+    segunda: 'Cada día a las 7:00 (hora del este) salen pases en línea para ese mismo día.', noVan: 'Solo pierden el US$1 de servicio.', cambio: 'Saquen pases para la nueva fecha.', plata: 'US$1 por persona' },
+  { id: 'grabado', n: 'Tour de la Oficina de Grabado (dólares)', lugar: 'Oficina de Grabado (donde imprimen dólares)', sale: { tipo: 'ya' }, u: 'https://www.bep.gov/visitor-centers/washington-dc-tour-and-visitor-center/tour/',
+    que: 'Tiquete gratis con hora: lunes a viernes, recorridos de 9:00 a 14:00 (máximo 9 por persona).', porque: 'A las 11:30 alcanzan a dormir después de Nueva York, y queda al lado del Museo del Holocausto.',
+    segunda: 'El mismo día salen pocos en línea a las 8:00, por orden de llegada.', noVan: 'Gratis: no pierden nada.', cambio: 'Reserven otro turno.', plata: 'Nada' },
   { id: 'marc', n: 'Tren MARC a Baltimore', lugar: 'Monumento a Washington', horaTren: 1, sale: { tipo: 'nada' }, u: 'https://www.mta.maryland.gov/',
     que: 'No lo compren antes: el tiquete no tiene fecha, vale 6 meses y no se devuelve.', porque: 'Sábado: el Walters y el Monumento abren (lunes y martes cierran).',
     segunda: 'Cómprenlo ese día en la app CharmPass o en la máquina de Union Station (US$9).', noVan: 'Si no lo compraron antes, no pierden nada.', cambio: 'No hace falta: sirve cualquier día.', plata: 'Nada si compran ese día' }

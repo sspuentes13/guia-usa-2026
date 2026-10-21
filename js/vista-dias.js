@@ -19,7 +19,7 @@ var POR_QUE_ORDEN = [
   '🏠 <b>Primero Arlington</b> (1–3 nov): llegan cansados y queda cerca de casa. Lunes cementerio e Iwo Jima; martes naturaleza y aviones.',
   '🏛️ <b>DC de miércoles a viernes</b> (4–6 nov): entre semana hay menos filas. El Washington Monument cierra el miércoles 4, por eso va el viernes 6.',
   '🧺 <b>Old Town el sábado 7</b>: el mercado campesino solo es los sábados.',
-  '🐼 <b>Zoo el lunes 9</b> (ya tienen los pases) <b>y museos el martes 10</b>; <b>descanso el miércoles 11</b> (festivo) y días libres el 12 y el 13.',
+  '🐼 <b>Zoo el lunes 9</b> (ya tienen los pases) <b>y museos el martes 10</b>; <b>descanso el miércoles 11</b> (festivo); <b>gratis el jueves 12</b> (Udvar-Hazy, el transbordador) <b>y el viernes 13</b> (Corte Suprema, Archivos, Renwick y mercado navideño).',
   '🗽 <b>Nueva York lunes 16 y martes 17</b>, con una noche de hotel y bus Greyhound: el lunes el museo del 11-S es gratis de 17:30 a 19:00 (el martes no abre) y el martes patinan en Bryant Park.',
   '🦀 <b>Baltimore el sábado 14</b>: el Walters y el Monumento abren (lunes y martes cierran).',
   '🛍️ <b>Del 16 al 18, libres en Arlington</b>: compras y un día comodín para lo que haya quedado pendiente.',

@@ -36,10 +36,10 @@ El plan recomendado está pensado para seguirlo tal cual:
 | mié 4 – vie 6 nov | DC: National Mall al amanecer; Capitolio, Library y museos; Washington Monument, Georgetown y show |
 | sáb 7 nov | Old Town Alexandria (el mercado solo es los sábados) y Mount Vernon opcional |
 | lun 9 – mar 10 nov | Zoológico y catedral (pases ya reservados para el lun 9); National Gallery, Museo Afroamericano y The Wharf |
-| jue 12 – vie 13 nov | Libres: Clarendon y día comodín (el vie 13 reabre el Renwick y abre el mercado navideño) |
+| jue 12 – vie 13 nov | **Turismo gratis:** Udvar-Hazy (transbordador espacial) y Clarendon; Corte Suprema, Botánico, Archivos Nacionales, Renwick (reabre ese día) y mercado navideño |
 | sáb 14 nov | Baltimore (el Walters y el Monumento abren) |
 | lun 16 – mar 17 nov | **Nueva York en 2 días**: bus Greyhound (8:30 lun / 16:50 mar), noche en el American Dream (Gramercy), museo del 11-S gratis el lunes 17:30, patinaje en Bryant Park el martes |
-| mié 18 nov | Descanso y lista de compras |
+| mié 18 nov | **Gratis:** Oficina de Grabado (imprimen dólares) y Museo del Holocausto; lista de compras |
 | jue 19 nov | Filadelfia y compras sin impuesto en Delaware |
 | vie 20 – dom 22 nov | Último día en DC, Pentagon City, maletas y despedida |
 
