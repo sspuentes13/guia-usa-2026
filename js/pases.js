@@ -20,6 +20,7 @@ function pasesAbrir(clave) {
     return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: pzB64(L.sal), iterations: L.iter, hash: 'SHA-256' }, k, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
   }).then(function (llave) { pz.llave = llave; return pzBajar(L.indice); }).then(pzDescifrar).then(function (b) {
     PASES = JSON.parse(new TextDecoder().decode(b)); pz.err = '';
+    pasesAlPlan();
     try { localStorage.setItem('guiaPasesClave', clave); } catch (e) {}
     L.archivos.forEach(function (f) { fetch('pases/' + f).catch(function () {}); });   // quedan guardados para usar sin internet
     return PASES;
@@ -29,6 +30,16 @@ function pasesAbrir(clave) {
     throw new Error(pz.err);
   }).then(function (x) { pz.abriendo = null; return x; }, function (e) { pz.abriendo = null; throw e; });
   return pz.abriendo;
+}
+/* Cada ticket con fecha queda como reserva confirmada en el plan (se comparte por la hoja y va a Google Calendar) */
+function pasesAlPlan() {
+  var res = MIPLAN.res || {}, cambio = false;
+  (PASES || []).forEach(function (p) {
+    if (!p.res || !p.fecha) return;
+    var x = res[p.res];
+    if (!x || x.f !== p.fecha || (p.hora && x.h !== p.hora) || x.pase !== p.id) { res[p.res] = { f: p.fecha, h: p.hora || (x && x.h) || '', pase: p.id, t: Date.now() }; cambio = true; }
+  });
+  if (cambio) { MIPLAN.res = res; MIPLAN.modificado = Date.now(); MIPLAN.pend = 1; planGuardar(); }
 }
 function pasesOlvidar() { try { localStorage.removeItem('guiaPasesClave'); } catch (e) {} PASES = null; pz.llave = null; Object.keys(pz.urls).forEach(function (k) { URL.revokeObjectURL(pz.urls[k]); }); pz.urls = {}; }
 function pzRefrescar() { if (typeof tab !== 'undefined' && tab === 'inicio') renderInicio(); }

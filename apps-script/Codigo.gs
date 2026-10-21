@@ -253,13 +253,13 @@ function guardarGastos_(hoja, entrantes) {
   return filas.filter(function (f) { return f[0] !== ''; }).map(deFila_);
 }
 
-/* ---------- Google Calendar: reservas confirmadas, alertas y plan del viaje ----------
+/* ---------- Google Calendar: SOLO las reservas confirmadas (día y hora que les dieron) ----------
    Los eventos van a un calendario aparte ("JD & Santi On Tour") en la cuenta dueña de este script,
    para poder ocultarlo, compartirlo o borrarlo sin tocar el calendario principal.
    La app manda la lista completa de eventos; aquí se crea lo nuevo, se rehace lo que cambió
    y se borra lo que ya no está. Cada evento lleva una etiqueta k (id) y s (firma del contenido). */
 var CAL_NOMBRE = 'JD & Santi On Tour';
-var CAL_LOTE = 25;   // eventos creados o borrados por llamada (la app repite hasta terminar)
+var CAL_LOTE = 8;    // eventos creados o borrados por llamada (la app repite hasta terminar); Google limita las ráfagas
 
 /* Ejecutar UNA vez desde el editor (▶ Ejecutar) para dar permiso de calendario y crearlo. */
 function conectarCalendario() {
@@ -287,10 +287,11 @@ function sincronizarCalendario_(eventos) {
   cal.getEvents(desde, hasta).forEach(function (e) {
     var k = e.getTag('k');
     if (!k) return;   // eventos creados a mano en este calendario: no se tocan
-    if (hay[k]) { if (borrados < CAL_LOTE) { e.deleteEvent(); borrados++; } else pendientes++; return; }   // duplicado
+    if (hay[k]) { if (borrados < CAL_LOTE) { e.deleteEvent(); borrados++; Utilities.sleep(300); } else pendientes++; return; }   // duplicado
     hay[k] = e;
   });
   var quiero = {};
+  eventos = eventos.filter(function (x) { return x && /^conf-/.test(String(x.k)); });   // versiones viejas de la app mandaban todo el plan
   eventos.forEach(function (x) {
     var k = texto_(x.k, 80), ini = new Date(x.ini), min = Math.max(5, Math.min(24 * 60, Number(x.min) || 60));
     if (!k || isNaN(ini.getTime()) || ini < desde || ini > hasta || quiero[k]) return;
@@ -301,19 +302,19 @@ function sincronizarCalendario_(eventos) {
     var e = hay[k];
     if (e && e.getTag('s') === firma) { iguales++; return; }
     if (creados + borrados >= CAL_LOTE) { pendientes++; return; }
-    if (e) { e.deleteEvent(); borrados++; }
+    if (e) { e.deleteEvent(); borrados++; Utilities.sleep(300); }
     var n = cal.createEvent(ev.t, new Date(ev.ini), new Date(ev.ini + ev.min * 60000), { description: ev.d, location: ev.lugar });
     n.setTag('k', k); n.setTag('s', firma);
     n.removeAllReminders();
     ev.alarmas.forEach(function (m) { n.addPopupReminder(m); });
     if (ev.correo) n.addEmailReminder(ev.alarmas.length ? Math.max.apply(null, ev.alarmas) : 1440);
     creados++;
-    Utilities.sleep(120);
+    Utilities.sleep(400);
   });
   Object.keys(hay).forEach(function (k) {
     if (quiero[k]) return;
     if (creados + borrados >= CAL_LOTE) { pendientes++; return; }
-    hay[k].deleteEvent(); borrados++;
+    hay[k].deleteEvent(); borrados++; Utilities.sleep(300);
   });
   return { ok: true, creados: creados, borrados: borrados, iguales: iguales, pendientes: pendientes, calendario: CAL_NOMBRE };
 }

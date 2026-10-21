@@ -121,10 +121,7 @@ Marquen ✓ al reservar: queda guardada la fecha. Si después mueven ese día, l
 
 En **🎟️ Reservas según su plan**, toquen **✓** en cada reserva y escriban el **día y la hora** que les confirmaron. Queda en los dos teléfonos (por la hoja de Gastos). Las reservas con ticket en 🎫 Nuestros pases ya traen su fecha y hora.
 
-**Google Calendar** (la cuenta dueña de la hoja de Gastos): con Gastos conectado, la app crea y mantiene al día el calendario **«JD & Santi On Tour»**. Ahí van:
-- **cada reserva confirmada**, con alerta el día antes y 2 horas antes, también por correo;
-- **cuándo salen las reservas** que faltan, con alerta 30 min y 1 día antes;
-- **el plan de cada día**, con sus horas.
+**Google Calendar** (la cuenta dueña de la hoja de Gastos): con Gastos conectado, la app pone en el calendario **«JD & Santi On Tour»** **solo las reservas confirmadas**, con su día y hora y alerta el día antes y 2 horas antes (también por correo). Nada más del plan. Los tickets de 🎫 Nuestros pases cuentan como confirmados. Para recordatorios de todo el plan está el botón **📅 Recordatorios al calendario** (archivo .ics, opcional).
 
 Se sincroniza solo unos segundos después de cada cambio, o con **📅 Sincronizar ahora**. Si cambian un día o una hora, el evento se corrige solo.
 
