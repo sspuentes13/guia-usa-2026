@@ -89,6 +89,6 @@ function horarioHTML(i) {
     txt = grupos.map(function (g) { return (g.a === g.b ? DIAS_SEM[g.a] : DIAS_SEM[g.a] + '–' + DIAS_SEM[g.b]) + ' ' + g.v; }).join(' · ');
   }
   var plan = dias.filter(function (n) { return n >= 1 && n <= 26; }).map(function (n) { var dow = fechaDia(n).getDay(), oc = abreCierra(H, dow, isoDia(n)); return 'Día ' + n + ' (' + fechaCorta(n) + '): ' + (oc === null ? '⚠️ cerrado' : oc ? hhmm(oc[0]) + '–' + hhmm(oc[1]) : '—'); });
-  return '<div class="box horario"><h4>🕘 Horario verificado</h4>' + esc(txt) + (plan.length ? '<br><b>' + esc(plan.join(' · ')) + '</b>' : '') + (H.reserva ? '<br>🎟️ ' + esc(H.reserva) : '') + (H.precio ? '<br>💵 ' + esc(H.precio) : '') + (H.nota ? '<br>💡 ' + esc(H.nota) : '') +
+  return '<div class="box horario"><h4>🕘 Horario verificado</h4>' + esc(txt) + (plan.length ? '<br><b>' + esc(plan.join(' · ')) + '</b>' : '') + (H.reserva ? '<br>🎟️ ' + esc(H.reserva) : '') + (H.precio ? '<br>💵 ' + esc(H.precio) : '') + (H.nota ? '<br>💡 ' + esc(H.nota) : '') + (H.es ? '<br>🇪🇸 <b>En español:</b> ' + esc(H.es) : '') +
     (H.fuente ? '<br><a href="' + esc(H.fuente) + '" target="_blank" rel="noopener">Fuente oficial ↗</a>' : '') + (H.conf && H.conf !== 'alta' ? ' <small>(verificar cerca de la fecha)</small>' : '') + '</div>';
 }

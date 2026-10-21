@@ -2,7 +2,7 @@
    Cada plan es un lugar del mapa (P): se agrega a un día con el mismo selector del plan
    y entra a la ruta, al cronograma, a los avisos y al presupuesto de ese día. */
 
-var TIPOS_EXTRA = { museo: '🏛️ Museos gratis', ny: '🗽 Nueva York gratis', afuera: '🚌 Alrededores de Washington', paseo: '🌳 Paseos gratis', evento: '🎄 Eventos y ferias', misa: '⛪ Misa del domingo', hielo: '⛸️ Patinar en hielo', teatro: '🎭 Teatro y shows baratos', deporte: '🏀 Partidos baratos' };
+var TIPOS_EXTRA = { familia: '👨‍👩‍👦 En familia y con poco inglés', museo: '🏛️ Museos gratis', ny: '🗽 Nueva York gratis', afuera: '🚌 Alrededores de Washington', paseo: '🌳 Paseos gratis', evento: '🎄 Eventos y ferias', misa: '⛪ Misa del domingo', hielo: '⛸️ Patinar en hielo', teatro: '🎭 Teatro y shows baratos', deporte: '🏀 Partidos baratos' };
 
 function idxExtra(x) { return idxLugar(x.lugar); }
 /* Días en que se puede hacer (según funciones, temporada o domingos) */
@@ -34,7 +34,7 @@ function planesExtraHTML() {
       var i = idxExtra(x), p = P[i], ds = diasDe(p), sug = ds.length ? null : diaSugerido(x);
       h += '<article class="extra' + (ds.length ? ' en' : '') + '"><div class="extra-h"><span class="extra-e">' + emo(p) + '</span><div><b>' + esc(x.t) + '</b><small>' + esc(p.n) + ' · ' + esc(CITYNAME[p.c]) + '</small></div></div>' +
         '<div class="extra-p"><span class="pill o">' + esc(x.precio) + '</span>' + (x.idioma ? '<span class="pill">' + esc(x.idioma) + '</span>' : '') + (ds.length ? '<span class="pill g">✓ ' + ds.map(etiquetaDia).join(' y ') + '</span>' : '') + '</div>' +
-        '<p>' + esc(x.por) + '</p><small>🕘 ' + esc(x.cuando) + '</small>' + (x.como ? '<small>🎟️ ' + esc(x.como) + '</small>' : '') + (x.conf ? '<small><i>Confirmen cerca de la fecha: ' + esc(x.conf) + '</i></small>' : '') +
+        '<p>' + esc(x.por) + '</p><small>🕘 ' + esc(x.cuando) + '</small>' + (x.como ? '<small>🎟️ ' + esc(x.como) + '</small>' : '') + (x.es ? '<small>🇪🇸 ' + esc(x.es) + '</small>' : '') + (x.familia ? '<small>👨‍👩‍👦 ' + esc(x.familia) + '</small>' : '') + (x.conf ? '<small><i>Confirmen cerca de la fecha: ' + esc(x.conf) + '</i></small>' : '') +
         (!ds.length && sug ? '<small class="okt">💡 Mejor día: ' + etiquetaDia(sug) + ' (' + esc(DAYS[sug - 1].title) + ')</small>' : '') +
         '<div class="row">' + (ds.length ? '<button class="btn sm" data-xmv="' + i + '">📅 Cambiar de día</button><button class="btn sm" data-xq="' + i + '">Quitar</button>' :
           (sug ? '<button class="btn sm or" data-xadd="' + i + '" data-n="' + sug + '">＋ Agregar al ' + fechaCorta(sug) + '</button>' : '') + '<button class="btn sm" data-xmv="' + i + '">📅 Otro día</button>') +
