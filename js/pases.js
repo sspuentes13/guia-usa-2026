@@ -10,7 +10,8 @@ function pzBajar(f) { return fetch('pases/' + f).then(function (r) { if (!r.ok) 
 function pzDescifrar(buf) { var u = new Uint8Array(buf); return crypto.subtle.decrypt({ name: 'AES-GCM', iv: u.slice(0, 12) }, pz.llave, u.slice(12)); }
 
 function pasesAbrir(clave) {
-  clave = String(clave || '').trim().toLowerCase();
+  clave = String(clave || '').toLowerCase().replace(/[\s‐-―−_.]+/g, '-').replace(/^-+|-+$/g, '');   // celular: mayúsculas, espacios o guion largo
+  if (/^[a-z0-9]{12}$/.test(clave)) clave = clave.match(/.{4}/g).join('-');                                           // sin guiones
   if (!window.crypto || !crypto.subtle) return Promise.reject(new Error('Este navegador no puede abrir los pases. Usen Safari o Chrome.'));
   var L;
   pz.abriendo = fetch('pases/lista.json').then(function (r) { if (!r.ok) throw new Error('Sin internet: abran la guía una vez con wifi.'); return r.json(); }).then(function (x) {
