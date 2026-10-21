@@ -60,6 +60,7 @@ function planGuardar(local) {
   try { localStorage.setItem(PLAN_KEY, JSON.stringify(MIPLAN)); } catch (e) {}
   if (local) return;
   if (typeof gx !== 'undefined' && gx.conn && typeof gxProgramarSync === 'function') gxProgramarSync(700);
+  if (typeof programarCalendario === 'function') programarCalendario();
 }
 /* Cambio hecho por la persona: se guarda, se recalcula todo y se avisa a la otra persona */
 function planCambio(msg) {

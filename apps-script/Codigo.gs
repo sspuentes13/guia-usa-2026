@@ -132,6 +132,10 @@ function atender_(req) {
       var gastos = guardarGastos_(hojas.gastos, Array.isArray(req.gastos) ? req.gastos : []);
       return { ok: true, gastos: gastos, config: config, plan: plan.orden ? plan : null, ahora: Date.now() };
     }
+    if (req.accion === 'calendario') {
+      try { return sincronizarCalendario_(req.eventos); }
+      catch (err) { var m = String(err && err.message || err); return { ok: false, error: /permis|authoriz|autoriz/i.test(m) ? 'calendario_sin_permiso' : 'calendario', detalle: m.slice(0, 300) }; }
+    }
     return { ok: false, error: 'accion' };
   } finally {
     lock.releaseLock();
@@ -247,4 +251,69 @@ function guardarGastos_(hoja, entrantes) {
     filas = filas.concat(nuevas);
   }
   return filas.filter(function (f) { return f[0] !== ''; }).map(deFila_);
+}
+
+/* ---------- Google Calendar: reservas confirmadas, alertas y plan del viaje ----------
+   Los eventos van a un calendario aparte ("JD & Santi On Tour") en la cuenta dueña de este script,
+   para poder ocultarlo, compartirlo o borrarlo sin tocar el calendario principal.
+   La app manda la lista completa de eventos; aquí se crea lo nuevo, se rehace lo que cambió
+   y se borra lo que ya no está. Cada evento lleva una etiqueta k (id) y s (firma del contenido). */
+var CAL_NOMBRE = 'JD & Santi On Tour';
+var CAL_LOTE = 25;   // eventos creados o borrados por llamada (la app repite hasta terminar)
+
+/* Ejecutar UNA vez desde el editor (▶ Ejecutar) para dar permiso de calendario y crearlo. */
+function conectarCalendario() {
+  var c = calendario_();
+  Logger.log('Listo: calendario "' + c.getName() + '" conectado. Ya pueden sincronizar desde la app.');
+}
+
+function calendario_() {
+  var props = PropertiesService.getScriptProperties(), id = props.getProperty('CAL_ID');
+  var c = id ? CalendarApp.getCalendarById(id) : null;
+  if (!c) {
+    c = CalendarApp.createCalendar(CAL_NOMBRE, { timeZone: 'America/New_York', color: CalendarApp.Color.ORANGE });
+    props.setProperty('CAL_ID', c.getId());
+  }
+  return c;
+}
+
+function texto_(v, max) { return String(v == null ? '' : v).slice(0, max); }
+
+function sincronizarCalendario_(eventos) {
+  if (!Array.isArray(eventos) || eventos.length > 400) return { ok: false, error: 'eventos' };
+  var cal = calendario_();
+  var desde = new Date(2026, 8, 1), hasta = new Date(2027, 0, 31);
+  var hay = {}, iguales = 0, creados = 0, borrados = 0, pendientes = 0;
+  cal.getEvents(desde, hasta).forEach(function (e) {
+    var k = e.getTag('k');
+    if (!k) return;   // eventos creados a mano en este calendario: no se tocan
+    if (hay[k]) { if (borrados < CAL_LOTE) { e.deleteEvent(); borrados++; } else pendientes++; return; }   // duplicado
+    hay[k] = e;
+  });
+  var quiero = {};
+  eventos.forEach(function (x) {
+    var k = texto_(x.k, 80), ini = new Date(x.ini), min = Math.max(5, Math.min(24 * 60, Number(x.min) || 60));
+    if (!k || isNaN(ini.getTime()) || ini < desde || ini > hasta || quiero[k]) return;
+    var ev = { t: texto_(x.t, 200), d: texto_(x.d, 3000) + (x.u ? '\n\n' + texto_(x.u, 500) : ''), lugar: texto_(x.lugar, 200),
+      ini: ini.getTime(), min: min, alarmas: (Array.isArray(x.alarmas) ? x.alarmas : []).slice(0, 4).map(Number).filter(function (m) { return m >= 0 && m <= 40320; }), correo: !!x.correo };
+    var firma = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, JSON.stringify(ev), Utilities.Charset.UTF_8));
+    quiero[k] = 1;
+    var e = hay[k];
+    if (e && e.getTag('s') === firma) { iguales++; return; }
+    if (creados + borrados >= CAL_LOTE) { pendientes++; return; }
+    if (e) { e.deleteEvent(); borrados++; }
+    var n = cal.createEvent(ev.t, new Date(ev.ini), new Date(ev.ini + ev.min * 60000), { description: ev.d, location: ev.lugar });
+    n.setTag('k', k); n.setTag('s', firma);
+    n.removeAllReminders();
+    ev.alarmas.forEach(function (m) { n.addPopupReminder(m); });
+    if (ev.correo) n.addEmailReminder(ev.alarmas.length ? Math.max.apply(null, ev.alarmas) : 1440);
+    creados++;
+    Utilities.sleep(120);
+  });
+  Object.keys(hay).forEach(function (k) {
+    if (quiero[k]) return;
+    if (creados + borrados >= CAL_LOTE) { pendientes++; return; }
+    hay[k].deleteEvent(); borrados++;
+  });
+  return { ok: true, creados: creados, borrados: borrados, iguales: iguales, pendientes: pendientes, calendario: CAL_NOMBRE };
 }

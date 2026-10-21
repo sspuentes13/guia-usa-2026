@@ -16,8 +16,16 @@ function icsEventos(que) {
     var c = cuandoSale(r, x.n);
     if (r.sale.tipo === 'compra') { ev.push({ id: 'res-' + r.id, ini: new Date(Math.max(ahora.getTime() + 36e5, new Date(2026, 9, 8, 9).getTime())), min: 30, t: '🎟️ Comprar: ' + r.n, d: r.que + ' ' + r.cambio, u: r.u, alarmas: [0] }); return; }
     if (!c || c.t < ahora) return;
-    ev.push({ id: 'res-' + r.id, ini: c.t, min: 30, t: (c.limite ? '⏳ Último día: ' : '🎟️ Salen: ') + r.n + ' (para el ' + fechaCorta(x.n) + ')', d: r.que + ' Si se agotan: ' + r.segunda + ' Si no van: ' + r.noVan, u: r.u, alarmas: [30, 1440] });
+    ev.push({ id: 'res-' + r.id, ini: c.t, min: 30, t: (c.limite ? '⏳ Último día: ' : '🎟️ Salen: ') + r.n + ' (para el ' + fechaCorta(x.n) + ')', d: r.que + ' Si se agotan: ' + r.segunda + ' Si no van: ' + r.noVan, u: r.u, alarmas: [30, 1440], correo: true });
   });
+  // 1b) reservas confirmadas: el día y la hora que les dieron, con alarma el día antes y 2 h antes
+  if (que !== 'plan') { var hc = hechas(); RESERVAS.forEach(function (r) {
+    var x = hc[r.id]; if (!x || !x.f) return;
+    var fila = filaReserva(r, ahora, hc), h = horaNum(x.h || (fila && fila.hora) || '') , n = diaDeIso(x.f), i = idxLugar(r.lugar), H = i > -1 && typeof horario === 'function' ? horario(i) : null, p = i > -1 ? P[i] : null;
+    if (n < 1) return;
+    ev.push({ id: 'conf-' + r.id, ini: icsInstante(n, h != null ? h : 9), min: Math.max(60, (H && H.dur) || 60), t: '✅ ' + r.n + (h != null ? '' : ' (hora por confirmar)'),
+      d: 'Reserva confirmada para el ' + fechaIsoTxt(x.f) + (x.h ? ' a las ' + x.h : '') + '.' + (x.pase ? ' El ticket está en la app: 🎫 Nuestros pases.' : '') + '\n' + r.que, u: r.u, lugar: p ? p.n + ', ' + (CITYNAME[p.c] || '') : '', alarmas: [120, 1440], correo: true });
+  }); }
   // 2) pendientes antes del viaje que tienen fecha (check-in, seguro…)
   if (que !== 'plan' && typeof PREPARAR !== 'undefined') PREPARAR.forEach(function (g) { g.items.forEach(function (it) { if (it.fecha && !(MIPLAN.chk || {})[it.id]) { var f = new Date(it.fecha); if (f > ahora) ev.push({ id: 'prep-' + it.id, ini: f, min: 30, t: '🧳 ' + it.t, d: it.d || '', alarmas: [0, 1440] }); } }); });
   // 3) actividades con hora de cada día del plan
@@ -60,3 +68,54 @@ function descargarIcs(txt, nombre) {
   a.href = u; a.download = nombre; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
 }
+
+/* ---------- Google Calendar (cuenta dueña de la hoja de Gastos) ----------
+   Usa la misma conexión de Gastos: el script crea y actualiza el calendario «JD & Santi On Tour»
+   con las reservas confirmadas, las alertas de cuándo salen y el plan de cada día.
+   Se sincroniza solo unos segundos después de cada cambio; solo viaja lo que cambió. */
+var gcal = { timer: null, corriendo: null };
+function gcalLeer(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+function gcalGuardar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function gcalEventos() {
+  return icsEventos('todo').map(function (e) {
+    return { k: e.id, t: e.t, ini: e.ini.toISOString(), min: e.min, d: e.d || '', u: e.u || '', lugar: e.lugar || '', alarmas: e.alarmas || [], correo: !!e.correo };
+  });
+}
+function gcalFirma(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return s.length + '.' + h; }
+function gcalConectado() { return typeof gx !== 'undefined' && !!gx.conn; }
+function programarCalendario() { if (!gcalConectado()) return; clearTimeout(gcal.timer); gcal.timer = setTimeout(function () { sincronizarGoogle(false); }, 5000); }
+function sincronizarGoogle(manual) {
+  if (!gcalConectado()) { if (manual) toast('Primero conecten la pestaña 💸 Gastos en este teléfono'); return Promise.resolve(); }
+  if (gcal.corriendo) return gcal.corriendo;
+  var ev = gcalEventos(), firma = gcalFirma(JSON.stringify(ev)), est = gcalLeer('guiaGcal') || {};
+  if (!manual && est.firma === firma && !est.err) return Promise.resolve();
+  if (navigator.onLine === false) { if (manual) toast('Sin internet: se sincroniza al volver la conexión'); return Promise.resolve(); }
+  var vueltas = 0, creados = 0;
+  if (manual) toast('📅 Sincronizando ' + ev.length + ' eventos con Google Calendar…');
+  function una() {
+    return gxApi({ accion: 'calendario', clave: gx.conn.clave, eventos: ev }).then(function (j) {
+      vueltas++; creados += j.creados || 0;
+      if (j.pendientes > 0 && vueltas < 25) { if (manual) toast('📅 Google Calendar: ' + creados + ' listos, faltan ' + j.pendientes + '…'); return una(); }
+      return j;
+    });
+  }
+  gcal.corriendo = una().then(function () {
+    gcalGuardar('guiaGcal', { firma: firma, cuando: Date.now(), n: ev.length });
+    if (manual) toast('✓ Google Calendar al día: ' + ev.length + ' eventos con alarma');
+  }, function (e) {
+    var msg = e.code === 'calendario_sin_permiso' ? 'Falta autorizar el calendario una sola vez (ver README → Google Calendar).' : e.code === 'accion' ? 'Falta actualizar el script de la hoja.' : (e.message || 'No se pudo conectar con Google Calendar.');
+    gcalGuardar('guiaGcal', { firma: '', cuando: Date.now(), err: msg });
+    if (manual) toast('⚠️ ' + msg);
+  }).then(function () { gcal.corriendo = null; var el = document.getElementById('gcalBox'); if (el) el.outerHTML = gcalHTML(); bindGcal(); });
+  return gcal.corriendo;
+}
+function gcalHTML() {
+  var est = gcalLeer('guiaGcal') || {}, h = '<div class="box gcal" id="gcalBox"><b>📅 Google Calendar</b><br>';
+  if (!gcalConectado()) h += '<span class="gnota">Para que cada reserva confirmada llegue sola a Google Calendar (con alerta el día antes y 2 horas antes), conecten la pestaña <b>💸 Gastos</b> en este teléfono. Mientras, usen <b>📅 Recordatorios al calendario</b>.</span>';
+  else if (est.err) h += '<span class="av">⚠️ ' + esc(est.err) + '</span>';
+  else if (est.cuando) h += '<span class="okt">✓ Al día: ' + est.n + ' eventos en el calendario «JD & Santi On Tour»</span> <small>(' + new Date(est.cuando).toLocaleString('es-CO', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) + ')</small>';
+  else h += '<span class="gnota">Todavía no se ha sincronizado.</span>';
+  if (gcalConectado()) h += '<div class="row mt"><button class="btn sm or" id="gcalSync">📅 Sincronizar ahora</button></div>';
+  return h + '</div>';
+}
+function bindGcal() { var b = document.getElementById('gcalSync'); if (b) b.onclick = function () { b.disabled = true; sincronizarGoogle(true); }; }

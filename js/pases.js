@@ -44,7 +44,7 @@ function pasesComoRes(x) {
   (PASES || []).forEach(function (p) {
     if (!p.res) return;
     var n = pzDiaPlan(p), f = p.fecha || (o[p.res] && o[p.res].f) || (n ? isoDia(n) : null);
-    if (f) o[p.res] = { f: f, pase: p.id };
+    if (f) o[p.res] = { f: f, h: p.hora || (o[p.res] && o[p.res].h) || '', pase: p.id };
   });
   return o;
 }

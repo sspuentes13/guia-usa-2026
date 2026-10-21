@@ -56,6 +56,17 @@ var RESERVAS = [
   { id: 'grabado', n: 'Tour de la Oficina de Grabado (dólares)', lugar: 'Oficina de Grabado (donde imprimen dólares)', sale: { tipo: 'ya' }, u: 'https://www.bep.gov/visitor-centers/washington-dc-tour-and-visitor-center/tour/',
     que: 'Tiquete gratis con hora: lunes a viernes, recorridos de 9:00 a 14:00 (máximo 9 por persona).', porque: 'A las 11:30 alcanzan a dormir después de Nueva York, y queda al lado del Museo del Holocausto.',
     segunda: 'El mismo día salen pocos en línea a las 8:00, por orden de llegada.', noVan: 'Gratis: no pierden nada.', cambio: 'Reserven otro turno.', plata: 'Nada' },
+  { id: 'capitolioes', n: 'Tour del Capitolio EN ESPAÑOL (opcional)', lugar: 'Capitolio', sale: { tipo: 'ya' }, u: 'mailto:CVCReservations@aoc.gov?subject=Spanish%20tour%20request',
+    que: 'Tour guiado en español a las 8:40, con audífonos de traducción. Se pide por correo a CVCReservations@aoc.gov entre 3 y 90 días antes (fecha, hora 8:40, número de personas y nombres).', porque: 'Para entender todo sin depender del inglés. Si lo confirman, cancelen el de las 9:20 para liberar los cupos.',
+    segunda: 'En los mostradores dan un folleto en español que sigue al guía del tour en inglés.', noVan: 'Gratis: avisen por correo.', cambio: 'Escriban al mismo correo.', plata: 'Nada' },
+  { id: 'planetword', n: 'Planet Word (pase gratis)', lugar: 'Planet Word (museo del idioma)', sale: { tipo: 'ya' }, u: 'https://planetwordmuseum.org/plan-your-visit/',
+    que: 'Pase gratis con hora (recomendado). Los de noviembre ya salieron.', porque: 'El mismo día quedan pocos.', segunda: 'Lleguen temprano: hay algunos cupos sin reserva.', noVan: 'Gratis: no pierden nada.', cambio: 'Saquen otro pase.', plata: 'Nada' },
+  { id: 'dumbarton', n: 'Dumbarton Oaks (registro gratis)', lugar: 'Jardines de Dumbarton Oaks', sale: { tipo: 'ya' }, u: 'https://www.doaks.org/visit/plan',
+    que: 'Gratis del 1 nov al 31 dic. Registro gratis en Eventbrite (recomendado; la web se contradice).', porque: 'Asegura la entrada en la tarde (14:00–17:00).', segunda: 'Prueben en la puerta.', noVan: 'Gratis: no pierden nada.', cambio: 'Regístrense para otro día.', plata: 'Nada' },
+  { id: 'sphere', n: 'Universal Sphere (tiquete gratis del mismo día)', lugar: 'Universal Sphere y videopared de Comcast', sale: { tipo: 'dias', dias: 0, h: 9 }, u: 'https://comcastcentercampus.com/universal-sphere',
+    que: 'Tiquete gratis del mismo día en TheUniversalSphere.com desde las 9:00 (o en el lugar con un guía).', porque: 'La función actual termina el 20 nov.', segunda: 'Pidan cupo en el lugar.', noVan: 'Gratis.', cambio: 'Solo sirve el mismo día.', plata: 'Nada' },
+  { id: 'glenstone', n: 'Glenstone (tiquete gratis)', lugar: 'Glenstone (arte y naturaleza, Maryland)', sale: { tipo: 'ya' }, u: 'https://www.glenstone.org/plan-your-visit',
+    que: 'Tiquete gratis con hora (salen el día 1 de cada mes a las 10:00). Si llegan en el bus Ride On 301, entran sin reserva.', porque: 'Los fines de semana se agotan.', segunda: 'Lleguen en el bus 301: entran sin tiquete.', noVan: 'Gratis.', cambio: 'Saquen otro.', plata: 'Nada' },
   { id: 'marc', n: 'Tren MARC a Baltimore', lugar: 'Monumento a Washington', horaTren: 1, sale: { tipo: 'nada' }, u: 'https://www.mta.maryland.gov/',
     que: 'No lo compren antes: el tiquete no tiene fecha, vale 6 meses y no se devuelve.', porque: 'Sábado: el Walters y el Monumento abren (lunes y martes cierran).',
     segunda: 'Cómprenlo ese día en la app CharmPass o en la máquina de Union Station (US$9).', noVan: 'Si no lo compraron antes, no pierden nada.', cambio: 'No hace falta: sirve cualquier día.', plata: 'Nada si compran ese día' }
@@ -92,6 +103,7 @@ function filaReserva(r, ahora, hc) {
   var c = cuandoSale(r, n), hecha = hc[r.id], f = horaFija(P[i], n), hora = f ? horaTxt(f.t) : '';
   if (r.horaTren) { var acts = diaDeN(n).acts; for (var q = 0; q < acts.length; q++) if (horaNum(acts[q][0]) != null) { hora = (typeof r.horaTren === 'string' ? r.horaTren : 'tren de las') + ' ' + acts[q][0]; break; } }
   var otra = hecha && hecha.f && hecha.f !== isoDia(n);
+  if (hecha && hecha.h && !otra) hora = hecha.h;
   var est, cl, orden;
   if (hecha && !otra) { est = 'Lista'; cl = 'g'; orden = 9e15; }
   else if (otra) { est = 'Cambiar'; cl = 'r'; orden = 0; }
@@ -108,6 +120,26 @@ function filaReserva(r, ahora, hc) {
   } else if (r.sale.tipo === 'ya') cuando = 'Ya se puede reservar';
   return { r: r, n: n, hora: hora, est: est, cl: cl, orden: orden, cuando: cuando, hecha: hecha, otra: otra };
 }
+/* Confirmar una reserva con el día y la hora que les dieron (va al plan compartido y a Google Calendar) */
+function confirmarReserva(id, fPlan, el) {
+  var r = RESERVAS.filter(function (x) { return x.id === id; })[0]; if (!r) return;
+  var res = MIPLAN.res || {}, x = res[id] || {}, fila = filaReserva(r, new Date(), hechas()) || {}, hc = hechas()[id] || {};
+  var hn = horaNum(x.h || hc.h || fila.hora || ''), hora = hn != null ? ('0' + Math.floor(hn)).slice(-2) + ':' + ('0' + Math.round(hn % 1 * 60)).slice(-2) : '';
+  var h = '<p class="gnota">Escriban el día y la hora que les confirmaron. Queda guardado en los dos teléfonos y, si Google Calendar está conectado, se crea el evento con alerta el día antes y 2 horas antes.</p>' +
+    (hc.pase ? '<p class="gnota">🎫 Esta reserva ya tiene ticket en la carpeta: la fecha del ticket manda.</p>' : '') +
+    '<div class="pzform"><label class="gl">Día<input class="gin" type="date" id="rcF" min="2026-10-30" max="2026-11-24" value="' + (x.f || hc.f || fPlan) + '"></label><label class="gl">Hora<input class="gin" type="time" id="rcH" value="' + hora + '"></label></div>' +
+    '<div class="row mt"><button class="btn pri" id="rcOk">✓ Reserva confirmada</button>' + (res[id] ? '<button class="btn gdel" id="rcNo">Quitar ✓</button>' : '') + '<a class="btn" href="' + r.u + '" target="_blank" rel="noopener">Abrir la página ↗</a></div>';
+  hoja('🎟️ ' + r.n, h, function (d) {
+    function guardar(v) { MIPLAN.res = res; if (v) res[id] = v; else delete res[id]; MIPLAN.modificado = Date.now(); MIPLAN.pend = 1; planGuardar(); cerrarHoja(); renderReservas(el); }
+    d.querySelector('#rcOk').onclick = function () {
+      var f = d.querySelector('#rcF').value, hh = d.querySelector('#rcH').value;
+      if (!f) return toast('Escojan el día');
+      guardar({ f: f, h: hh ? String(+hh.split(':')[0]) + ':' + hh.split(':')[1] : '', t: Date.now() });
+      toast('✓ ' + r.n + ': ' + fechaIsoTxt(f) + (hh ? ' a las ' + hh : ''));
+    };
+    var no = d.querySelector('#rcNo'); if (no) no.onclick = function () { guardar(null); toast('Reserva desmarcada'); };
+  });
+}
 function renderReservas(el) {
   if (!el) return;
   var ahora = new Date(), hc = hechas();
@@ -117,16 +149,18 @@ function renderReservas(el) {
   var pend = L.filter(function (x) { return !x.hecha && x.r.sale.tipo !== 'nada'; }).length, malas = L.filter(function (x) { return x.otra; }).length;
   var av = avisosPlan();
   var h = '<div class="row spread"><h3 class="gh3">🎟️ Reservas según su plan</h3><span class="pill ' + (av ? 'r' : 'g') + '">' + (av ? '⚠️ ' + av + ' aviso' + (av > 1 ? 's' : '') + ' en el plan' : '✓ Fechas sin choques') + '</span></div>';
-  h += '<p class="gnota" style="margin:0 0 10px">' + (malas ? '<b class="av">⚠️ ' + malas + ' reserva' + (malas > 1 ? 's quedaron' : ' quedó') + ' en otra fecha por un cambio del plan.</b> ' : '') + (pend ? 'Faltan ' + pend + '. Marquen ✓ cuando reserven: queda guardada la fecha.' : '✓ ¡Todo listo!') + ' Si mueven un día, las fechas se recalculan solas.</p>';
+  h += '<p class="gnota" style="margin:0 0 10px">' + (malas ? '<b class="av">⚠️ ' + malas + ' reserva' + (malas > 1 ? 's quedaron' : ' quedó') + ' en otra fecha por un cambio del plan.</b> ' : '') + (pend ? 'Faltan ' + pend + '. Cuando reserven, toquen ✓ y escriban el día y la hora: queda en los dos teléfonos y en Google Calendar con alerta.' : '✓ ¡Todo listo!') + ' Si mueven un día, las fechas se recalculan solas.</p>';
   h += '<ul class="reservas">';
   L.forEach(function (x) {
     var r = x.r;
-    h += '<li class="' + (x.hecha && !x.otra ? 'ok' : x.cl === 'r' ? 'urge' : '') + '"><button class="rchk" data-r="' + r.id + '" data-f="' + isoDia(x.n) + '" aria-label="Marcar como reservada">' + (x.hecha ? '✓' : '') + '</button><div><b>' + esc(r.n) + '</b><small>Para el <b>Día ' + x.n + ' · ' + fechaCorta(x.n) + (x.hora ? ', ' + x.hora : '') + '</b>' + (x.cuando ? ' · ' + esc(x.cuando) : '') + '</small>' +
+    h += '<li class="' + (x.hecha && !x.otra ? 'ok' : x.cl === 'r' ? 'urge' : '') + '"><button class="rchk" data-r="' + r.id + '" data-f="' + isoDia(x.n) + '" aria-label="Confirmar día y hora">' + (x.hecha ? '✓' : '') + '</button><div><b>' + esc(r.n) + '</b><small>Para el <b>Día ' + x.n + ' · ' + fechaCorta(x.n) + (x.hora ? ', ' + x.hora : '') + '</b>' + (x.cuando ? ' · ' + esc(x.cuando) : '') + '</small>' +
+      (x.hecha && !x.otra ? '<small class="okt">✓ Confirmada: ' + fechaIsoTxt(x.hecha.f) + (x.hecha.h ? ', ' + esc(x.hecha.h) : ' (toquen ✓ para poner la hora)') + (x.hecha.pase ? ' · ticket en 🎫 Nuestros pases' : '') + '</small>' : '') +
       (x.otra ? '<small class="av">⚠️ Reservaron para el ' + fechaIsoTxt(x.hecha.f) + ', pero el plan ahora dice ' + fechaCorta(x.n) + '. ' + esc(r.cambio) + '</small>' : '') +
       '<details class="rdet"><summary>Qué pasa si…</summary><dl><dt>📝 Qué es</dt><dd>' + esc(r.que) + '</dd><dt>🤔 Por qué ese día</dt><dd>' + esc(r.porque) + '</dd><dt>🔁 Si se agotan</dt><dd>' + esc(r.segunda) + '</dd><dt>🙅 Si reservan y no van</dt><dd>' + esc(r.noVan) + '</dd><dt>📅 Cambiar la fecha</dt><dd>' + esc(r.cambio) + '</dd><dt>💵 Plata en riesgo</dt><dd>' + esc(r.plata) + '</dd></dl></details></div>' +
       '<div class="rcu"><span class="pill ' + x.cl + '">' + (x.hecha && !x.otra ? (x.hecha.pase ? '🎫 Con ticket' : 'Lista') : x.est) + '</span>' + (x.hecha && x.hecha.pase ? '<button class="lnk" data-pz="' + esc(x.hecha.pase) + '">Ver pase</button>' : '<a href="' + r.u + '" target="_blank" rel="noopener">Abrir ↗</a>') + '</div></li>';
   });
   h += '</ul>';
+  if (typeof gcalHTML === 'function') h += gcalHTML();
   h += '<details class="rdet faq"><summary>🤔 ¿Son las mejores fechas? ¿Y si reservamos y no vamos?</summary><ul class="insights">' +
     '<li><b>Fechas:</b> ' + (av ? 'hay ' + av + ' aviso' + (av > 1 ? 's' : '') + ' en el plan actual: ábranlos en la pestaña Días.' : 'con el plan actual todo abre el día que van y no hay choques de horario.') + ' Arlington va primero (llegan a casa), luego DC entre semana (menos filas), Nueva York lunes y martes con una noche de hotel (el lunes el museo del 11-S es gratis en la tarde), Baltimore un sábado (el Walters abre) y al final compras.</li>' +
     '<li><b>Pases gratis</b> (Capitolio, Library, museos, Zoo): si no van no pierden nada. Cancelen para liberar el cupo y saquen otro para el día nuevo.</li>' +
@@ -137,14 +171,9 @@ function renderReservas(el) {
   el.innerHTML = h;
   [].forEach.call(el.querySelectorAll('[data-pz]'), function (b) { b.onclick = function () { verPase(b.dataset.pz); }; });
   [].forEach.call(el.querySelectorAll('[data-r]'), function (b) {
-    b.onclick = function () {
-      var x = MIPLAN.res || {}, id = b.dataset.r;
-      if (x[id] && x[id].f === b.dataset.f) delete x[id]; else x[id] = { f: b.dataset.f, t: Date.now() };
-      MIPLAN.res = x; MIPLAN.modificado = Date.now(); MIPLAN.pend = 1; planGuardar();
-      toast(x[id] ? '✓ Reserva guardada para el ' + fechaIsoTxt(b.dataset.f) : 'Reserva desmarcada');
-      renderReservas(el);
-    };
+    b.onclick = function () { confirmarReserva(b.dataset.r, b.dataset.f, el); };
   });
+  if (typeof bindGcal === 'function') bindGcal();
 }
 
 /* Día de hoy durante el viaje */
