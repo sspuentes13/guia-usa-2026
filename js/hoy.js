@@ -150,6 +150,7 @@ function renderReservas(el) {
   var av = avisosPlan();
   var h = '<div class="row spread"><h3 class="gh3">🎟️ Reservas según su plan</h3><span class="pill ' + (av ? 'r' : 'g') + '">' + (av ? '⚠️ ' + av + ' aviso' + (av > 1 ? 's' : '') + ' en el plan' : '✓ Fechas sin choques') + '</span></div>';
   h += '<p class="gnota" style="margin:0 0 10px">' + (malas ? '<b class="av">⚠️ ' + malas + ' reserva' + (malas > 1 ? 's quedaron' : ' quedó') + ' en otra fecha por un cambio del plan.</b> ' : '') + (pend ? 'Faltan ' + pend + '. Cuando reserven, toquen ✓ y escriban el día y la hora: queda en los dos teléfonos y en Google Calendar con alerta.' : '✓ ¡Todo listo!') + ' Si mueven un día, las fechas se recalculan solas.</p>';
+  if (typeof gcalHTML === 'function') h += gcalHTML();
   h += '<ul class="reservas">';
   L.forEach(function (x) {
     var r = x.r;
@@ -160,7 +161,6 @@ function renderReservas(el) {
       '<div class="rcu"><span class="pill ' + x.cl + '">' + (x.hecha && !x.otra ? (x.hecha.pase ? '🎫 Con ticket' : 'Lista') : x.est) + '</span>' + (x.hecha && x.hecha.pase ? '<button class="lnk" data-pz="' + esc(x.hecha.pase) + '">Ver pase</button>' : '<a href="' + r.u + '" target="_blank" rel="noopener">Abrir ↗</a>') + '</div></li>';
   });
   h += '</ul>';
-  if (typeof gcalHTML === 'function') h += gcalHTML();
   h += '<details class="rdet faq"><summary>🤔 ¿Son las mejores fechas? ¿Y si reservamos y no vamos?</summary><ul class="insights">' +
     '<li><b>Fechas:</b> ' + (av ? 'hay ' + av + ' aviso' + (av > 1 ? 's' : '') + ' en el plan actual: ábranlos en la pestaña Días.' : 'con el plan actual todo abre el día que van y no hay choques de horario.') + ' Arlington va primero (llegan a casa), luego DC entre semana (menos filas), Nueva York lunes y martes con una noche de hotel (el lunes el museo del 11-S es gratis en la tarde), Baltimore un sábado (el Walters abre) y al final compras.</li>' +
     '<li><b>Pases gratis</b> (Capitolio, Library, museos, Zoo): si no van no pierden nada. Cancelen para liberar el cupo y saquen otro para el día nuevo.</li>' +

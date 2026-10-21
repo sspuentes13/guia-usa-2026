@@ -5,7 +5,7 @@
    - Gastos (Google Apps Script): nunca se guardan aquí.
    - Pases (pases/*.bin): cifrados; se guardan al instalar para abrirlos sin internet.
    Al publicar cambios grandes, sube VERSION para forzar la actualización. */
-var VERSION = '2026-10-21f';
+var VERSION = '2026-10-21g';
 var SHELL='guia-app-'+VERSION, PREP='guia-tiles-prep', VIS='guia-tiles-vis', EXT='guia-ext';
 var ARCHIVOS=['./','index.html','manifest.webmanifest','css/leaflet.css','css/app.css','css/gastos.css','css/ui.css',
   'js/vendor/leaflet.js','js/datos/lugares.js','js/datos/ciudades.js','js/datos/presupuesto.js','js/datos/dias.js',

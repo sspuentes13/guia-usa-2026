@@ -495,5 +495,5 @@ ul.prep{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:6px}
 .pzimg img{display:block;width:100%;height:auto;border-radius:8px}
 .pzimg.qr img{image-rendering:pixelated}
 .pzph{padding:30px 0;color:var(--ink-2);font-size:14px}
-.gcal{margin-top:10px}.gcal .okt{font-weight:700}
+.gcal{margin:0 0 10px}.gcal .okt{font-weight:700}
 .pzform .gl{flex:1;display:block;font-size:13px;font-weight:700}

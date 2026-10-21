@@ -103,7 +103,7 @@ function sincronizarGoogle(manual) {
     gcalGuardar('guiaGcal', { firma: firma, cuando: Date.now(), n: ev.length });
     if (manual) toast('✓ Google Calendar al día: ' + ev.length + ' eventos con alarma');
   }, function (e) {
-    var msg = e.code === 'calendario_sin_permiso' ? 'Falta autorizar el calendario una sola vez (ver README → Google Calendar).' : e.code === 'accion' ? 'Falta actualizar el script de la hoja.' : (e.message || 'No se pudo conectar con Google Calendar.');
+    var msg = e.code === 'calendario_sin_permiso' ? 'Falta autorizar el calendario una sola vez (ver README → Google Calendar).' : e.code === 'accion' ? 'Falta actualizar el script de la hoja.' : e.code === 'calendario' ? 'Google Calendar respondió: ' + (e.detalle || 'error') : (e.message || 'No se pudo conectar con Google Calendar.');
     gcalGuardar('guiaGcal', { firma: '', cuando: Date.now(), err: msg });
     if (manual) toast('⚠️ ' + msg);
   }).then(function () { gcal.corriendo = null; var el = document.getElementById('gcalBox'); if (el) el.outerHTML = gcalHTML(); bindGcal(); });
@@ -114,7 +114,8 @@ function gcalHTML() {
   if (!gcalConectado()) h += '<span class="gnota">Para que cada reserva confirmada llegue sola a Google Calendar (con alerta el día antes y 2 horas antes), conecten la pestaña <b>💸 Gastos</b> en este teléfono. Mientras, usen <b>📅 Recordatorios al calendario</b>.</span>';
   else if (est.err) h += '<span class="av">⚠️ ' + esc(est.err) + '</span>';
   else if (est.cuando) h += '<span class="okt">✓ Al día: ' + est.n + ' eventos en el calendario «JD & Santi On Tour»</span> <small>(' + new Date(est.cuando).toLocaleString('es-CO', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) + ')</small>';
-  else h += '<span class="gnota">Todavía no se ha sincronizado.</span>';
+  else h += '<span class="gnota">Todavía no se ha sincronizado: toquen <b>📅 Sincronizar ahora</b>.</span>';
+  if (gcalConectado() && est.cuando && !est.err) h += '<br><small>¿No lo ven? Los eventos son de noviembre. En calendar.google.com marquen «JD & Santi On Tour» en <i>Mis calendarios</i>; en iPhone actívenlo en <a href="https://calendar.google.com/calendar/syncselect" target="_blank" rel="noopener">calendar.google.com/calendar/syncselect</a>.</small>';
   if (gcalConectado()) h += '<div class="row mt"><button class="btn sm or" id="gcalSync">📅 Sincronizar ahora</button></div>';
   return h + '</div>';
 }

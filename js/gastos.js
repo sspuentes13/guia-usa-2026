@@ -79,7 +79,7 @@ function gxErr(c){return {clave:'Clave incorrecta.',bloqueado:'Demasiados intent
 function gxApi(req,url){return fetch(url||gx.conn.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(req),redirect:'follow',cache:'no-store'})
  .then(function(r){if(!r.ok)throw new Error('El script respondió '+r.status+'. Revisa que esté publicado para “Cualquier persona”.');return r.text()})
  .then(function(t){var j;try{j=JSON.parse(t)}catch(e){throw new Error('El enlace no parece ser el del script (debe terminar en /exec).')}
-  if(!j.ok){var e=new Error(gxErr(j.error));e.code=j.error;throw e}return j})}
+  if(!j.ok){var e=new Error(gxErr(j.error));e.code=j.error;e.detalle=j.detalle||'';throw e}return j})}
 function gxConectar(url,clave){url=String(url||'').trim();clave=String(clave||'');
  if(!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(url))return Promise.reject(new Error('El enlace debe verse así: https://script.google.com/macros/s/…/exec'));
  if(!clave)return Promise.reject(new Error('Escribe la clave.'));
@@ -93,7 +93,7 @@ function gxSync(){
  var pend=gx.items.filter(function(x){return x._pend});
  gx.sync.estado='sync';gxPintarEstado();
  gx.syncP=gxApi({accion:'sync',clave:gx.conn.clave,gastos:pend.map(gxLimpio),config:gx.cfgPend?gx.cfg:null,plan:typeof planParaSync==='function'?planParaSync():null}).then(gxAplicar).then(function(){
-  gx.sync={estado:'ok',cuando:Date.now(),error:''};return gxKv('ultimaSync',gx.sync.cuando)
+  gx.sync={estado:'ok',cuando:Date.now(),error:''};if(typeof programarCalendario==='function')programarCalendario();return gxKv('ultimaSync',gx.sync.cuando)
  }).catch(function(e){gx.sync.estado='error';gx.sync.error=e.message;console.warn('sync',e)}).then(function(){gx.syncP=null;gxPintarEstado();gxRefrescarSiSeguro()});
  return gx.syncP}
 function gxAplicar(j){if(j.plan&&typeof planRemoto==='function')planRemoto(j.plan);var map={},cambios=[];gx.items.forEach(function(x){map[x.id]=x});
