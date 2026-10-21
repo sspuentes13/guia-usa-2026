@@ -54,7 +54,7 @@ Los días 8, 11 y 15 son de descanso.
 
 ## ✨ Planes extra: museos gratis, Nueva York, alrededores, teatro, patinaje y misa
 
-En la pestaña **Días**, la tarjeta **✨ Planes extra** tiene 58 planes: 13 verificados el 6 oct 2026, 26 gratis y 19 **en familia y con poco inglés** agregados el 21 oct 2026 (los gratis también salen en la pestaña **Gratis**). Cada uno se puede agregar a un día, cambiar o quitar. Al agregarlo entra a la ruta, al cronograma, a los avisos y al presupuesto, y la app solo sugiere días en que hay función o abre.
+En la pestaña **Días**, la tarjeta **✨ Planes extra** tiene 60 planes: 15 de teatro, patinaje, misa y deportes (6 oct 2026), 26 gratis y 19 **en familia y con poco inglés** agregados el 21 oct 2026 (los gratis también salen en la pestaña **Gratis**). Cada uno se puede agregar a un día, cambiar o quitar. Al agregarlo entra a la ruta, al cronograma, a los avisos y al presupuesto, y la app solo sugiere días en que hay función o abre.
 
 Ya quedaron en el plan (los opcionales se pueden quitar):
 
