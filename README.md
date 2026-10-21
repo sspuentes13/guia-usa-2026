@@ -54,7 +54,7 @@ Los días 8, 11 y 15 son de descanso.
 
 ## ✨ Planes extra: museos gratis, Nueva York, alrededores, teatro, patinaje y misa
 
-En la pestaña **Días**, la tarjeta **✨ Planes extra** tiene 60 planes: 15 de teatro, patinaje, misa y deportes (6 oct 2026), 26 gratis y 19 **en familia y con poco inglés** agregados el 21 oct 2026 (los gratis también salen en la pestaña **Gratis**). Cada uno se puede agregar a un día, cambiar o quitar. Al agregarlo entra a la ruta, al cronograma, a los avisos y al presupuesto, y la app solo sugiere días en que hay función o abre.
+En la pestaña **Días**, la tarjeta **✨ Planes extra** tiene 64 planes: 15 de teatro, patinaje, misa y deportes (6 oct 2026), 26 gratis y 23 **en familia, 100 % gratis y con poco inglés** agregados el 21 oct 2026 (los gratis también salen en la pestaña **Gratis**). Cada uno se puede agregar a un día, cambiar o quitar. Al agregarlo entra a la ruta, al cronograma, a los avisos y al presupuesto, y la app solo sugiere días en que hay función o abre.
 
 Ya quedaron en el plan (los opcionales se pueden quitar):
 
@@ -73,11 +73,13 @@ Ya quedaron en el plan (los opcionales se pueden quitar):
 - **Baltimore y Filadelfia:** Museo de Arte de Baltimore (Matisse) y la Casa de la Moneda.
 - **Ojo:** el Met y el Museo de Historia Natural de NY **no** son gratis para turistas (el «paga lo que quieras» es solo para residentes de Nueva York). Great Falls, el Museo de los Marines y Annapolis quedaron fuera: sin transporte público razonable.
 
-**👨‍👩‍👦 En familia y con poco inglés (21 oct 2026):**
-- **En español:** Museo de Arte de las Américas (OEA) e Instituto Cultural de México, gratis y con personal que habla español.
-- **Sin idioma, gratis:** mirador de la Torre del Reloj (Old Post Office, mié–sáb 9:00–12:00), jardines de Dumbarton Oaks (gratis en noviembre), Gran Salón del Museo de la Construcción (LEGO hasta el 20 nov), Biblioteca MLK, luces de Franklin Park y mercado navideño de Union Square (NY).
-- **Baratos y muy divertidos:** carrusel del Mall (US$6), ZooLights (US$10, desde el 20 nov), Museo de las Ilusiones, ARTECHOUSE, Espionaje, Centro de Ciencias de Baltimore, Franklin Institute y Eastern State (Filadelfia), Intrepid, MoMath y el zoológico de Central Park (NY).
-- **🇪🇸 En español en lo que ya estaba:** la ficha de cada lugar dice qué hay en español. Lo más útil: el **Capitolio tiene tour en español a las 8:40** (se pide por correo a CVCReservations@aoc.gov, de 3 a 90 días antes), la National Gallery tiene audioguía gratis en español y Mount Vernon y Eastern State, audioguía en español.
+**👨‍👩‍👦 En familia, 100 % gratis y con poco inglés (21 oct 2026):** no se paga ninguna entrada, solo el transporte.
+- **En español:** Museo de Arte de las Américas (OEA) e Instituto Cultural de México, con personal que habla español.
+- **Washington:** mirador de la Torre del Reloj (Old Post Office, mié–sáb 9:00–12:00), Spark!Lab (inventar con las manos) y Q?rius (fósiles y microscopios), jardines de Dumbarton Oaks (gratis en noviembre), Gran Salón del Museo de la Construcción, Biblioteca MLK, luces de Franklin Park, encendido del árbol de CityCenterDC (sáb 14) y fuegos artificiales en National Harbor (sábados 17:30, desde el 7 nov).
+- **Baltimore:** Basílica (la primera catedral del país), Biblioteca Pratt y la tumba de Edgar Allan Poe.
+- **Filadelfia:** Universal Sphere (volar en dragón, hasta el 20 nov), imprenta de Franklin en vivo, jardín Rodin (El pensador) y la Free Library (tour gratis el jueves 14:00).
+- **Nueva York:** Oculus, Winter Garden, South Street Seaport, Hudson Yards (el Vessel por fuera), mercado navideño de Union Square y la galería de los susurros de Grand Central.
+- **🇪🇸 En español en lo que ya estaba:** la ficha de cada lugar dice qué hay en español. Lo más útil: el **Capitolio tiene tour en español a las 8:40** (se pide por correo a CVCReservations@aoc.gov, de 3 a 90 días antes), la National Gallery tiene audioguía gratis en español y Mount Vernon, audioguía en español.
 
 Otros planes:
 - **Misa en español** en St. Charles Borromeo, Clarendon (domingos 12:00), y en la Catedral de San Mateo (13:00).
