@@ -1,8 +1,8 @@
-/* JD & Santi On Tour · planes extra (teatro barato, patinaje en hielo y misa del domingo).
+/* JD & Santi On Tour · planes extra (museos gratis, Nueva York, alrededores, eventos, teatro barato, patinaje y misa).
    Cada plan es un lugar del mapa (P): se agrega a un día con el mismo selector del plan
    y entra a la ruta, al cronograma, a los avisos y al presupuesto de ese día. */
 
-var TIPOS_EXTRA = { misa: '⛪ Misa del domingo', hielo: '⛸️ Patinar en hielo', teatro: '🎭 Teatro y shows baratos', deporte: '🏀 Partidos baratos' };
+var TIPOS_EXTRA = { museo: '🏛️ Museos gratis', ny: '🗽 Nueva York gratis', afuera: '🚌 Alrededores de Washington', paseo: '🌳 Paseos gratis', evento: '🎄 Eventos y ferias', misa: '⛪ Misa del domingo', hielo: '⛸️ Patinar en hielo', teatro: '🎭 Teatro y shows baratos', deporte: '🏀 Partidos baratos' };
 
 function idxExtra(x) { return idxLugar(x.lugar); }
 /* Días en que se puede hacer (según funciones, temporada o domingos) */
@@ -25,7 +25,7 @@ function diaSugerido(x) {
 
 function planesExtraHTML() {
   if (typeof PLANES_EXTRA === 'undefined') return '';
-  var h = '<div class="card extras"><div class="row spread"><h3 class="gh3">✨ Planes extra</h3><small>Teatro barato, patinaje y misa: agréguenlos a un día y entran al cronograma</small></div>';
+  var h = '<div class="card extras"><div class="row spread"><h3 class="gh3">✨ Planes extra</h3><small>Museos gratis, Nueva York, alrededores, teatro barato, patinaje y misa: agréguenlos a un día y entran al cronograma</small></div>';
   Object.keys(TIPOS_EXTRA).forEach(function (t) {
     var L = PLANES_EXTRA.filter(function (x) { return x.tipo === t && idxExtra(x) > -1; });
     if (!L.length) return;

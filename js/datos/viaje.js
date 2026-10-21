@@ -113,9 +113,9 @@ var GUIA = [
     'En Dulles: fila normal de migración (el Mobile Passport Control no aplica para visa de turista). Después, Metro línea Plateada a Arlington.',
     'El 23 nov sale el vuelo a las 5:50: Uber a las 2:00 (no hay Metro a esa hora).'
   ] },
-  { e: '🗽', t: 'Nueva York en 2 días (9–10 nov)', u: 'https://1iota.com', ut: 'Grabaciones de TV gratis (1iota)', p: [
-    'Bus Greyhound: ida lun 9 a las 8:30 desde Union Station (US$14,99) y regreso mar 10 a las 16:50 desde Port Authority (US$30,99). Unos US$100 los dos. Viajen con una mochila pequeña.',
-    'Hotel: American Dream en Gramercy, ~US$153 con impuestos y desayuno, cancelación gratis hasta el 7 nov. Ojo con los hoteles de Times Square que cobran "resort fee" (el Gallivant: US$40 por noche más impuestos y US$500 de depósito).',
+  { e: '🗽', t: 'Nueva York en 2 días (16–17 nov)', u: 'https://1iota.com', ut: 'Grabaciones de TV gratis (1iota)', p: [
+    'Bus Greyhound: ida lun 16 a las 8:30 desde Union Station y regreso mar 17 a las 16:50 desde Port Authority. Para el 9–10 costaba US$14,99 + US$30,99 (unos US$100 los dos): confirmen el precio nuevo. Viajen con una mochila pequeña.',
+    'Hotel: American Dream en Gramercy, ~US$153 con impuestos y desayuno (precio del 9 nov: confirmen el del 16), cancelación gratis hasta 2 días antes. Ojo con los hoteles de Times Square que cobran "resort fee" (el Gallivant: US$40 por noche más impuestos y US$500 de depósito).',
     'Gratis con reserva: museo del 11-S el lunes de 17:30 a 19:00 (tiquetes ese día a las 7:00), turno para patinar en Bryant Park y grabaciones de TV en 1iota.com.',
     'Más gratis: tour de la Biblioteca Pública (lun–sáb 11:00 y 14:00; boletas el domingo anterior), Museo del Indígena Americano junto al Toro, ferry a Staten Island y Puente de Brooklyn.',
     'El Whitney abre el lunes (el martes no) y es gratis hasta los 25 años: Santi entra gratis.',

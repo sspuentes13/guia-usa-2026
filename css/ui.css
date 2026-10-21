@@ -479,3 +479,19 @@ ul.prep{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:6px}
 .sos ul{margin:6px 0;padding-left:18px;font-size:14px;line-height:1.5;display:grid;gap:4px}
 @media (min-width:1100px) and (min-height:541px){#v-inicio>#prepCard{grid-column:1}#v-inicio>#guiaCard{grid-column:2}}
 .prep .rchk,.reservas .rchk{width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;padding:0;align-self:start;margin-top:2px}
+
+/* 🎫 pases */
+.pzform{display:flex;gap:8px;margin:6px 0}.pzform .gin{flex:1}
+.reservas.pases li{grid-template-columns:30px minmax(0,1fr) auto}
+.pzico{font-size:22px;text-align:center}
+.lnk{background:none;border:0;padding:0;font:inherit;font-size:12px;font-weight:800;color:var(--orange);cursor:pointer}
+.pzver{display:grid;gap:10px}
+.pzfecha{margin:0;font-weight:800;font-size:17px}
+.pzcod{background:var(--sky-2);border-radius:14px;padding:10px 12px;text-align:center}
+.pzcod small{display:block;font-size:12px;color:var(--ink-2)}
+.pzcod b{font-size:24px;letter-spacing:.06em;font-variant-numeric:tabular-nums;user-select:all;-webkit-user-select:all}
+.pzimg{margin:0;background:#fff;border:2px solid var(--sky-2);border-radius:16px;padding:10px;text-align:center}
+.pzimg figcaption{font-size:13px;font-weight:800;margin-bottom:6px;color:var(--ink-2)}
+.pzimg img{display:block;width:100%;height:auto;border-radius:8px}
+.pzimg.qr img{image-rendering:pixelated}
+.pzph{padding:30px 0;color:var(--ink-2);font-size:14px}

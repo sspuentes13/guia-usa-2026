@@ -6,7 +6,7 @@
    'nada' (no se compra antes), 'miercoles' (el miércoles dos semanas antes). */
 var RESERVAS = [
   { id: 'capitolio', n: 'Tour del Capitolio', lugar: 'Capitolio', sale: { tipo: 'ya' }, u: 'https://www.visitthecapitol.gov/visit/book-a-tour',
-    que: 'Tour gratis con hora (se reserva hasta ~90 días antes).', porque: 'El de las 9:00 es el primero del día: menos gente y después pasan por el túnel a la Library of Congress.',
+    que: 'Tour gratis con hora (se reserva hasta ~90 días antes).', porque: 'Temprano hay menos gente y después pasan por el túnel a la Library of Congress. Reservado a las 9:20: lleguen 8:20 (piden 60 min antes).',
     segunda: 'Pases del mismo día en los mostradores de Emancipation Hall, antes de las 14:30.', noVan: 'Gratis: cancelen en su cuenta o al 202-226-8000 para liberar el cupo.', cambio: 'Cancelen y reserven la nueva fecha (gratis).', plata: 'Nada' },
   { id: 'loc', n: 'Library of Congress', lugar: 'Library of Congress', sale: { tipo: 'dias', dias: 30 }, u: 'https://www.loc.gov/visit/',
     que: 'Pase gratis con hora.', porque: 'El mismo día del Capitolio: se pasa por el túnel sin volver a hacer fila.',
@@ -15,7 +15,7 @@ var RESERVAS = [
     que: 'Tiquete con hora en recreation.gov (máximo 6). Se agotan en minutos.', porque: 'El turno de las 9:00 es el primero: menos fila y buena luz. El miércoles 4 nov está cerrado por mantenimiento.',
     segunda: 'El día anterior a las 15:00 (hora del este) sale otro lote en recreation.gov; y el mismo día dan pases en el kiosco de la calle 15 desde las 8:45.', noVan: 'Cancelen antes de las 14:00 (hora del este) del día anterior. El US$1 por tiquete no se devuelve.', cambio: 'No se puede cambiar la fecha: cancelen y reserven otra vez (US$1 más por persona).', plata: 'US$1 por persona' },
   { id: 'aire', n: 'Air and Space Museum', lugar: 'Air and Space Museum', sale: { tipo: 'mes' }, u: 'https://airandspace.si.edu/visit/museum-dc',
-    que: 'Pase gratis con hora (obligatorio, incluso bebés).', porque: 'Queda a 10 min a pie del Capitolio: el pase de las 13:00 encaja después del almuerzo.',
+    que: 'Pase gratis con hora (obligatorio, incluso bebés).', porque: 'Queda a 10 min a pie del Capitolio. Reservado a las 15:00, después de Historia Natural y el almuerzo.',
     segunda: 'Si se agotan, aparecen pases extra cerca de la fecha: revisen la mañana del mismo día.', noVan: 'Gratis: cancelen desde el correo de confirmación.', cambio: 'Saquen pases para la nueva fecha (gratis).', plata: 'Nada' },
   { id: 'zoo', n: 'National Zoo', lugar: 'National Zoo', sale: { tipo: 'dias', dias: 30 }, u: 'https://nationalzoo.si.edu/visit',
     que: 'Pase de entrada gratis obligatorio.', porque: 'Entre semana hay menos gente, y los pandas están más activos en la mañana.',
@@ -30,13 +30,13 @@ var RESERVAS = [
     que: 'US$28 en línea con 3 días de anticipación (US$30 en taquilla).', porque: 'Sábado: se combina con Old Town y el bus 101 desde Huntington.',
     segunda: 'Se puede comprar en la taquilla el mismo día (US$2 más).', noVan: 'Probablemente no devuelven el dinero: compren solo si están seguros.', cambio: 'Llamen al 703-780-2000 para cambiar la fecha.', plata: 'US$28 por persona' },
   { id: 'busny', n: 'Bus Greyhound a Nueva York (ida y regreso)', lugar: 'Port Authority (llegada)', horaTren: 'bus de las', sale: { tipo: 'compra' }, u: 'https://www.greyhound.com',
-    que: 'Ida lun 9 a las 8:30 desde Union Station (bus deck), llega a Port Authority 13:05: US$14,99. Regreso mar 10 a las 16:50 desde Port Authority, llega 22:35: US$30,99. Más US$3,99 de servicio por compra.', porque: 'Es ~4 veces más barato que Amtrak y llega a Port Authority, a 6 cuadras de Times Square.',
+    que: 'Ida el lunes a las 8:30 desde Union Station (bus deck), llega a Port Authority 13:05. Regreso el martes a las 16:50 desde Port Authority, llega 22:35. Para el 9–10 nov costaba US$14,99 + US$30,99 + US$3,99 de servicio: confirmen el precio de las fechas nuevas.', porque: 'Es ~4 veces más barato que Amtrak y llega a Port Authority, a 6 cuadras de Times Square.',
     segunda: 'FlixBus a la misma hora y precio (8:00, llega a la calle 31 con 8.ª Av.). De regreso: Greyhound 18:45 (llega 23:40) o FlixBus 16:00 directo a Rosslyn.', noVan: 'Greyhound devuelve un bono (no plata): 100 % si cancelan con 30 días o más, 70 % con 7–29 días, 40 % con 2–6 días y 20 % con menos de 2.', cambio: 'Se puede cambiar hasta 15 minutos antes de salir, pagando la diferencia.', plata: '~US$50 por persona' },
-  { id: 'hotelny', n: 'Hotel en Manhattan (noche del 9 nov)', lugar: 'Hotel American Dream', sale: { tipo: 'antes', dias: 2 }, u: 'https://www.booking.com/hotel/us/american-dream-new-york.html',
-    que: 'American Dream (Gramercy): camarote para dos, baño compartido y desayuno, ~US$153 con impuestos. Cancelación gratis hasta el 7 nov y se paga en el hotel.', porque: 'Es la opción más barata con 2 camas, desayuno y cancelación gratis. El Gallivant sale ~US$322 con 2 camas (cobra US$40 de resort fee más impuestos y retiene US$500 de depósito).',
-    segunda: 'HI NYC Hostel (~US$158 los dos en dormitorio), Pod 51 (~US$211, camarote) o Mayfair Times Square (~US$221, 1 cama).', noVan: 'Cancelando antes del 7 nov no pagan nada.', cambio: 'Se cambia gratis en Booking hasta el 7 nov.', plata: 'Nada si cancelan antes del 7 nov' },
+  { id: 'hotelny', n: 'Hotel en Manhattan (1 noche)', lugar: 'Hotel American Dream', sale: { tipo: 'antes', dias: 2 }, u: 'https://www.booking.com/hotel/us/american-dream-new-york.html',
+    que: 'American Dream (Gramercy): camarote para dos, baño compartido y desayuno, ~US$153 con impuestos (cotizado para el 9 nov: confirmen el precio de la noche nueva). Cancelación gratis hasta 2 días antes y se paga en el hotel.', porque: 'Es la opción más barata con 2 camas, desayuno y cancelación gratis. El Gallivant sale ~US$322 con 2 camas (cobra US$40 de resort fee más impuestos y retiene US$500 de depósito).',
+    segunda: 'HI NYC Hostel (~US$158 los dos en dormitorio), Pod 51 (~US$211, camarote) o Mayfair Times Square (~US$221, 1 cama).', noVan: 'Cancelando hasta 2 días antes no pagan nada.', cambio: 'Se cambia gratis en Booking hasta 2 días antes.', plata: 'Nada si cancelan a tiempo' },
   { id: 'museo911', n: 'Museo del 11-S gratis (lunes 17:30)', lugar: 'Memorial del 11-S', sale: { tipo: 'dias', dias: 0, h: 7 }, u: 'https://www.911memorial.org/visit/visit-museum',
-    que: 'Los lunes el museo es gratis de 17:30 a 19:00. Los tiquetes salen ese mismo lunes a las 7:00 (hora de NY) en 911memorial.org y se acaban rápido.', porque: 'El martes 10 el museo no abre; el lunes es gratis al final de la tarde.',
+    que: 'Los lunes el museo es gratis de 17:30 a 19:00. Los tiquetes salen ese mismo lunes a las 7:00 (hora de NY) en 911memorial.org y se acaban rápido.', porque: 'Los martes de noviembre el museo no abre; el lunes es gratis al final de la tarde.',
     segunda: 'Si se agotan: tiquete pago (US$24–36) para antes de las 17:30, o solo las fuentes del Memorial (gratis).', noVan: 'Gratis: no pierden nada.', cambio: 'Solo aplica los lunes.', plata: 'Nada' },
   { id: 'bryant', n: 'Turno para patinar en Bryant Park', lugar: 'Pista de hielo de Bryant Park', sale: { tipo: 'ya' }, u: 'https://bryantpark.org/activities/the-rink',
     que: 'Entrada gratis con turno de hora obligatorio; el hielo empieza 20 min después. Alquiler de patines desde ~US$19.', porque: 'Queda al lado de la Biblioteca, en la ruta del martes.',
@@ -78,7 +78,7 @@ function hechas() {
       localStorage.removeItem('guiaReservas'); MIPLAN.res = x; planGuardar(true);
     }
   } catch (e) {}
-  return x;
+  return typeof pasesComoRes === 'function' ? pasesComoRes(x) : x;
 }
 function filaReserva(r, ahora, hc) {
   var i = idxLugar(r.lugar), n = i > -1 ? diasDe(P[i])[0] : 0;
@@ -118,17 +118,18 @@ function renderReservas(el) {
     h += '<li class="' + (x.hecha && !x.otra ? 'ok' : x.cl === 'r' ? 'urge' : '') + '"><button class="rchk" data-r="' + r.id + '" data-f="' + isoDia(x.n) + '" aria-label="Marcar como reservada">' + (x.hecha ? '✓' : '') + '</button><div><b>' + esc(r.n) + '</b><small>Para el <b>Día ' + x.n + ' · ' + fechaCorta(x.n) + (x.hora ? ', ' + x.hora : '') + '</b>' + (x.cuando ? ' · ' + esc(x.cuando) : '') + '</small>' +
       (x.otra ? '<small class="av">⚠️ Reservaron para el ' + fechaIsoTxt(x.hecha.f) + ', pero el plan ahora dice ' + fechaCorta(x.n) + '. ' + esc(r.cambio) + '</small>' : '') +
       '<details class="rdet"><summary>Qué pasa si…</summary><dl><dt>📝 Qué es</dt><dd>' + esc(r.que) + '</dd><dt>🤔 Por qué ese día</dt><dd>' + esc(r.porque) + '</dd><dt>🔁 Si se agotan</dt><dd>' + esc(r.segunda) + '</dd><dt>🙅 Si reservan y no van</dt><dd>' + esc(r.noVan) + '</dd><dt>📅 Cambiar la fecha</dt><dd>' + esc(r.cambio) + '</dd><dt>💵 Plata en riesgo</dt><dd>' + esc(r.plata) + '</dd></dl></details></div>' +
-      '<div class="rcu"><span class="pill ' + x.cl + '">' + (x.hecha && !x.otra ? 'Lista' : x.est) + '</span><a href="' + r.u + '" target="_blank" rel="noopener">Abrir ↗</a></div></li>';
+      '<div class="rcu"><span class="pill ' + x.cl + '">' + (x.hecha && !x.otra ? (x.hecha.pase ? '🎫 Con ticket' : 'Lista') : x.est) + '</span>' + (x.hecha && x.hecha.pase ? '<button class="lnk" data-pz="' + esc(x.hecha.pase) + '">Ver pase</button>' : '<a href="' + r.u + '" target="_blank" rel="noopener">Abrir ↗</a>') + '</div></li>';
   });
   h += '</ul>';
   h += '<details class="rdet faq"><summary>🤔 ¿Son las mejores fechas? ¿Y si reservamos y no vamos?</summary><ul class="insights">' +
     '<li><b>Fechas:</b> ' + (av ? 'hay ' + av + ' aviso' + (av > 1 ? 's' : '') + ' en el plan actual: ábranlos en la pestaña Días.' : 'con el plan actual todo abre el día que van y no hay choques de horario.') + ' Arlington va primero (llegan a casa), luego DC entre semana (menos filas), Nueva York lunes y martes con una noche de hotel (el lunes el museo del 11-S es gratis en la tarde), Baltimore un sábado (el Walters abre) y al final compras.</li>' +
     '<li><b>Pases gratis</b> (Capitolio, Library, museos, Zoo): si no van no pierden nada. Cancelen para liberar el cupo y saquen otro para el día nuevo.</li>' +
     '<li><b>Washington Monument e Independence Hall:</b> pierden US$1 por persona. El Monument tiene una segunda oportunidad el día anterior a las 15:00 (hora del este).</li>' +
-    '<li><b>Lo que cuesta plata:</b> el Amtrak a Filadelfia (compren con tarifa <b>Flex</b> o cancelen dentro de las 24 h), el bus a Nueva York (Greyhound devuelve un bono, no plata) y el hotel (cancelación gratis hasta el 7 nov).</li>' +
+    '<li><b>Lo que cuesta plata:</b> el Amtrak a Filadelfia (compren con tarifa <b>Flex</b> o cancelen dentro de las 24 h), el bus a Nueva York (Greyhound devuelve un bono, no plata) y el hotel (cancelación gratis hasta 2 días antes).</li>' +
     '<li><b>MARC:</b> no lo compren antes; sirve cualquier día.</li>' +
     '<li>Si cambian un día en la pestaña Días, esta lista recalcula las fechas y les avisa qué reserva hay que mover.</li></ul></details>';
   el.innerHTML = h;
+  [].forEach.call(el.querySelectorAll('[data-pz]'), function (b) { b.onclick = function () { verPase(b.dataset.pz); }; });
   [].forEach.call(el.querySelectorAll('[data-r]'), function (b) {
     b.onclick = function () {
       var x = MIPLAN.res || {}, id = b.dataset.r;
@@ -160,7 +161,10 @@ function renderHoy(el) {
     h += '<ul class="tl">' + d.acts.map(function (a) { return '<li><b>' + esc(a[0]) + '</b><span>' + esc(a[1]) + '</span></li>'; }).join('') + '</ul>';
     h += '<div class="row"><button class="btn" id="hoyPlan">🔀 ' + (pe ? 'Usar el día para un pendiente (' + pe + ')' : 'Cambiar el plan') + '</button></div>';
   }
+  var pzs = typeof pasesDelDia === 'function' ? pasesDelDia(n) : [];
+  if (pzs.length) h += '<div class="row">' + pzs.map(function (p) { return '<button class="btn pri" data-pz="' + esc(p.id) + '">🎫 Pase: ' + esc(p.t) + '</button>'; }).join('') + '</div>';
   el.innerHTML = h;
+  [].forEach.call(el.querySelectorAll('[data-pz]'), function (b) { b.onclick = function () { verPase(b.dataset.pz); }; });
   if (hayRuta) {
     if (prox) document.getElementById('hoyIr').onclick = function () { irA({ ll: P[prox.i].ll, n: P[prox.i].n, i: prox.i }); };
     document.getElementById('hoyRuta').onclick = function () { verRutaDia(n); };

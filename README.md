@@ -35,10 +35,11 @@ El plan recomendado está pensado para seguirlo tal cual:
 | dom 1 – mar 3 nov | Llegada y Arlington: cementerio, Iwo Jima, Air Force; Roosevelt Island y Gravelly Point |
 | mié 4 – vie 6 nov | DC: National Mall al amanecer; Capitolio, Library y museos; Washington Monument, Georgetown y show |
 | sáb 7 nov | Old Town Alexandria (el mercado solo es los sábados) y Mount Vernon opcional |
-| lun 9 – mar 10 nov | **Nueva York en 2 días**: bus Greyhound (8:30 lun / 16:50 mar), noche en el American Dream (Gramercy), museo del 11-S gratis el lunes 17:30, patinaje en Bryant Park el martes |
-| jue 12 – vie 13 nov | Zoológico y catedral; National Gallery, Museo Afroamericano y The Wharf |
+| lun 9 – mar 10 nov | Zoológico y catedral (pases ya reservados para el lun 9); National Gallery, Museo Afroamericano y The Wharf |
+| jue 12 – vie 13 nov | Libres: Clarendon y día comodín (el vie 13 reabre el Renwick y abre el mercado navideño) |
 | sáb 14 nov | Baltimore (el Walters y el Monumento abren) |
-| lun 16 – mié 18 nov | Libres en Arlington: compras y un día comodín para lo pendiente |
+| lun 16 – mar 17 nov | **Nueva York en 2 días**: bus Greyhound (8:30 lun / 16:50 mar), noche en el American Dream (Gramercy), museo del 11-S gratis el lunes 17:30, patinaje en Bryant Park el martes |
+| mié 18 nov | Descanso y lista de compras |
 | jue 19 nov | Filadelfia y compras sin impuesto en Delaware |
 | vie 20 – dom 22 nov | Último día en DC, Pentagon City, maletas y despedida |
 
@@ -51,9 +52,9 @@ Los días 8, 11 y 15 son de descanso.
 - La ruta, el cronograma, las reservas, la tarjeta **Hoy** y los restaurantes cercanos se recalculan con la fecha nueva. **↺ Volver al recomendado** deshace todo, pero conserva las reservas marcadas.
 - **Compartir:** si Gastos está conectado, el plan viaja por la misma hoja privada y gana el último cambio. Si no, **📲 Compartir plan** manda un enlace que aplica el mismo plan en el otro teléfono.
 
-## ✨ Planes extra: teatro barato, patinaje y misa
+## ✨ Planes extra: museos gratis, Nueva York, alrededores, teatro, patinaje y misa
 
-En la pestaña **Días**, la tarjeta **✨ Planes extra** tiene 13 planes verificados el 6 oct 2026. Cada uno se puede agregar a un día, cambiar o quitar. Al agregarlo entra a la ruta, al cronograma, a los avisos y al presupuesto, y la app solo sugiere días en que hay función o abre.
+En la pestaña **Días**, la tarjeta **✨ Planes extra** tiene 39 planes: 13 verificados el 6 oct 2026 y 26 gratis agregados el 21 oct 2026 (también salen en la pestaña **Gratis**). Cada uno se puede agregar a un día, cambiar o quitar. Al agregarlo entra a la ruta, al cronograma, a los avisos y al presupuesto, y la app solo sugiere días en que hay función o abre.
 
 Ya quedaron en el plan (los opcionales se pueden quitar):
 
@@ -61,8 +62,16 @@ Ya quedaron en el plan (los opcionales se pueden quitar):
 |---|---|
 | jue 5 nov, 20:00 | Concierto gratis de **Edmar Castañeda** (arpa colombiana) en la Library of Congress (opcional) |
 | dom 8 nov, 13:30 | **Basílica del Santuario Nacional**: capillas y **misa en español a las 14:30** |
-| jue 12 nov, 10:00 | **Patinar gratis en Bryant Park** (NY), al bajar del tren; solo se paga el alquiler de patines (desde ~US$19). Para que quepa se acortaron Rockefeller y San Patricio, y Central Park pasó a las 13:45 (opcional) |
+| mar 17 nov, 11:30 | **Patinar gratis en Bryant Park** (NY); solo se paga el alquiler de patines (desde ~US$19). |
 | dom 15 nov, 14:00 | **Flamenco en GALA Hispanic Theatre**, US$25 en balcón (opcional) |
+
+**Nuevos y gratis (21 oct 2026, páginas oficiales):**
+- **Museos de DC:** Historia Americana, Hirshhorn (su jardín de esculturas reabre el 31 oct), Indígena Americano, Postal, Archivos Nacionales (la Constitución original), Holocausto (pase con hora), Renwick (reabre el vie 13 nov), Arte Asiático, Planet Word (idiomas, cierra los martes), Corte Suprema (charla en la sala), Folger (Shakespeare) y la Oficina de Grabado (imprimen dólares).
+- **Paseos y eventos:** Jardín Botánico, Arboreto Nacional, Memorial del Pentágono, **Día de los Veteranos** en Arlington (solo mié 11 nov, 11:00) y el mercado navideño de Downtown (desde el 13 nov).
+- **Alrededores:** **Udvar-Hazy** (el transbordador Discovery; metro Plateada + bus 983) y Glenstone (arte entre bosques en Maryland; metro + bus Ride On 301).
+- **Nueva York:** Museo del Indígena Americano, Federal Hall, Iglesia Trinity, mercado navideño de Bryant Park y la Biblioteca Morgan (gratis el martes 15:00–17:00).
+- **Baltimore y Filadelfia:** Museo de Arte de Baltimore (Matisse) y la Casa de la Moneda.
+- **Ojo:** el Met y el Museo de Historia Natural de NY **no** son gratis para turistas (el «paga lo que quieras» es solo para residentes de Nueva York). Great Falls, el Museo de los Marines y Annapolis quedaron fuera: sin transporte público razonable.
 
 Otros planes:
 - **Misa en español** en St. Charles Borromeo, Clarendon (domingos 12:00), y en la Catedral de San Mateo (13:00).
@@ -89,7 +98,7 @@ Ojo: el edificio principal del Kennedy Center sigue cerrado. El show gratis del 
 
   Si cambian el plan, vuelvan a exportar.
 - **Presupuesto:** las comidas de afuera suman ~15 % de impuestos y propina.
-- **Partidos baratos** (en Planes extra): Wizards (NBA) desde ~US$5–15, con fecha sugerida el lun 16 nov, y Capitals (NHL) desde ~US$29.
+- **Partidos baratos** (en Planes extra): Wizards (NBA) desde ~US$5–15, y Capitals (NHL) desde ~US$29.
 
 ## 🎟️ Reservas
 
@@ -99,6 +108,23 @@ En Inicio, **🎟️ Reservas según su plan** calcula cuándo salen los pases *
 - cuánta plata está en riesgo.
 
 Marquen ✓ al reservar: queda guardada la fecha. Si después mueven ese día, la app avisa en rojo que esa reserva hay que cambiarla.
+
+### 🎫 Nuestros pases (tickets y QR)
+
+En Inicio, **🎫 Nuestros pases** muestra los tickets que ya reservaron: QR del Zoo (uno por persona), código de barras del Capitolio y confirmación de Air and Space. Funcionan sin internet.
+
+- **Van cifrados** (AES-256): la página es pública y los tickets tienen nombres, códigos y QR que cualquiera podría usar. En este repositorio solo hay archivos ilegibles en `pases/`.
+- **La clave** se escribe una vez en cada teléfono y queda guardada solo ahí. **📲 Abrir en el otro teléfono** manda un link que ya trae la clave: mándenlo solo por chat privado. La clave **nunca** va en este repositorio.
+- **Valida contra el plan:** cada pase dice si su fecha y hora coinciden con el plan, y avisa qué reserva marcada con ✓ no tiene ticket en la carpeta. Una reserva con ticket cuenta como hecha para la fecha del ticket.
+- El día del paseo, la tarjeta **Hoy** muestra el botón del pase.
+
+**Agregar o cambiar un pase** (desde el computador vinculado): pongan la captura o el PDF en la carpeta privada `Reservas/` (al lado de este repo, no adentro), agréguenlo a `Reservas/pases.json` y corran:
+
+```bash
+node herramientas/cifrar-pases.js ../Reservas
+```
+
+Luego suban `VERSION` en `sw.js` y publiquen. La clave está en `Reservas/CLAVE-PASES.txt`.
 
 En resumen: los pases gratis (Capitolio, Library, museos y Zoo) no cuestan nada si no van. El Washington Monument y el Independence Hall cuestan US$1 por persona. Lo único con plata grande es **Amtrak**: compren apenas confirmen la fecha, con tarifa **Flex** si no están seguros, o cancelen dentro de las 24 horas. El **MARC** no se compra antes.
 
@@ -209,7 +235,7 @@ Cambios importantes que salieron de la auditoría:
 - **Baltimore:** primer MARC del sábado a las **8:55**.
 - **Filadelfia:** Amtrak de las **6:30**. SEPTA a Wilmington a las **14:04** (los de 13:13 y 15:33 no llegan). Regreso Amtrak **20:32**.
 - **Old Town Alexandria:** el mercado se mudó a **100 N Royal St / Tavern Square** (sábados 7:00–12:00). El trolley pasa desde las 11:00. Mount Vernon se alcanza en el bus 101 de las 11:58.
-- **Amaneceres y atardeceres:** se calculan para cada fecha y ciudad (±2 min). Por ejemplo, amanecer el 4 nov a las 6:38 y atardecer a las 17:04; en Nueva York el 12 nov, a las 16:42. Si mueven un día con atardecer, la hora se ajusta.
+- **Amaneceres y atardeceres:** se calculan para cada fecha y ciudad (±2 min). Por ejemplo, amanecer el 4 nov a las 6:38 y atardecer a las 17:04; en Nueva York el 16 nov, a las ~16:37. Si mueven un día con atardecer, la hora se ajusta.
 - **Sin riesgo de cierre del gobierno federal** durante el viaje (financiado hasta el 11 de diciembre de 2026).
 
 Durante el viaje, Inicio muestra **📅 Hoy**: el cronograma del día, la próxima actividad, las notas de la fecha (madrugar para el tren, festivos) y un botón para cambiar el plan.

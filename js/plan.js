@@ -31,9 +31,10 @@ function planOrdenValido(o) {
   }
   return true;
 }
+function esPlanViejo(o) { return typeof PLANES_BASE_VIEJOS !== 'undefined' && PLANES_BASE_VIEJOS.some(function (v) { return v.join() === o.join(); }); }
 function planNormal(x) {
   var p = planVacio();
-  if (x && planOrdenValido(x.orden)) p.orden = x.orden.slice();
+  if (x && planOrdenValido(x.orden) && !esPlanViejo(x.orden)) p.orden = x.orden.slice();
   ['mov', 'est', 'res', 'chk'].forEach(function (k) { if (x && x[k] && typeof x[k] === 'object') p[k] = x[k]; });
   p.modificado = x && +x.modificado || 0; p.pend = x && x.pend ? 1 : 0;
   return p;
@@ -220,7 +221,7 @@ function avisosBloque(id, n) {
   if (id === 'ny2' && DIA_DE.ny1 !== n - 1) o.push('El día 1 de Nueva York tiene que ir justo antes (hay noche de hotel).');
   if (b.viaje) [n - 1, n + 1].forEach(function (m) { var d = diaDeN(m); if (d && BLOQUES[d.id].viaje && !(/^ny\d/.test(id) && /^ny\d/.test(d.id))) o.push('Queda pegado a otro viaje largo (' + d.title + '): van a llegar muy cansados.'); });
   if (typeof reservasDeBloque === 'function') reservasDeBloque(id).forEach(function (r) {
-    var x = MIPLAN.res[r.id]; if (x && x.f && x.f !== iso) o.push('Ya tienen reserva de ' + r.n + ' para el ' + fechaIsoTxt(x.f) + '. ' + r.cambio);
+    var x = (typeof hechas === 'function' ? hechas() : MIPLAN.res)[r.id]; if (x && x.f && x.f !== iso) o.push('Ya tienen reserva de ' + r.n + ' para el ' + fechaIsoTxt(x.f) + '. ' + r.cambio);
   });
   return o;
 }

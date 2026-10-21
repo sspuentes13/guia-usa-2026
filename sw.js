@@ -3,17 +3,21 @@
    - Tiles de mapa: primero la caché (preparados o visitados), si no, internet.
    - Fotos de Wikipedia y fuente: caché con actualización en segundo plano.
    - Gastos (Google Apps Script): nunca se guardan aquí.
+   - Pases (pases/*.bin): cifrados; se guardan al instalar para abrirlos sin internet.
    Al publicar cambios grandes, sube VERSION para forzar la actualización. */
-var VERSION = '2026-10-15a';
+var VERSION = '2026-10-21b';
 var SHELL='guia-app-'+VERSION, PREP='guia-tiles-prep', VIS='guia-tiles-vis', EXT='guia-ext';
 var ARCHIVOS=['./','index.html','manifest.webmanifest','css/leaflet.css','css/app.css','css/gastos.css','css/ui.css',
   'js/vendor/leaflet.js','js/datos/lugares.js','js/datos/ciudades.js','js/datos/presupuesto.js','js/datos/dias.js',
-  'js/datos/contenido.js','js/datos/ingles.js','js/datos/mapas.js','js/datos/geo/col.js','js/datos/geo/arl.js','js/datos/geo/dc.js','js/datos/geo/ny.js','js/datos/geo/bal.js','js/datos/geo/phi.js','js/datos/geo/del.js','js/datos/geo/snow.js','js/offline.js','js/datos/horarios.js','js/rutas.js','js/cronograma.js','js/hoy.js', 'js/plan.js', 'js/comer.js', 'js/datos/restaurantes.js', 'js/datos/planes-extra.js', 'js/extras.js', 'js/datos/viaje.js', 'js/calendario.js', 'js/viaje.js','js/mapa-rutas.js','js/navegar.js','js/datos/transporte.js','js/vista-dias.js','js/ingles.js','js/gastos.js','js/app.js',
+  'js/datos/contenido.js','js/datos/ingles.js','js/datos/mapas.js','js/datos/geo/col.js','js/datos/geo/arl.js','js/datos/geo/dc.js','js/datos/geo/ny.js','js/datos/geo/bal.js','js/datos/geo/phi.js','js/datos/geo/del.js','js/datos/geo/snow.js','js/offline.js','js/datos/horarios.js','js/rutas.js','js/cronograma.js','js/hoy.js', 'js/pases.js', 'js/plan.js', 'js/comer.js', 'js/datos/restaurantes.js', 'js/datos/planes-extra.js', 'js/extras.js', 'js/datos/viaje.js', 'js/calendario.js', 'js/viaje.js','js/mapa-rutas.js','js/navegar.js','js/datos/transporte.js','js/vista-dias.js','js/ingles.js','js/gastos.js','js/app.js',
   'iconos/icono-192.png','iconos/icono-512.png','iconos/apple-touch-icon.png'];
 var MAX_VIS=2500, MAX_EXT=150;
 
 self.addEventListener('install',function(e){
-  e.waitUntil(caches.open(SHELL).then(function(c){return c.addAll(ARCHIVOS.map(function(u){return new Request(u,{cache:'reload'})}))}));
+  e.waitUntil(caches.open(SHELL).then(function(c){return c.addAll(ARCHIVOS.map(function(u){return new Request(u,{cache:'reload'})})).then(function(){
+    // pases cifrados (js/pases.js): se guardan de una vez para abrirlos sin internet
+    return fetch('pases/lista.json',{cache:'reload'}).then(function(r){return r.ok?r.clone().json().then(function(L){return c.put('pases/lista.json',r).then(function(){return c.addAll(L.archivos.map(function(f){return 'pases/'+f}))})}):null}).catch(function(){});
+  })}));
 });
 self.addEventListener('activate',function(e){
   e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k.indexOf('guia-app-')===0&&k!==SHELL}).map(function(k){return caches.delete(k)}))}).then(function(){return self.clients.claim()}));
