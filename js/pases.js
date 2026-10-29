@@ -61,6 +61,7 @@ function pasesComoRes(x) {
   return o;
 }
 function pzEstado(p) {
+  if (!p.res) return { cl: 'g', txt: 'Documento del viaje.' };   // seguro, dirección de llegada…: no van ligados a un lugar del plan
   var n = pzDiaPlan(p), r = pzReserva(p), hp = pzHoraPlan(p, n);
   if (!n) return { cl: 'o', txt: 'Ese lugar no está en el plan actual: agréguenlo al ' + (p.fecha ? fechaIsoTxt(p.fecha) : 'día de la reserva') + ' en la pestaña Días.' };
   if (!p.fecha) return { cl: 'o', n: n, txt: 'El ticket no muestra la fecha. El plan lo tiene el ' + etiquetaDia(n) + (hp ? ', ' + hp : '') + ': confírmenlo en el correo.' };

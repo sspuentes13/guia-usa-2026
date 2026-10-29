@@ -21,7 +21,7 @@ var RESERVAS = [
     que: 'Pase de entrada gratis obligatorio.', porque: 'Entre semana hay menos gente, y los pandas están más activos en la mañana.',
     segunda: 'Salen más pases una semana antes, el día anterior y el mismo día; también hay algunos en la puerta.', noVan: 'Gratis. Si pagaron parqueadero (US$30–40) no se devuelve.', cambio: 'Se puede cambiar hasta 48 h antes.', plata: 'Nada (sin carro)' },
   { id: 'afro', n: 'Museo de Historia Afroamericana', lugar: 'Museo Afroamericano', sale: { tipo: 'dias', dias: 30, h: 8 }, u: 'https://nmaahc.si.edu/visit/frequently-asked-questions',
-    que: 'Pase gratis con hora.', porque: 'Con el pase de las 13:30 alcanzan 2,5 h, que es lo mínimo para verlo bien.',
+    que: 'Pase gratis con hora.', porque: 'Reservado el lun 9 nov a las 12:00, después del zoo: el museo cierra a las 17:30, así que tienen toda la tarde (piden 2,5 h para verlo bien).',
     segunda: 'Pases del mismo día en línea a las 8:15 (hora del este).', noVan: 'Gratis. Avisen a NMAAHCVisitorServices@si.edu.', cambio: 'Escriban a NMAAHCVisitorServices@si.edu o saquen pases nuevos.', plata: 'Nada' },
   { id: 'kennedy', n: 'Show gratis del Kennedy Center', lugar: 'Kennedy Center', sale: { tipo: 'miercoles' }, u: 'https://www.kennedy-center.org/whats-on/millennium-stage/',
     que: 'Millennium Stage: show gratis (confirmen el programa de ese día).', porque: 'Cierra el día de Georgetown, que queda al lado, sin volver a cruzar la ciudad.',
